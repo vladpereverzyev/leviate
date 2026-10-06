@@ -4,8 +4,10 @@ Move 3D scans with your bare hands. Leviate is a web app that turns any webcam,
 on a computer or a phone, into a hand controller for 3D models. Open a scan, raise
 your hand in front of the camera and rotate, pan or zoom it without touching anything.
 
-Everything runs in the browser on the CPU. No install, no server, no GPU required,
+Everything runs in the browser on the CPU. No install, no server, no GPU required
 and your files never leave your device.
+
+![Leviate on a desktop browser](docs/screenshot.png)
 
 ## Features
 
@@ -27,6 +29,11 @@ and your files never leave your device.
 - **Fully offline**: all libraries and the hand model are bundled in the repository.
 
 ## Gestures
+
+![The three hand poses: open hand rotates, fist pans, thumb and index zoom](docs/gestures.png)
+
+The drawings show the 21 hand points that the app tracks and draws over the
+webcam preview, in the same colors it uses for each gesture.
 
 | Hand pose | Action |
 | --- | --- |
@@ -58,9 +65,16 @@ Any static server works, for example `npx serve` instead of Python.
 
 ### On a phone
 
+<img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="260" align="right">
+
 Browsers only open the camera on `https://` pages or on `localhost`. To use Leviate
 on a phone, publish the folder on any static HTTPS host (GitHub Pages, Netlify,
 Cloudflare Pages or your own server) and open that address on the phone.
+
+On a phone the Files and Webcam windows stack under the header and open one at a
+time. Tap a title to open or close it.
+
+<br clear="right">
 
 ## Supported files
 
@@ -110,6 +124,7 @@ file is missing the app tells you which one.
 | `js/windows.js` | Floating windows: drag, collapse, phone layout |
 | `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
 | `vendor/fonts/` | Jost font (SIL OFL 1.1) |
+| `docs/` | Screenshots and gesture drawings used in this README |
 | `icons/`, `site.webmanifest` | App icons for browsers, iOS and Android |
 | `vendor/mediapipe/` | MediaPipe Tasks Vision and its WebAssembly runtime (Apache-2.0) |
 | `models/hand_landmarker.task` | MediaPipe hand model (Apache-2.0) |

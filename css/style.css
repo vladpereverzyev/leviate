@@ -474,11 +474,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     flex-wrap: wrap;
     justify-content: center;
     border-radius: 18px;
-    bottom: max(26px, calc(env(safe-area-inset-bottom) + 18px));
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 36px);
   }
   .tool { padding: 6px 9px; font-size: 12.5px; }
   .sep, #fullscreen { display: none; }
 
-  .toast { bottom: calc(max(26px, env(safe-area-inset-bottom)) + 96px); }
-  .legal { left: 0; right: 0; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 10px; }
+  .toast { bottom: calc(max(6px, env(safe-area-inset-bottom)) + 110px); }
+  .legal { left: 12px; right: 12px; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 10px; line-height: 1.5; }
 }
