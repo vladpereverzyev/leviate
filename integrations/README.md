@@ -90,8 +90,8 @@ rotations and pans up and multiply the zooms.
 { "type": "hello", "app": "blender", "version": "4.5.3", "protocol": 1 }
 ```
 
-Send it when a page connects. Leviate shows the program name and version in its Link
-app section.
+Send it when a page connects. Leviate shows `name` (or `app`) and `version` in its Link
+app section; `name` is optional.
 
 ## Try a new integration
 

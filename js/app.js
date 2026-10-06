@@ -859,7 +859,7 @@ function showLink() {
   btn.textContent = appLink.linked ? 'Unlink app' : 'Link app';
   const app = appLink.app;
   $('link-info').textContent = appLink.linked
-    ? 'Linked' + (app ? ` to ${app.app[0].toUpperCase()}${app.app.slice(1)} ${app.version || ''}` : '')
+    ? 'Linked' + (app ? ` to ${app.name || app.app[0].toUpperCase() + app.app.slice(1)} ${app.version || ''}` : '')
     : '';
 }
 
