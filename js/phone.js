@@ -7,6 +7,7 @@
 // PeerJS only brokers the connection; the video goes straight between devices.
 
 import qrcode from '../vendor/qrcode/qrcode.mjs';
+import { ensure } from './consent.js';
 
 // Phones need https to open the camera, so a computer on localhost pairs
 // through the published copy of the app.
@@ -125,6 +126,10 @@ export async function runPhoneCamera(pairId) {
   }
 
   async function start() {
+    if (!await ensure('camera', 'external')) {
+      status('Allow Camera and External services in the cookie preferences to use this phone as a camera.');
+      return;
+    }
     if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
       status('Open this page over https to use the camera.');
       return;

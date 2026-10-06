@@ -1,0 +1,102 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy and cookie policy · Leviate</title>
+  <meta name="description" content="How Leviate handles your data: no cookies, no analytics, scans and video stay on your device.">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body { height: auto; overflow: auto; }
+    body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
+    .doc { max-width: 46rem; margin: 0 auto; padding: 40px 20px 120px; font-size: 15px; line-height: 1.7; font-weight: 300; }
+    .doc a { color: var(--accent-2); }
+    .doc h1 { margin: 6px 0 4px; font-size: 34px; font-weight: 300; letter-spacing: -0.02em; }
+    .doc h2 { margin: 36px 0 8px; font-size: 19px; font-weight: 400; }
+    .doc p, .doc li { color: var(--muted); }
+    .doc b { color: var(--text); font-weight: 500; }
+    .doc .updated { color: var(--dim); font-size: 13px; margin: 0 0 28px; }
+    .doc .back { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 400; }
+    .doc .back img { width: 26px; height: 26px; }
+    .doc table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    .doc th, .doc td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--muted); }
+    .doc th { color: var(--text); font-weight: 400; }
+    .doc .btn { margin-top: 8px; }
+    @media (max-width: 560px) { .doc h1 { font-size: 27px; } .doc table { font-size: 12px; } }
+  </style>
+</head>
+<body>
+  <main class="doc">
+    <a class="back" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
+    <h1>Privacy and cookie policy</h1>
+    <p class="updated">Last updated: 6 October 2026</p>
+
+    <p>This policy explains what happens to your data when you use Leviate at
+    vladpereverzyev.github.io/leviate. It is provided under Articles 13 and 14 of
+    Regulation (EU) 2016/679 (GDPR) and Italian Legislative Decree 196/2003 as amended.</p>
+
+    <h2>1. Data controller</h2>
+    <p>Vladyslav Pereverzyev, Via del Macello 36/B, 39100 Bolzano (BZ), Italy, VAT IT03281410211.
+    Email: <a href="mailto:info@vladpereverzyev.com">info@vladpereverzyev.com</a></p>
+
+    <h2>2. What Leviate does with your data</h2>
+    <p>Leviate is a static web app. It has no accounts, no server of its own, no analytics
+    and no advertising. <b>Your 3D files</b> are opened in your browser and never uploaded.
+    <b>The camera video</b> is read by the hand tracking on your device, frame by frame,
+    and is never recorded or sent anywhere. The camera starts only after you allow the
+    Camera category in the consent banner and then the permission asked by your browser.</p>
+
+    <h2>3. Hosting</h2>
+    <p>The app is served by GitHub Pages, operated by GitHub, Inc. (USA). When a page is
+    requested GitHub records technical data such as the IP address, date and time and
+    browser, to deliver the site and keep it secure. Legal basis: legitimate interest in a
+    secure and reliable service (Art. 6(1)(f) GDPR). GitHub is certified under the EU-U.S.
+    Data Privacy Framework. See the
+    <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</p>
+
+    <h2>4. Use phone</h2>
+    <p>To use a phone as a webcam the computer and the phone must find each other. This is
+    done by the public PeerJS server (0.peerjs.com), which receives the IP addresses of both
+    devices and a random session code. The video then goes straight between the two devices
+    over WebRTC, encrypted. When a direct link is not possible it is relayed through a PeerJS
+    TURN server, still encrypted. PeerJS never sees the video. This service runs only if you
+    allow the External services category. Legal basis: your consent (Art. 6(1)(a) GDPR),
+    which you can withdraw at any time.</p>
+
+    <h2>5. Links to other sites</h2>
+    <p>The links to GitHub, Ko-fi and vladpereverzyev.com open those sites, which process
+    data under their own policies. Nothing from them is loaded until you click.</p>
+
+    <h2 id="cookies">6. Cookies and browser storage</h2>
+    <p>Leviate sets <b>no cookies</b>. It keeps a few values in your browser storage, on your
+    device only. They are needed for the app to work and never leave the device.</p>
+    <table>
+      <tr><th>Name</th><th>Purpose</th><th>Duration</th></tr>
+      <tr><td>leviate.settings</td><td>Camera and gesture settings</td><td>Until you clear it</td></tr>
+      <tr><td>leviate.windows</td><td>Position of the floating windows</td><td>Until you clear it</td></tr>
+      <tr><td>leviate.consent</td><td>Your consent choice, date and a random code that identifies nobody</td><td>Six months</td></tr>
+    </table>
+    <p>The consent categories are <b>Necessary</b> (always active), <b>Camera</b>,
+    <b>Statistics</b> (nothing in use today) and <b>External services</b> (PeerJS for
+    Use phone). You can change your choice at any time.</p>
+    <button class="btn" type="button" data-cc-open>Cookie preferences</button>
+
+    <h2>7. Your rights</h2>
+    <p>You have the right to access, rectify and erase your data, to restrict or object to
+    its processing, to data portability and to withdraw consent at any time without
+    affecting earlier processing (Articles 15 to 22 GDPR). Write to
+    <a href="mailto:info@vladpereverzyev.com">info@vladpereverzyev.com</a>. You can also lodge
+    a complaint with the Italian supervisory authority, the
+    <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
+
+    <h2>8. Changes</h2>
+    <p>This policy may be updated when the app changes. The date at the top shows the last
+    change.</p>
+  </main>
+  <script type="module" src="js/consent.js"></script>
+</body>
+</html>

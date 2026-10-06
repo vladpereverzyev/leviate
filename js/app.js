@@ -23,6 +23,7 @@ import { GestureEngine, Mode } from './gestures.js';
 import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
+import { ensure } from './consent.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -709,6 +710,10 @@ function stopCamera() {
 }
 
 async function startCamera() {
+  if (!await ensure('camera')) {
+    toast('The camera needs your consent in the cookie preferences.', 4000);
+    return;
+  }
   if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
     toast('The camera needs HTTPS or localhost', 5000);
     return;
@@ -789,6 +794,11 @@ async function usePhone() {
     const wasStreaming = !!stream;
     closePhone();
     if (wasStreaming) stopCamera();
+    return;
+  }
+  // The PeerJS broker is an outside service: it needs consent first.
+  if (!await ensure('camera', 'external')) {
+    toast('Use phone needs Camera and External services in the cookie preferences.', 4000);
     return;
   }
   stopCamera();
