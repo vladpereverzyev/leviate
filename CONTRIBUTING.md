@@ -12,6 +12,31 @@ Thanks for helping. Bug reports, ideas and pull requests are welcome.
 - Run `git config core.hooksPath .githooks` once, so every commit raises the version.
 - Test on a desktop browser and on a phone if your change touches the camera or the layout.
 
+## Integrations for CAD and 3D programs
+
+The most welcome contribution is an integration that brings Leviate to another program:
+FreeCAD, Rhino, Fusion, SolidWorks, Inventor, SketchUp, dental CAD software with an open
+API and any program that can be scripted. [Leviate for Blender](integrations/blender/)
+is the example to follow. The policy for integrations:
+
+1. **One folder per program**: `integrations/<program>/` with the source, a README
+   (install, use, tested versions) and its LICENSE.
+2. **Same protocol for everyone**: the messages in
+   [integrations/README.md](integrations/README.md), as they are. If a program needs
+   something more, open an issue first, so the protocol stays one.
+3. **Local only**: listen on `127.0.0.1`, accept only the Leviate pages, no telemetry
+   and no data sent anywhere else.
+4. **Light**: use the program's own scripting and add-on system, avoid extra installs.
+   New dependencies must have a permissive or GPL compatible license and go in
+   `THIRD-PARTY-NOTICES.md`.
+5. **License**: what the program asks for (Blender add-ons are GPL-3.0-or-later),
+   otherwise AGPL-3.0. The CLA below applies to integrations too.
+6. **Name**: "Leviate for <Program>". Say in its README that it is not made or endorsed
+   by the owner of the program.
+7. **Release**: add a build step to `.github/workflows/build.yml` that packs the
+   integration as one zip. The zip is attached to the release with the others.
+8. **Tested**: write in the pull request which versions of the program you tried.
+
 ## Contributor License Agreement
 
 Leviate is dual licensed: AGPL-3.0 for everyone and a commercial license sold by the

@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Vladyslav Pereverzyev
+#
+# Builds the integration zips on every push and pull request. On a version tag (v*)
+# it publishes them in a GitHub Release and removes the older releases with their
+# tags, so there is always one release. The web app itself is not in the release:
+# it runs from https://vladpereverzyev.github.io/leviate/.
+
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write # needed to create and remove releases
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Check the add-on code
+        run: python -m py_compile integrations/blender/leviate/*.py
+
+      - name: Tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          APP="v$(grep -oP "VERSION = '\K[0-9.]+" js/version.js)"
+          if [ "$APP" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match js/version.js ($APP)"
+            exit 1
+          fi
+
+      - name: Build Leviate for Blender
+        run: python scripts/build-blender.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrations
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download the zips
+        uses: actions/download-artifact@v5
+        with:
+          name: integrations
+          path: dist
+
+      - name: Release notes
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          cat > notes.md <<EOF
+          **Leviate runs in the browser, nothing to download:** <https://vladpereverzyev.github.io/leviate/>
+
+          ### Leviate for Blender
+
+          Download \`leviate-blender-${VER}.zip\` below and drag it into Blender 4.2 or later.
+          Then open the **Leviate** tab in the 3D view (N), press **Wait for Leviate** and
+          press **Link app** in Leviate. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
+
+          The "Source code" archives below are added by GitHub; to use the app open the link above.
+          EOF
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: dist/*.zip
+          body_path: notes.md
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          make_latest: true
+
+      - name: Keep only this release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq '.[].tagName' |
+          while read -r tag; do
+            if [ "$tag" != "$GITHUB_REF_NAME" ]; then
+              gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes
+            fi
+          done

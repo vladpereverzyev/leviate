@@ -392,7 +392,8 @@ button, select, input { font: inherit; color: inherit; }
 
 .field { margin-top: 8px; }
 .field.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
-.field select {
+.field select,
+.field input[type="number"] {
   width: 100%;
   padding: 6px 10px;
   border-radius: 999px;

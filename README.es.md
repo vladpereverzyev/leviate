@@ -1,5 +1,10 @@
 # Leviate
 
+[![Build & Release](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml/badge.svg)](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/vladpereverzyev/leviate?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
+[![Downloads](https://img.shields.io/github/downloads/vladpereverzyev/leviate/total?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.md)
 [![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.it.md)
 [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.es.md)
@@ -21,7 +26,7 @@ y tus archivos nunca salen de tu dispositivo.
 ## Funciones
 
 - **Gestos de la mano**: mano abierta para girar, puño para desplazar, pulgar e índice
-  para el zoom. Gira la palma o el puño y el modelo gira con ellos.
+  para el zoom.
 - **Cualquier webcam**: integrada o USB en el ordenador, frontal o trasera en el teléfono.
 - **Tu teléfono como webcam**: escanea un código QR con un iPhone o un Android y su
   cámara transmite al ordenador. Sin apps que instalar.
@@ -43,6 +48,8 @@ y tus archivos nunca salen de tu dispositivo.
   teléfono) sobre un punto del modelo y cada rotación gira alrededor de él.
   **Reset** vuelve al centro.
 - **Ratón y táctil** siguen funcionando junto a los gestos.
+- **Blender y otros programas**: **Link app** envía los gestos a Blender con el
+  add-on de Leviate, así la mano mueve la vista de Blender o los objetos seleccionados.
 - **Totalmente sin conexión**: todas las librerías y el modelo de la mano están en el
   repositorio.
 
@@ -55,18 +62,13 @@ previa de la webcam, con los mismos colores que usa para cada gesto.
 
 | Postura de la mano | Acción |
 | --- | --- |
-| Mano abierta (cuatro o cinco dedos fuera) | Mueve la mano para **girar** el modelo. Gira la palma a la izquierda o a la derecha para **girarlo** a la izquierda o a la derecha |
-| Puño | Mueve la mano para **desplazar** el modelo en el espacio. Gira el puño a la izquierda, a la derecha, arriba o abajo para **girarlo** en el mismo sentido |
+| Mano abierta (cuatro o cinco dedos fuera) | Mueve la mano para **girar** el modelo |
+| Puño | Mueve la mano para **desplazar** el modelo en el espacio |
 | Pulgar e índice fuera, los demás dedos cerrados | Separa los dos dedos para **acercar** y júntalos para **alejar** |
 
 El zoom mide la distancia entre pulgar e índice respecto al tamaño de la palma, así que
 acercar la mano a la cámara no hace zoom por sí solo. Al pasar de una postura a otra el
 modelo no salta, porque cada gesto empieza donde se detuvo el anterior.
-
-El giro de la mano se lee de la forma 3D de la muñeca y los nudillos, así que funciona
-también mientras la mano se mueve. El modelo copia el giro: cuando la palma gira a la
-derecha el modelo gira a la derecha. **Turn** en la sección Gestures ajusta cuánto lo
-sigue, 0 lo desactiva.
 
 La sensibilidad de cada gesto y el suavizado se ajustan en la sección **Gestures** del
 panel. Los ajustes se guardan en el navegador.
@@ -152,6 +154,22 @@ QR siempre apunta a una página `https`, porque un teléfono solo abre la cámar
 copia que funciona en tu propio ordenador se empareja a través de
 <https://vladpereverzyev.github.io/leviate/>.
 
+## Úsalo en Blender
+
+Leviate también puede mover Blender. El seguimiento de la mano se queda en el navegador
+y el add-on **Leviate for Blender** recibe los gestos. Nada que instalar aparte del add-on.
+
+1. Descarga `leviate-blender-<versión>.zip` de la [última release](https://github.com/vladpereverzyev/leviate/releases/latest)
+   y arrástralo a Blender 4.2 o posterior.
+2. En la vista 3D pulsa **N**, abre la pestaña **Leviate** y pulsa **Wait for Leviate**.
+3. En Leviate inicia la cámara (o **Use phone**) y pulsa **Link app**.
+
+La mano abierta orbita, el puño desplaza, el pellizco hace zoom. Desde el panel también
+puedes mover los objetos seleccionados en lugar de la vista. Todo se queda en el
+ordenador: la página habla con Blender a través de `127.0.0.1` y solo envía los
+movimientos de la mano. Chrome, Edge y Firefox lo permiten, Safari no. Guía completa en
+[integrations/blender](integrations/blender/).
+
 ## Archivos compatibles
 
 | Formato | Colores | Notas |
@@ -182,11 +200,9 @@ un archivo asociado la app te dice cuál.
    dirección de cada punta con la dirección de la palma y obtiene una de las tres
    posturas. Una postura debe ser estable durante unos fotogramas antes de activarse,
    lo que elimina el parpadeo.
-4. **Movimiento**: el centro de la palma se suaviza y su desplazamiento entre fotogramas
-   se convierte en giro o desplazamiento. MediaPipe también da los puntos de la mano en
-   3D: se sigue la orientación de la muñeca y los nudillos y su giro a la izquierda, a la
-   derecha, arriba y abajo se aplica al modelo. Para el zoom se sigue en el tiempo la
-   relación entre la distancia pulgar índice y el tamaño de la palma.
+4. **Movimiento**: el centro de la palma se suaviza y su desplazamiento entre
+   fotogramas se convierte en giro o desplazamiento. Para el zoom se sigue en el
+   tiempo la relación entre la distancia pulgar índice y el tamaño de la palma.
 5. **Renderizado**: [three.js](https://threejs.org) dibuja los escaneos con WebGL.
    El giro sigue los ejes de la pantalla, así que mover la mano a la derecha siempre
    gira el modelo a la derecha, sea cual sea la vista.
@@ -204,6 +220,9 @@ un archivo asociado la app te dice cuál.
 | `js/hand-worker.js` | Seguimiento de la mano en un Web Worker, fuera del hilo principal |
 | `js/phone.js` | Teléfono como webcam: emparejamiento con QR en el ordenador, página de cámara en el teléfono |
 | `js/windows.js` | Ventanas flotantes: arrastrar, plegar, diseño para teléfono |
+| `js/link.js` | Link app: envía los gestos a un programa en este ordenador |
+| `integrations/` | Add-ons para otros programas (Blender) y el protocolo que usan |
+| `scripts/build-blender.py` | Crea el zip del add-on para Blender |
 | `vendor/three/` | three.js, sus cargadores y decodificadores (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | Emparejamiento WebRTC y generador de códigos QR (MIT) |
 | `vendor/fonts/` | Fuente Jost (SIL OFL 1.1) |
@@ -224,8 +243,10 @@ git config core.hooksPath .githooks
 ```
 
 Para una versión minor o major ejecuta `node scripts/bump.mjs minor` (o `major`) antes
-del commit. Las versiones están en la
-[página de releases](https://github.com/vladpereverzyev/leviate/releases).
+del commit. Un tag `v<versión>` inicia el workflow Build & Release: crea los zip de las
+integraciones y los publica como única release en la
+[página de releases](https://github.com/vladpereverzyev/leviate/releases). La app web no
+está en la release, siempre funciona desde el enlace de arriba.
 
 ## No es un producto sanitario
 
@@ -237,7 +258,8 @@ escaneos en el software aprobado para ese fin.
 
 El vídeo y tus escaneos se procesan solo dentro de tu navegador. No se sube nada, no
 hay seguimiento ni cuenta. El único servicio externo es el broker PeerJS que usa
-**Use phone**, que ve los datos de conexión pero nunca el vídeo.
+**Use phone**, que ve los datos de conexión pero nunca el vídeo. **Link app** solo envía
+los movimientos de la mano a un programa en el mismo ordenador.
 
 ## Contribuir
 
@@ -245,6 +267,23 @@ Issues y pull requests son bienvenidos. Lee antes [CONTRIBUTING.md](CONTRIBUTING
 el [Código de conducta](CODE_OF_CONDUCT.md). Cada contribución necesita el
 [Contributor License Agreement](CLA.md): el bot CLA Assistant te pide firmarlo con un
 comentario en tu primer pull request.
+
+### Lleva Leviate a tu CAD
+
+Las integraciones para otros programas CAD y 3D son la contribución más bienvenida:
+FreeCAD, Rhino, Fusion, SolidWorks, Inventor, SketchUp, software CAD dental con una API
+abierta y cualquier programa que admita scripts. Blender abre el camino. Las reglas para
+las integraciones:
+
+1. Una carpeta por programa en `integrations/<programa>/` con código, README y LICENSE.
+2. El mismo protocolo para todos, descrito en [integrations/README.md](integrations/README.md).
+   ¿Necesitas más? Abre antes una issue.
+3. Solo local: escucha en `127.0.0.1`, solo las páginas de Leviate, sin seguimiento.
+4. Ligeras: usa los scripts y el sistema de add-ons del programa, evita instalaciones extra.
+5. Licencia: la que pida el programa (los add-ons de Blender son GPL-3.0-or-later), si no
+   AGPL-3.0. Se aplica el CLA.
+6. Nombre: "Leviate for <Programa>", no hecho ni respaldado por el dueño del programa.
+7. El workflow Build & Release crea cada integración como zip y la adjunta a la release.
 
 ## Apoyo
 
@@ -269,6 +308,9 @@ Leviate tiene doble licencia.
 
 El nombre "Leviate" y su logotipo no están cubiertos por la AGPL-3.0 y no pueden usarse
 en versiones modificadas sin permiso.
+
+Las integraciones de `integrations/` llevan su propio archivo de licencia. Leviate for
+Blender es GPL-3.0-or-later, como Blender pide para sus add-ons.
 
 Los componentes de terceros mantienen sus propias licencias. Mira [NOTICE](NOTICE) y
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

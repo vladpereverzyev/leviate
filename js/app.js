@@ -24,6 +24,7 @@ import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
 import { ensure } from './consent.js';
+import { AppLink, DEFAULT_PORT } from './link.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -55,7 +56,7 @@ const MAX_SCALE = 20;
 const STORE_KEY = 'leviate.settings';
 const settings = {
   device: '', res: '480', fps: '30', facing: 'user', mirror: true,
-  gestures: true, rotate: 5, turn: 1, pan: 1, zoom: 1, smooth: 0.5,
+  gestures: true, rotate: 5, pan: 1, zoom: 1, smooth: 0.5, linkPort: DEFAULT_PORT,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 function saveSettings() {
@@ -642,7 +643,7 @@ function startWorker() {
           if (msg.type !== 'result') return;
           tracker.busy = false;
           detectMs = detectMs * 0.9 + msg.ms * 0.1;
-          if (stream) handleHand(msg.lm, msg.world);
+          if (stream) handleHand(msg.lm);
         };
         resolve(tracker);
       }
@@ -847,6 +848,54 @@ function setPhoneMirror(facing) {
 let phoneMirror = false;
 
 $('phone-link').addEventListener('click', usePhone);
+
+// ------------------------------------------------------------- link app
+
+const appLink = new AppLink({ version: VERSION, onChange: showLink });
+
+function showLink() {
+  const btn = $('app-link');
+  btn.classList.toggle('on', appLink.linked);
+  btn.textContent = appLink.linked ? 'Unlink app' : 'Link app';
+  const app = appLink.app;
+  $('link-info').textContent = appLink.linked
+    ? 'Linked' + (app ? ` to ${app.app[0].toUpperCase()}${app.app.slice(1)} ${app.version || ''}` : '')
+    : '';
+}
+
+async function linkApp() {
+  if (appLink.linked) { appLink.close(); return; }
+  try {
+    await appLink.connect(settings.linkPort);
+    toast('App linked', 2000);
+  } catch (err) {
+    toast('No app found. Open Blender with the Leviate add-on and press Wait for Leviate.', 6000);
+  }
+}
+
+// The same motion the view gets, in the units of integrations/README.md.
+function sendGesture({ mode, dx, dy, zoom }) {
+  if (!appLink.linked) return;
+  const rotate = [0, 0, 0];
+  const pan = [0, 0];
+  if (mode === Mode.ROTATE) {
+    rotate[0] = dy * settings.rotate;
+    rotate[1] = dx * settings.rotate;
+  } else if (mode === Mode.PAN) {
+    pan[0] = dx * settings.pan * camera.aspect;
+    pan[1] = -dy * settings.pan;
+  }
+  appLink.motion(mode, rotate, pan, mode === Mode.ZOOM ? Math.pow(zoom, settings.zoom) : 1);
+}
+
+$('app-link').addEventListener('click', linkApp);
+$('link-port').value = settings.linkPort;
+$('link-port').addEventListener('change', (e) => {
+  const port = Math.round(Number(e.target.value));
+  settings.linkPort = port >= 1024 && port <= 65535 ? port : DEFAULT_PORT;
+  e.target.value = settings.linkPort;
+  saveSettings();
+});
 // No camera app at hand: a click on the code copies the pairing link.
 $('qr-code').addEventListener('click', async () => {
   try {
@@ -893,7 +942,7 @@ function applyMirror() {
 
 // ------------------------------------------------------------- gestures
 
-const sliders = { 'g-rotate': 'rotate', 'g-turn': 'turn', 'g-pan': 'pan', 'g-zoom': 'zoom', 'g-smooth': 'smooth' };
+const sliders = { 'g-rotate': 'rotate', 'g-pan': 'pan', 'g-zoom': 'zoom', 'g-smooth': 'smooth' };
 for (const [id, key] of Object.entries(sliders)) {
   const input = $(id);
   const out = input.nextElementSibling;
@@ -959,14 +1008,7 @@ const axisX = new THREE.Vector3();
 const axisY = new THREE.Vector3();
 const turn = new THREE.Quaternion();
 
-function applyGesture({ mode, dx, dy, zoom, turn: hand }) {
-  // Turning the hand turns the model the same way, around the camera's axes.
-  if (hand.x || hand.y) {
-    axisX.setFromMatrixColumn(camera.matrixWorld, 0);
-    axisY.setFromMatrixColumn(camera.matrixWorld, 1);
-    if (hand.y) rotatePivot(turn.setFromAxisAngle(axisY, hand.y * settings.turn));
-    if (hand.x) rotatePivot(turn.setFromAxisAngle(axisX, hand.x * settings.turn));
-  }
+function applyGesture({ mode, dx, dy, zoom }) {
   if (mode === Mode.ROTATE && (dx || dy)) {
     // Rotate around the camera's own axes so the motion matches the screen.
     axisX.setFromMatrixColumn(camera.matrixWorld, 0);
@@ -1010,12 +1052,15 @@ function track() {
   const t0 = performance.now();
   const result = landmarker.task.detectForVideo(video, t0);
   detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
-  handleHand(result.landmarks?.[0] || null, result.worldLandmarks?.[0] || null);
+  handleHand(result.landmarks?.[0] || null);
 }
 
-function handleHand(lm, world) {
-  const cmd = engine.update(lm, world, { mirror: phone ? phoneMirror : settings.mirror });
-  if (settings.gestures) applyGesture(cmd);
+function handleHand(lm) {
+  const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
+  if (settings.gestures) {
+    applyGesture(cmd);
+    sendGesture(cmd);
+  }
   drawHand(lm, cmd.mode);
 
   const badge = $('badge');
