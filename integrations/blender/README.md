@@ -5,7 +5,8 @@ your phone through a QR code) and the hand tracking run inside Blender: no brows
 computer, no app on the phone, nothing to set up besides the add-on. It uses the same
 MediaPipe hand model and the same gestures as the [Leviate web app](https://vladpereverzyev.github.io/leviate/).
 
-Works with Blender 4.2 or later on Windows (x64), macOS (Apple Silicon) and Linux (x64).
+Works with Blender 4.2 or later, Blender 5 included, on Windows (x64), macOS (Apple
+Silicon) and Linux (x64).
 
 ## Install
 

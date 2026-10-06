@@ -31,6 +31,9 @@ PACKAGES = [
     "pylibsrtp==1.0.0", "pyopenssl==26.4.0", "typing-extensions==4.16.0", "websockets==17.2",
     "qrcode==8.2",
 ]
+# Blender 4.2 to 4.5 run Python 3.11, Blender 5 runs Python 3.13. Blender installs only
+# the wheels that match its own Python, so one zip serves both.
+PYTHONS = ["3.11", "3.13"]
 PLATFORMS = {
     "windows-x64": ["win_amd64"],
     "macos-arm64": ["macosx_14_0_arm64"],
@@ -39,17 +42,24 @@ PLATFORMS = {
 
 
 def wheels_for(platform):
-    folder = CACHE / platform
-    folder.mkdir(parents=True, exist_ok=True)
-    subprocess.run([
-        sys.executable, "-m", "pip", "download", "--quiet", "--only-binary=:all:", "--no-deps",
-        *(arg for tag in PLATFORMS[platform] for arg in ("--platform", tag)), "--python-version", "3.11", "--dest", str(folder), *PACKAGES,
-    ], check=True)
     names = {re.split(r"[=<>~]", p)[0].replace("-", "_").lower() for p in PACKAGES}
-    found = [w for w in sorted(folder.glob("*.whl")) if w.name.split("-")[0].lower() in names]
-    if len(found) != len(PACKAGES):
-        raise SystemExit(f"{platform}: expected {len(PACKAGES)} wheels, found {[w.name for w in found]}")
-    return found
+    wheels = {}
+    for python in PYTHONS:
+        folder = CACHE / platform / python
+        folder.mkdir(parents=True, exist_ok=True)
+        subprocess.run([
+            sys.executable, "-m", "pip", "download", "--quiet", "--only-binary=:all:", "--no-deps",
+            *(arg for tag in PLATFORMS[platform] for arg in ("--platform", tag)),
+            "--python-version", python, "--dest", str(folder), *PACKAGES,
+        ], check=True)
+        found = [w for w in sorted(folder.glob("*.whl")) if w.name.split("-")[0].lower() in names]
+        if len(found) != len(PACKAGES):
+            raise SystemExit(f"{platform} Python {python}: expected {len(PACKAGES)} wheels, "
+                             f"found {[w.name for w in found]}")
+        # Wheels for any Python 3 (py3, abi3) are the same file for every version, kept once.
+        for w in found:
+            wheels.setdefault(w.name, w)
+    return [wheels[name] for name in sorted(wheels)]
 
 
 def build(platform, version):
