@@ -25,6 +25,9 @@ _draw_handle = None
 _texture = {"serial": -1, "tex": None, "size": (0, 0)}
 _state = {"moving": False}
 _qr = {"url": None, "size": 0, "cells": []}
+# Pairing id and token of this Blender session: the QR code stays the same from one
+# start to the next, so a paired phone reconnects with Start camera alone.
+_phone_identity = None
 
 HAND_LINKS = (
     (0, 1), (1, 2), (2, 3), (3, 4),
@@ -357,10 +360,13 @@ def stop_drawing():
 # ---------------------------------------------------------------- camera
 
 def start_camera(context):
-    global _tracker
+    global _tracker, _phone_identity
     settings = context.window_manager.leviate
     height = int(settings.resolution)
-    phone = PhoneLink() if settings.source == "PHONE" else None
+    phone = None
+    if settings.source == "PHONE":
+        phone = PhoneLink(_phone_identity)
+        _phone_identity = (phone.id, phone.token)
     _tracker = Tracker(camera=settings.camera - 1, width=height * 4 // 3, height=height,
                        mirror=settings.mirror, smoothing=1 - settings.smooth, phone=phone)
     _tracker.start()

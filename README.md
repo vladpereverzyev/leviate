@@ -135,9 +135,12 @@ Nothing to install on either device.
 </tr>
 </table>
 
-Keep the phone page open while you use it. Press **Disconnect phone** on the computer or
-**Stop** on the phone to end the session. Clicking the QR code copies the pairing link,
-handy when you want to send it to the phone another way.
+Keep the phone page open while you use it. Press **Disconnect phone** on the computer to
+end the session. **Stop** on the phone pauses it: the computer shows the same QR code
+again and **Start camera** on the phone connects again, with no new scan. When the link is
+lost and the computer shows a new code, **Scan QR code** on the phone page reads it right
+there. Clicking the QR code copies the pairing link, handy when you want to send it to the
+phone another way.
 
 How it works: the two devices connect with WebRTC. The free [PeerJS](https://peerjs.com)
 server only introduces them to each other and passes the connection details; the video goes

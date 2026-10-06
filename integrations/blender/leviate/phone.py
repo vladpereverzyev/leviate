@@ -57,8 +57,10 @@ class PhoneLink:
     facing and connected are read by the tracker and the panel.
     """
 
-    def __init__(self):
-        self.id = random_id()
+    def __init__(self, identity=None):
+        # identity: (id, token) of an earlier link, so the QR code stays the same and a
+        # phone that was paired before only needs to tap Start camera again.
+        self.id, self.token = identity or (random_id(), secrets.token_hex(8))
         self.url = PAIR_URL + self.id
         self.status = "Connecting to the pairing server…"
         self.error = ""
@@ -162,7 +164,7 @@ class PhoneLink:
                 if data.get("facing") in ("user", "environment"):
                     self.facing = data["facing"]
                 if data.get("bye"):
-                    hang_up("The phone stopped the camera. Scan the QR code to connect again.")
+                    hang_up("The phone stopped the camera. Tap Start camera on the phone or scan the QR code")
 
         def hang_up(text):
             for cid, (_, pc, _) in list(calls.items()):
@@ -196,7 +198,7 @@ class PhoneLink:
                         self.connected = True
                         self.status = "Phone connected"
                     elif state in ("failed", "closed") and calls.get(cid, (None, None, None))[1] is pc:
-                        hang_up("The phone disconnected. Scan the QR code to connect again.")
+                        hang_up("The phone disconnected. Tap Start camera on the phone or scan the QR code")
             else:
                 @pc.on("datachannel")
                 def on_channel(channel):
@@ -235,13 +237,32 @@ class PhoneLink:
                 await asyncio.sleep(HEARTBEAT)
                 await ws.send(json.dumps({"type": "HEARTBEAT"}))
 
-        token = secrets.token_hex(8)
-        try:
-            ws = await websockets.connect(SERVER % (self.id, token), ssl=_ssl_context(),
-                                          open_timeout=15, max_size=2 ** 22)
-        except Exception as err:
-            self.error = "Could not reach the pairing server (%s). Check the internet connection." % (
-                str(err) or err.__class__.__name__)
+        async def join():
+            """The server socket once it accepted our id, or None with self.error set."""
+            for _ in range(10):
+                try:
+                    ws = await websockets.connect(SERVER % (self.id, self.token), ssl=_ssl_context(),
+                                                  open_timeout=15, max_size=2 ** 22)
+                    first = json.loads(await asyncio.wait_for(ws.recv(), 15))
+                except Exception as err:
+                    self.error = "Could not reach the pairing server (%s). Check the internet connection." % (
+                        str(err) or err.__class__.__name__)
+                    return None
+                if first.get("type") == "OPEN":
+                    self.status = "Scan the QR code with your phone"
+                    return ws
+                await ws.close()
+                if first.get("type") != "ID-TAKEN":
+                    self.error = "Pairing server: %s" % ((first.get("payload") or {}).get("msg") or first.get("type"))
+                    return None
+                # The server still holds the code of the last link for a moment.
+                self.status = "Waiting for the pairing code to be free…"
+                await asyncio.sleep(1)
+            self.error = "Pairing server: the code is still in use, press Start camera again in a moment"
+            return None
+
+        ws = await join()
+        if ws is None:
             return
 
         async def listen():
@@ -252,9 +273,7 @@ class PhoneLink:
                     continue
                 kind = msg.get("type")
                 payload = msg.get("payload") or {}
-                if kind == "OPEN":
-                    self.status = "Scan the QR code with your phone"
-                elif kind in ("ID-TAKEN", "INVALID-KEY", "ERROR"):
+                if kind in ("ID-TAKEN", "INVALID-KEY", "ERROR"):
                     self.error = "Pairing server: %s" % (payload.get("msg") or kind)
                     return
                 elif kind == "OFFER":
@@ -267,7 +286,7 @@ class PhoneLink:
                     await add_candidate(payload)
                 elif kind in ("LEAVE", "EXPIRE"):
                     if any(src == msg.get("src") for src, _, _ in calls.values()):
-                        hang_up("The phone disconnected. Scan the QR code to connect again.")
+                        hang_up("The phone disconnected. Tap Start camera on the phone or scan the QR code")
 
         beat = asyncio.ensure_future(heartbeat(ws))
         reader = asyncio.ensure_future(listen())

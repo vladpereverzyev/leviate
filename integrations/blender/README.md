@@ -51,7 +51,12 @@ With **Phone** selected, **Start camera** shows a QR code in the bottom left cor
 2. Allow the camera on the phone and tap **Start camera**.
 3. The QR code turns into the preview and the hand moves Blender as with a webcam.
    **Flip** on the phone switches to the rear camera, **Stop** ends the link and the QR
-   code comes back for the next time.
+   code comes back.
+
+The QR code stays the same as long as Blender is open, even after **Stop camera**. A
+phone that was paired before only needs **Start camera** to come back, with no new scan.
+When Blender restarts it shows a new code: **Scan QR code** on the phone page reads it
+right there, no need to leave the page.
 
 **Copy link** in the panel copies the same link, to open it on the phone another way.
 The phone needs **Allow Online Access** in Blender (**Edit > Preferences > System >

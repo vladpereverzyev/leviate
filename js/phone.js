@@ -46,14 +46,27 @@ export function qrSvg(text) {
 
 // ------------------------------------------------------------ computer
 
+// One pairing code per page. The server lets the same id and token back in, so the
+// code stays the same each time and a phone paired before only taps Start camera.
+let identity = null;
+
 // Waits for a phone. Calls onStream(stream, facing) when video arrives,
-// onFacing(facing) when the phone switches camera and onEnd() when it hangs up.
-export async function hostPhone({ onStream, onFacing, onEnd, onStatus }) {
+// onFacing(facing) when the phone switches camera and onHangUp() when it hangs up:
+// the computer then keeps waiting with the same code. onEnd() follows close().
+export async function hostPhone({ onStream, onFacing, onHangUp, onEnd, onStatus }) {
   const Peer = await loadPeer();
-  const id = randomId();
-  const peer = new Peer(id);
+  identity ||= { id: randomId(), token: randomId().slice(8) };
+  const { id } = identity;
+  const peer = new Peer(id, { token: identity.token });
   let call = null;
   let closed = false;
+
+  const hangUp = (which) => {
+    if (closed || !which || call !== which) return;
+    call = null;
+    which.close();
+    onHangUp?.();
+  };
 
   const end = () => {
     if (closed) return;
@@ -70,20 +83,22 @@ export async function hostPhone({ onStream, onFacing, onEnd, onStatus }) {
   onStatus?.('waiting');
 
   peer.on('call', (incoming) => {
-    call?.close();
+    // One phone at a time: a new call replaces the old one.
+    const old = call;
     call = incoming;
-    call.answer();
-    call.on('stream', (s) => onStream(s, call.metadata?.facing || 'user'));
-    call.on('close', end);
-    call.peerConnection?.addEventListener('connectionstatechange', () => {
-      const state = call?.peerConnection?.connectionState;
-      if (state === 'failed' || state === 'closed') end();
+    old?.close();
+    incoming.answer();
+    incoming.on('stream', (s) => onStream(s, incoming.metadata?.facing || 'user'));
+    incoming.on('close', () => hangUp(incoming));
+    incoming.peerConnection?.addEventListener('connectionstatechange', () => {
+      const state = incoming.peerConnection?.connectionState;
+      if (state === 'failed' || state === 'closed') hangUp(incoming);
     });
   });
   peer.on('connection', (conn) => {
     conn.on('data', (msg) => {
       if (msg?.facing) onFacing?.(msg.facing);
-      if (msg?.bye) end();
+      if (msg?.bye) hangUp(call);
     });
   });
   peer.on('disconnected', () => { if (!call) peer.reconnect(); });
@@ -93,6 +108,54 @@ export async function hostPhone({ onStream, onFacing, onEnd, onStatus }) {
 
 // --------------------------------------------------------------- phone
 
+let jsQRReady = null;
+function loadJsQR() {
+  jsQRReady ||= new Promise((resolve, reject) => {
+    if (window.jsQR) return resolve(window.jsQR);
+    const s = document.createElement('script');
+    s.src = new URL('../vendor/jsqr/jsQR.js', import.meta.url).href;
+    s.onload = () => resolve(window.jsQR);
+    s.onerror = () => reject(new Error('Could not load the QR reader'));
+    document.head.append(s);
+  });
+  return jsQRReady;
+}
+
+// The pairing id inside a scanned code, or null when it is not a Leviate code.
+function pairFromCode(text) {
+  try {
+    const id = new URL(text).searchParams.get('pair');
+    return /^leviate-[a-z0-9]+$/.test(id || '') ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+// Reads QR codes from a playing video: the browser's own reader when it has one
+// (Chrome on Android), jsQR otherwise (Safari on iPhone).
+async function qrReader(video) {
+  if ('BarcodeDetector' in window) {
+    try {
+      if ((await BarcodeDetector.getSupportedFormats()).includes('qr_code')) {
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        return async () => (await detector.detect(video)).map((c) => c.rawValue);
+      }
+    } catch { /* fall back to jsQR */ }
+  }
+  const jsQR = await loadJsQR();
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  return async () => {
+    const scale = Math.min(1, 640 / Math.max(video.videoWidth, video.videoHeight, 1));
+    canvas.width = Math.round(video.videoWidth * scale);
+    canvas.height = Math.round(video.videoHeight * scale);
+    if (!canvas.width || !canvas.height) return [];
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const code = jsQR(ctx.getImageData(0, 0, canvas.width, canvas.height).data, canvas.width, canvas.height);
+    return code ? [code.data] : [];
+  };
+}
+
 export async function runPhoneCamera(pairId) {
   document.body.classList.add('phone-mode');
   const $ = (id) => document.getElementById(id);
@@ -100,6 +163,7 @@ export async function runPhoneCamera(pairId) {
     video: $('pm-video'),
     start: $('pm-start'),
     flip: $('pm-flip'),
+    scan: $('pm-scan'),
     status: $('pm-status'),
   };
   $('phone-mode').hidden = false;
@@ -111,8 +175,17 @@ export async function runPhoneCamera(pairId) {
   let call = null;
   let conn = null;
   let wakeLock = null;
+  let scanning = null;   // { stream } while the camera looks for a QR code
 
   const status = (text) => { ui.status.textContent = text; };
+  const AGAIN = ' Tap Start camera to connect again, or Scan QR code if the computer shows a new code.';
+
+  // The link is gone: the camera stops and the phone can pair again, with the same
+  // code (Start camera) or with a new one read right here (Scan QR code).
+  function lost(text) {
+    stop();
+    status(text + AGAIN);
+  }
 
   async function openCamera() {
     stream?.getTracks().forEach((t) => t.stop());
@@ -134,7 +207,9 @@ export async function runPhoneCamera(pairId) {
       status('Open this page over https to use the camera.');
       return;
     }
+    stopScan();
     ui.start.disabled = true;
+    ui.scan.hidden = true;
     status('Opening the camera…');
     try {
       await openCamera();
@@ -145,36 +220,105 @@ export async function runPhoneCamera(pairId) {
       // JSON keeps the small control messages readable for the Blender add-on too.
       conn = peer.connect(pairId, { serialization: 'json' });
       call = peer.call(pairId, stream, { metadata: { facing } });
+      const mine = call;
       call.peerConnection?.addEventListener('connectionstatechange', () => {
-        const state = call.peerConnection.connectionState;
+        if (call !== mine) return;
+        const state = mine.peerConnection.connectionState;
         if (state === 'connected') status('Connected. Keep this page open and point the camera at your hand.');
-        if (state === 'failed') status('Connection failed. Check that both devices are online and try again.');
-        if (state === 'disconnected' || state === 'closed') status('Disconnected.');
+        // "disconnected" often comes back by itself, so it only warns.
+        if (state === 'disconnected') status('Connection interrupted, trying to get it back…');
+        if (state === 'failed') lost('Connection failed. Check that both devices are online.');
+        if (state === 'closed') lost('The computer closed the connection.');
       });
-      call.on('close', () => status('The computer closed the connection.'));
-      peer.on('error', (err) => status('Connection error. ' + err.message));
+      call.on('close', () => { if (call === mine) lost('The computer closed the connection.'); });
+      peer.on('error', (err) => {
+        if (call !== mine) return;
+        // Nobody waits with this code any more: Blender or the page started again.
+        if (err.type === 'peer-unavailable') lost('The computer is no longer waiting with this code.');
+        else lost('Connection error. ' + err.message);
+      });
       ui.start.textContent = 'Stop';
       ui.start.disabled = false;
       ui.flip.hidden = false;
       try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
     } catch (err) {
       console.error(err);
-      status('Could not start. ' + err.message);
       stop();
+      status('Could not start. ' + err.message);
     }
   }
 
   function stop() {
-    try { conn?.open && conn.send({ bye: true }); } catch {}
-    call?.close();
-    peer?.destroy();
+    // Forget the call first, so its close events know it was ended here.
+    const [oldCall, oldPeer, oldConn] = [call, peer, conn];
+    call = peer = conn = null;
+    try { oldConn?.open && oldConn.send({ bye: true }); } catch {}
+    oldCall?.close();
+    oldPeer?.destroy();
     stream?.getTracks().forEach((t) => t.stop());
     wakeLock?.release?.();
-    stream = peer = call = conn = wakeLock = null;
+    stream = wakeLock = null;
     ui.video.srcObject = null;
     ui.start.textContent = 'Start camera';
     ui.start.disabled = false;
     ui.flip.hidden = true;
+    ui.scan.hidden = false;
+  }
+
+  async function scan() {
+    if (scanning) {
+      stopScan();
+      status('Ready. Tap Start camera.');
+      return;
+    }
+    if (!await ensure('camera', 'external')) {
+      status('Allow Camera and External services in the cookie preferences to use this phone as a camera.');
+      return;
+    }
+    stop();
+    const session = scanning = { stream: null };
+    ui.scan.textContent = 'Cancel';
+    status('Point the camera at the QR code on the computer.');
+    try {
+      session.stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+      });
+      if (scanning !== session) {
+        session.stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
+      ui.video.srcObject = session.stream;
+      ui.video.classList.remove('mirror');
+      await ui.video.play();
+      const read = await qrReader(ui.video);
+      while (scanning === session) {
+        const found = (await read()).map(pairFromCode).find(Boolean);
+        if (found && scanning === session) {
+          pairId = found;
+          // Keep the new code in the address, so a reload pairs with it too.
+          history.replaceState(null, '', location.pathname + '?pair=' + found);
+          stopScan();
+          await start();
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 150));
+      }
+    } catch (err) {
+      console.error(err);
+      if (scanning === session) {
+        stopScan();
+        status('Could not scan. ' + err.message);
+      }
+    }
+  }
+
+  function stopScan() {
+    if (!scanning) return;
+    scanning.stream?.getTracks().forEach((t) => t.stop());
+    scanning = null;
+    if (!stream) ui.video.srcObject = null;
+    ui.scan.textContent = 'Scan QR code';
   }
 
   async function flip() {
@@ -190,8 +334,13 @@ export async function runPhoneCamera(pairId) {
     }
   }
 
-  ui.start.addEventListener('click', () => (stream ? (stop(), status('Stopped.')) : start()));
+  ui.start.addEventListener('click', () => {
+    if (!stream) return start();
+    stop();
+    status('Stopped.' + AGAIN);
+  });
   ui.flip.addEventListener('click', flip);
-  window.addEventListener('pagehide', stop);
+  ui.scan.addEventListener('click', scan);
+  window.addEventListener('pagehide', () => { stopScan(); stop(); });
   status('Ready. Tap Start camera.');
 }

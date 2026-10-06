@@ -141,8 +141,11 @@ Niente da installare su nessuno dei due.
 </table>
 
 Tieni aperta la pagina sul telefono mentre lo usi. Premi **Disconnect phone** sul
-computer o **Stop** sul telefono per chiudere la sessione. Un clic sul codice QR copia
-il link di collegamento, comodo quando vuoi mandarlo al telefono in un altro modo.
+computer per chiudere la sessione. **Stop** sul telefono la mette in pausa: il computer
+mostra di nuovo lo stesso codice QR e **Start camera** sul telefono si ricollega, senza
+inquadrarlo di nuovo. Se il collegamento si perde e il computer mostra un codice nuovo,
+**Scan QR code** nella pagina del telefono lo legge direttamente lì. Un clic sul codice QR
+copia il link di collegamento, comodo quando vuoi mandarlo al telefono in un altro modo.
 
 Come funziona: i due dispositivi si collegano con WebRTC. Il server gratuito
 [PeerJS](https://peerjs.com) li presenta soltanto e passa i dati di connessione; il

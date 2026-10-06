@@ -852,6 +852,17 @@ async function usePhone() {
         attach(s);
       },
       onFacing: setPhoneMirror,
+      // The phone left: show the same code again and keep waiting for it.
+      onHangUp: () => {
+        if (phone !== session) return;
+        stream = null;
+        video.srcObject = null;
+        engine.reset();
+        setCamUi(false);
+        $('qr').hidden = false;
+        $('qr-text').textContent = 'Phone disconnected. Tap Start camera on the phone or scan again';
+        $('phone-link').textContent = 'Cancel';
+      },
       onEnd: () => {
         if (phone !== session) return;
         stopCamera();

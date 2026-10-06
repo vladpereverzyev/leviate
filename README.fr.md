@@ -147,8 +147,11 @@ ordinateur. Rien à installer sur l'un ou l'autre.
 </table>
 
 Gardez la page ouverte sur le téléphone pendant l'utilisation. Appuyez sur
-**Disconnect phone** sur l'ordinateur ou **Stop** sur le téléphone pour terminer la
-session. Un clic sur le code QR copie le lien d'appairage, pratique pour l'envoyer au
+**Disconnect phone** sur l'ordinateur pour terminer la session. **Stop** sur le téléphone
+la met en pause : l'ordinateur affiche à nouveau le même code QR et **Start camera** sur
+le téléphone se reconnecte, sans le scanner à nouveau. Si la liaison se perd et que
+l'ordinateur affiche un nouveau code, **Scan QR code** sur la page du téléphone le lit
+directement. Un clic sur le code QR copie le lien d'appairage, pratique pour l'envoyer au
 téléphone d'une autre façon.
 
 Fonctionnement : les deux appareils se connectent avec WebRTC. Le serveur gratuit

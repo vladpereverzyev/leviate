@@ -13,6 +13,7 @@ components. Each one keeps its own license.
 | [Draco decoder](https://github.com/google/draco) | bundled with three.js | Apache-2.0 | `vendor/three/addons/libs/draco/` |
 | [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `vendor/peerjs/` |
 | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `vendor/qrcode/` |
+| [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `vendor/jsqr/` |
 | [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `vendor/fonts/` |
 | [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` and `integrations/blender/leviate/gestures.py` |
 
@@ -108,6 +109,17 @@ is in the header of the file.
 ```
 Copyright (c) 2009 Kazuhiko Arase
 Licensed under the MIT license
+```
+
+## jsQR
+
+File: `vendor/jsqr/jsQR.js`, copied unmodified from the npm package (`dist/jsQR.js`).
+It reads the QR code on phones whose browser has no built in QR reader (Safari on
+iPhone). The full license is in `vendor/jsqr/LICENSE`.
+
+```
+jsQR by Cosmo Wolfe and contributors
+Licensed under the Apache License, Version 2.0
 ```
 
 ## Jost font

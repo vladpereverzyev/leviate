@@ -188,6 +188,9 @@ class Tracker:
                         continue
                     # The front camera of the phone is mirrored like a selfie, the rear one is not.
                     self.mirror = self.phone.facing == "user"
+                # MediaPipe reads the pixels row after row with no gap. Scaled phone video in
+                # portrait has padded rows, which MediaPipe would see as a skewed image.
+                rgb = np.ascontiguousarray(rgb)
                 h, w = rgb.shape[:2]
                 self.frame_size = (w, h)
                 # Timestamps must grow, even if two frames arrive in the same millisecond.

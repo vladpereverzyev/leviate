@@ -142,9 +142,11 @@ Auf keinem der beiden Geräte muss etwas installiert werden.
 </table>
 
 Lass die Seite am Handy offen, solange du es nutzt. Drück **Disconnect phone** am
-Computer oder **Stop** am Handy, um die Sitzung zu beenden. Ein Klick auf den QR-Code
-kopiert den Kopplungslink, praktisch, wenn du ihn auf anderem Weg ans Handy schicken
-willst.
+Computer, um die Sitzung zu beenden. **Stop** am Handy pausiert sie: der Computer zeigt
+wieder denselben QR-Code und **Start camera** am Handy verbindet sich neu, ohne ihn noch
+einmal zu scannen. Geht die Verbindung verloren und zeigt der Computer einen neuen Code,
+liest ihn **Scan QR code** direkt auf der Handyseite. Ein Klick auf den QR-Code kopiert
+den Kopplungslink, praktisch, wenn du ihn auf anderem Weg ans Handy schicken willst.
 
 So funktioniert es: die beiden Geräte verbinden sich über WebRTC. Der kostenlose
 [PeerJS](https://peerjs.com)-Server stellt sie nur einander vor und gibt die
