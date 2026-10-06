@@ -9,6 +9,18 @@
 export const PROTOCOL = 1;
 export const DEFAULT_PORT = 47800;
 
+// Chrome lets a public page reach 127.0.0.1 only with the permission for apps on
+// this device ("loopback-network", older versions "local-network-access").
+// Returns 'granted', 'prompt', 'denied' or null when the browser has no such check.
+export async function devicePermission() {
+  for (const name of ['loopback-network', 'local-network-access']) {
+    try {
+      return (await navigator.permissions.query({ name })).state;
+    } catch {}
+  }
+  return null;
+}
+
 export class AppLink {
   constructor({ version, onChange = () => {} }) {
     this.version = version;

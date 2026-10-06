@@ -24,7 +24,7 @@ import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
 import { ensure } from './consent.js';
-import { AppLink, DEFAULT_PORT } from './link.js';
+import { AppLink, DEFAULT_PORT, devicePermission } from './link.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -863,13 +863,28 @@ function showLink() {
     : '';
 }
 
+const BLOCKED_HELP = 'The browser blocks the link. Click the icon left of the address, ' +
+  'open Site settings and allow access to apps on this device (local network), then press Link app again.';
+
 async function linkApp() {
   if (appLink.linked) { appLink.close(); return; }
+  const info = $('link-info');
+  if (await devicePermission() === 'denied') {
+    info.textContent = BLOCKED_HELP;
+    toast(BLOCKED_HELP, 10000);
+    return;
+  }
+  info.textContent = 'Connecting… If the browser asks to reach apps on this device, press Allow.';
   try {
     await appLink.connect(settings.linkPort);
     toast('App linked', 2000);
   } catch (err) {
-    toast('No app found. Open Blender with the Leviate add-on and press Wait for Leviate.', 6000);
+    const state = await devicePermission();
+    const text = state === 'denied' || state === 'prompt'
+      ? BLOCKED_HELP
+      : `No app found on port ${settings.linkPort}. Open Blender with the Leviate add-on and press Wait for Leviate.`;
+    info.textContent = text;
+    toast(text, 10000);
   }
 }
 

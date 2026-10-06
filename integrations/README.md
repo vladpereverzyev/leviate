@@ -52,9 +52,10 @@ accept only `https://vladpereverzyev.github.io`, `http://localhost` and
 Everything else gets `403`, so another web site open in the browser cannot move the
 program.
 
-**Browsers**: Chrome, Edge and Firefox allow an `https` page to open
-`ws://127.0.0.1`. Chrome may ask once for permission to reach devices on the local
-network. Safari blocks it.
+**Browsers**: Chrome and Edge let the public `https` page open `ws://127.0.0.1` only
+after the user allows access to apps on this device (the `loopback-network` permission,
+`local-network-access` in older versions). They ask the first time; if the user said no,
+Leviate explains how to allow it in the site settings. Safari blocks it.
 
 ### Messages from Leviate
 

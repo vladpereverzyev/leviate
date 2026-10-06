@@ -166,8 +166,9 @@ Leviate kann auch Blender bewegen. Die Handerkennung bleibt im Browser und das A
 
 Offene Hand umkreist, Faust verschiebt, Pinch zoomt. Im Panel kannst du statt der
 Ansicht auch die ausgewählten Objekte bewegen. Alles bleibt auf dem Computer: die Seite
-spricht über `127.0.0.1` mit Blender und schickt nur die Handbewegungen. Chrome, Edge
-und Firefox erlauben das, Safari nicht. Ausführliche Anleitung in
+spricht über `127.0.0.1` mit Blender und schickt nur die Handbewegungen. Beim ersten
+Mal fragt Chrome oder Edge nach Zugriff auf Apps auf diesem Gerät: drück **Zulassen**.
+Safari erlaubt das nicht. Ausführliche Anleitung in
 [integrations/blender](integrations/blender/).
 
 ## Unterstützte Dateien

@@ -160,8 +160,9 @@ the add-on.
 
 Open hand orbits, fist pans, pinch zooms. The panel can
 also move the selected objects instead of the view. Everything stays on the computer:
-the page talks to Blender through `127.0.0.1` and sends only the hand movements. Chrome,
-Edge and Firefox allow it, Safari does not. Full guide in
+the page talks to Blender through `127.0.0.1` and sends only the hand movements. The first
+time Chrome or Edge asks to reach apps on this device: press **Allow**. Safari does not
+allow it. Full guide in
 [integrations/blender](integrations/blender/).
 
 ## Supported files

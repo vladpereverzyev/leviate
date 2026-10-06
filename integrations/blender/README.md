@@ -21,6 +21,9 @@ Works with Blender 4.2 or later on Windows, macOS and Linux.
 2. Press **Wait for Leviate**.
 3. Open <https://vladpereverzyev.github.io/leviate/> in Chrome, Edge or Firefox, press
    **Start** in the Webcam window (or **Use phone**) and then **Link app**.
+   The first time Chrome or Edge asks to reach apps on this device: press **Allow**.
+   If you pressed Block, click the icon left of the address, open **Site settings** and
+   allow it, then press **Link app** again.
 4. The panel shows **Linked to Leviate**. Now the gestures move Blender:
 
 | Hand | Blender |

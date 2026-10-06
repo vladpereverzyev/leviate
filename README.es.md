@@ -167,7 +167,9 @@ y el add-on **Leviate for Blender** recibe los gestos. Nada que instalar aparte 
 La mano abierta orbita, el puño desplaza, el pellizco hace zoom. Desde el panel también
 puedes mover los objetos seleccionados en lugar de la vista. Todo se queda en el
 ordenador: la página habla con Blender a través de `127.0.0.1` y solo envía los
-movimientos de la mano. Chrome, Edge y Firefox lo permiten, Safari no. Guía completa en
+movimientos de la mano. La primera vez Chrome o Edge
+pide acceso a las apps de este dispositivo: pulsa **Permitir**. Safari no lo permite.
+Guía completa en
 [integrations/blender](integrations/blender/).
 
 ## Archivos compatibles
