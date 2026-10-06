@@ -30,6 +30,8 @@ and your files never leave your device.
   and fold. On a phone they stack under the header.
 - **View tools**: front, top, left and right presets, wireframe, turntable,
   screenshot to PNG and fullscreen.
+- **Rotate around any point**: middle click (or double click, double tap on a phone) a
+  point of the model and every rotation turns around it. **Reset** goes back to the center.
 - **Mouse and touch** still work next to the gestures.
 - **Fully offline**: all libraries and the hand model are bundled in the repository.
 
@@ -117,8 +119,8 @@ Nothing to install on either device.
 1. On the computer open the **Webcam** window and press **Use phone**.
    A QR code appears in the preview.
 2. Scan it with the phone camera. Leviate opens in Safari or Chrome on the phone.
-3. Tap **Start camera** and allow the camera.
-   **Flip** switches between rear and front camera.
+3. Tap **Start camera** and allow the camera. It starts with the front camera;
+   **Flip** switches to the rear one.
 4. The phone video shows up in the Webcam window and the gestures work as with a
    normal webcam.
 
@@ -160,7 +162,9 @@ file is missing the app tells you which one.
    resolution and frame rate.
 2. **Hand tracking**: [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
    runs as WebAssembly with the CPU delegate (XNNPACK) and returns 21 landmarks of
-   the hand for every new video frame.
+   the hand for every new video frame. It runs in a Web Worker (`js/hand-worker.js`),
+   so the 3D view never waits for it; browsers without module workers fall back to
+   the main thread.
 3. **Pose**: MediaPipe also gives the 21 points in 3D. `js/gestures.js` measures how
    straight each finger is in 3D (tip distance against the length of its joints). That
    does not change with the side of the hand the camera sees. The result is one of
@@ -184,6 +188,7 @@ file is missing the app tells you which one.
 | `js/gestures.js` | Hand pose classification and motion (no DOM, easy to test) |
 | `js/version.js` | Current version, shown in the app |
 | `scripts/bump.mjs` | Raises the version (patch, minor or major) |
+| `js/hand-worker.js` | Hand tracking in a Web Worker, off the main thread |
 | `js/phone.js` | Phone as webcam: QR pairing on the computer, camera page on the phone |
 | `js/windows.js` | Floating windows: drag, collapse, phone layout |
 | `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |

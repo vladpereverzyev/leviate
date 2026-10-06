@@ -66,7 +66,8 @@ function saveSettings() {
 const stage = $('stage');
 const canvas = $('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// 1.5 keeps edges sharp on dense screens at a much lower cost than 2 or 3.
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setClearColor(0x000000, 0);
 
 const scene = new THREE.Scene();
@@ -109,7 +110,102 @@ function resetView() {
   pivot.quaternion.identity();
   pivot.scale.setScalar(1);
   controls.reset();
+  clearFocus();
 }
+
+// ----------------------------------------------------- rotation center
+
+// Middle click (or double click / double tap) on the model picks the point every
+// rotation turns around. The point is kept in model space, so it stays on the
+// model when gestures move or zoom it.
+const focusLocal = new THREE.Vector3();
+let hasFocus = false;
+const raycaster = new THREE.Raycaster();
+raycaster.params.Points.threshold = 0.01;
+
+const marker = new THREE.Mesh(
+  new THREE.SphereGeometry(1, 20, 12),
+  new THREE.MeshBasicMaterial({ color: 0x10b279, transparent: true, depthTest: false }),
+);
+marker.renderOrder = 10;
+marker.visible = false;
+scene.add(marker);
+let markerTime = 0;
+
+function focusWorld(target = new THREE.Vector3()) {
+  return hasFocus ? pivot.localToWorld(target.copy(focusLocal)) : target.copy(pivot.position);
+}
+
+function clearFocus() {
+  hasFocus = false;
+  marker.visible = false;
+  focusAnim = null;
+}
+
+let focusAnim = null;   // { from, to, start } moving the orbit target to the picked point
+
+function pickFocus(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const ndc = new THREE.Vector2(
+    ((clientX - rect.left) / rect.width) * 2 - 1,
+    -((clientY - rect.top) / rect.height) * 2 + 1,
+  );
+  raycaster.setFromCamera(ndc, camera);
+  const visible = content.children.filter((o) => o.visible);
+  const hit = raycaster.intersectObjects(visible, true)[0];
+  if (!hit) return false;
+
+  pivot.updateMatrixWorld(true);
+  focusLocal.copy(pivot.worldToLocal(hit.point.clone()));
+  hasFocus = true;
+  marker.position.copy(hit.point);
+  marker.visible = true;
+  markerTime = performance.now();
+  // Center the point on screen: move target and camera together.
+  focusAnim = { from: controls.target.clone(), to: hit.point.clone(), start: performance.now() };
+  return true;
+}
+
+function updateFocus(now) {
+  if (focusAnim) {
+    const t = Math.min(1, (now - focusAnim.start) / 350);
+    const k = t * t * (3 - 2 * t);
+    const next = focusAnim.from.clone().lerp(focusAnim.to, k);
+    camera.position.add(next.clone().sub(controls.target));
+    controls.target.copy(next);
+    if (t === 1) focusAnim = null;
+  }
+  if (marker.visible) {
+    const age = (now - markerTime) / 1000;
+    marker.position.copy(focusWorld());
+    marker.scale.setScalar(camera.position.distanceTo(marker.position) * 0.008);
+    marker.material.opacity = age < 1.2 ? 1 : Math.max(0.35, 1 - (age - 1.2));
+  }
+}
+
+// Rotate the model around the picked point (or its own center).
+const turnCenter = new THREE.Vector3();
+function rotatePivot(q) {
+  if (hasFocus) {
+    focusWorld(turnCenter);
+    pivot.position.sub(turnCenter).applyQuaternion(q).add(turnCenter);
+  }
+  pivot.quaternion.premultiply(q);
+}
+
+let middleDown = null;
+canvas.addEventListener('pointerdown', (e) => {
+  if (e.button === 1) { middleDown = { x: e.clientX, y: e.clientY }; e.preventDefault(); }
+});
+canvas.addEventListener('pointerup', (e) => {
+  if (e.button !== 1 || !middleDown) return;
+  const moved = Math.hypot(e.clientX - middleDown.x, e.clientY - middleDown.y);
+  middleDown = null;
+  if (moved < 5 && !pickFocus(e.clientX, e.clientY)) clearFocus();
+});
+canvas.addEventListener('dblclick', (e) => { if (!pickFocus(e.clientX, e.clientY)) clearFocus(); });
+// Middle click must not open the browser's autoscroll.
+canvas.addEventListener('mousedown', (e) => { if (e.button === 1) e.preventDefault(); });
 
 const VIEWS = {
   front: [0, 0, 0],
@@ -128,6 +224,7 @@ const items = [];
 let nextId = 1;
 
 function refit() {
+  clearFocus();
   content.position.set(0, 0, 0);
   content.scale.setScalar(1);
   content.updateMatrixWorld(true);
@@ -526,17 +623,54 @@ let lastVideoTime = -1;
 let detectMs = 0;
 let phone = null;        // pairing session while waiting for or using a phone
 
+// Hand tracking runs in a worker when the browser allows it, so the 3D view keeps
+// its frame rate. Otherwise it falls back to the main thread.
+function startWorker() {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(new URL('./hand-worker.js', import.meta.url), { type: 'module' });
+    const timer = setTimeout(() => fail(new Error('Hand worker timed out')), 30000);
+    const fail = (err) => { clearTimeout(timer); worker.terminate(); reject(err); };
+    worker.onerror = (e) => fail(new Error(e.message || 'Hand worker failed'));
+    worker.onmessage = ({ data }) => {
+      if (data.type === 'loaded') worker.postMessage({ type: 'init' });
+      else if (data.type === 'error') fail(new Error(data.message));
+      else if (data.type === 'ready') {
+        clearTimeout(timer);
+        const tracker = { worker, busy: false };
+        worker.onmessage = ({ data: msg }) => {
+          if (msg.type !== 'result') return;
+          tracker.busy = false;
+          detectMs = detectMs * 0.9 + msg.ms * 0.1;
+          if (stream) handleHand(msg.lm, msg.world);
+        };
+        resolve(tracker);
+      }
+    };
+  });
+}
+
+async function startMainThread() {
+  const fileset = await FilesetResolver.forVisionTasks('./vendor/mediapipe/wasm');
+  const task = await HandLandmarker.createFromOptions(fileset, {
+    baseOptions: { modelAssetPath: './models/hand_landmarker.task', delegate: 'CPU' },
+    runningMode: 'VIDEO',
+    numHands: 1,
+    minHandDetectionConfidence: 0.6,
+    minHandPresenceConfidence: 0.6,
+    minTrackingConfidence: 0.5,
+  });
+  return { task };
+}
+
 function getLandmarker() {
   landmarkerLoading ||= (async () => {
-    const fileset = await FilesetResolver.forVisionTasks('./vendor/mediapipe/wasm');
-    landmarker = await HandLandmarker.createFromOptions(fileset, {
-      baseOptions: { modelAssetPath: './models/hand_landmarker.task', delegate: 'CPU' },
-      runningMode: 'VIDEO',
-      numHands: 1,
-      minHandDetectionConfidence: 0.6,
-      minHandPresenceConfidence: 0.6,
-      minTrackingConfidence: 0.5,
-    });
+    try {
+      landmarker = await startWorker();
+      console.info('Hand tracking runs in a worker');
+    } catch (err) {
+      console.warn('Hand tracking on the main thread:', err.message);
+      landmarker = await startMainThread();
+    }
     return landmarker;
   })();
   return landmarkerLoading;
@@ -851,7 +985,7 @@ function turnModel(session, frame) {
   // From view space to world space.
   camQ.copy(camera.quaternion);
   delta.premultiply(camQ).multiply(camQ.clone().invert());
-  pivot.quaternion.premultiply(delta);
+  rotatePivot(delta);
 }
 
 function applyGesture({ mode, session, dx, dy, zoom, frame }) {
@@ -861,8 +995,8 @@ function applyGesture({ mode, session, dx, dy, zoom, frame }) {
     // Rotate around the camera's own axes so the motion matches the screen.
     axisX.setFromMatrixColumn(camera.matrixWorld, 0);
     axisY.setFromMatrixColumn(camera.matrixWorld, 1);
-    pivot.quaternion.premultiply(turn.setFromAxisAngle(axisY, dx * settings.rotate));
-    pivot.quaternion.premultiply(turn.setFromAxisAngle(axisX, dy * settings.rotate));
+    rotatePivot(turn.setFromAxisAngle(axisY, dx * settings.rotate));
+    rotatePivot(turn.setFromAxisAngle(axisX, dy * settings.rotate));
   } else if (mode === Mode.PAN && (dx || dy)) {
     const distance = camera.position.distanceTo(pivot.position);
     const height = 2 * distance * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
@@ -872,20 +1006,38 @@ function applyGesture({ mode, session, dx, dy, zoom, frame }) {
     pivot.position.add(axisX).add(axisY);
   } else if (mode === Mode.ZOOM && zoom !== 1) {
     const s = pivot.scale.x * Math.pow(zoom, settings.zoom);
-    pivot.scale.setScalar(THREE.MathUtils.clamp(s, MIN_SCALE, MAX_SCALE));
+    const next = THREE.MathUtils.clamp(s, MIN_SCALE, MAX_SCALE);
+    // Zoom around the picked point too, so it stays where it is.
+    if (hasFocus) {
+      focusWorld(turnCenter);
+      pivot.position.sub(turnCenter).multiplyScalar(next / pivot.scale.x).add(turnCenter);
+    }
+    pivot.scale.setScalar(next);
   }
 }
 
 function track() {
   if (!landmarker || !stream || video.readyState < 2 || video.currentTime === lastVideoTime) return;
+
+  if (landmarker.worker) {
+    // One frame in flight at a time; newer frames wait for the next free slot.
+    if (landmarker.busy) return;
+    lastVideoTime = video.currentTime;
+    landmarker.busy = true;
+    createImageBitmap(video)
+      .then((bitmap) => landmarker.worker.postMessage({ type: 'frame', bitmap, ts: performance.now() }, [bitmap]))
+      .catch(() => { landmarker.busy = false; });
+    return;
+  }
+
   lastVideoTime = video.currentTime;
-
   const t0 = performance.now();
-  const result = landmarker.detectForVideo(video, t0);
+  const result = landmarker.task.detectForVideo(video, t0);
   detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
+  handleHand(result.landmarks?.[0] || null, result.worldLandmarks?.[0] || null);
+}
 
-  const lm = result.landmarks?.[0] || null;
-  const world = result.worldLandmarks?.[0] || null;
+function handleHand(lm, world) {
   const cmd = engine.update(lm, world, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
@@ -900,11 +1052,13 @@ function track() {
 let frames = 0;
 let lastPerf = performance.now();
 const clock = new THREE.Clock();
+const spinQ = new THREE.Quaternion();
 
 renderer.setAnimationLoop(() => {
   const dt = clock.getDelta();
   track();
-  if ($('v-spin').checked) pivot.rotateOnWorldAxis(THREE.Object3D.DEFAULT_UP, dt * 0.6);
+  if ($('v-spin').checked) rotatePivot(spinQ.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, dt * 0.6));
+  updateFocus(performance.now());
   controls.update();
   renderer.render(scene, camera);
 

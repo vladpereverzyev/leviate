@@ -72,7 +72,7 @@ export async function hostPhone({ onStream, onFacing, onEnd, onStatus }) {
     call?.close();
     call = incoming;
     call.answer();
-    call.on('stream', (s) => onStream(s, call.metadata?.facing || 'environment'));
+    call.on('stream', (s) => onStream(s, call.metadata?.facing || 'user'));
     call.on('close', end);
     call.peerConnection?.addEventListener('connectionstatechange', () => {
       const state = call?.peerConnection?.connectionState;
@@ -103,7 +103,8 @@ export async function runPhoneCamera(pairId) {
   };
   $('phone-mode').hidden = false;
 
-  let facing = 'environment';
+  // Always start with the front camera; Flip switches to the rear one.
+  let facing = 'user';
   let stream = null;
   let peer = null;
   let call = null;
