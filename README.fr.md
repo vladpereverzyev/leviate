@@ -189,9 +189,12 @@ ou le téléphone (code QR, comme l'app web). Elle a deux modules :
 
 - **3D** : les gestes de l'app web dans votre logiciel 3D. La main ouverte tourne, le poing
   déplace, le pincement zoome la vue sous le curseur. Choisissez comment ce logiciel utilise
-  la souris (par exemple *Middle turns · Shift+middle pans* pour Blender) ou réglez les boutons.
+  la souris (*Right turns · Left+right pans* par défaut, celui des logiciels de CAO dentaire,
+  ou par exemple *Middle turns · Shift+middle pans* pour Blender) ou réglez les boutons.
 - **Mouse** : la main ouverte déplace le curseur, un doigt immobile un instant fait un clic
   gauche, deux doigts immobiles un clic droit.
+
+![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche, deux doigts clic droit](docs/gestures-mouse.png)
 
 Téléchargez-la depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) : `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) ou `-linux-x64.AppImage`.

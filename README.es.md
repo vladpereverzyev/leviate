@@ -184,9 +184,12 @@ móvil (código QR, como en la app web). Tiene dos módulos:
 
 - **3D**: los gestos de la app web en tu programa 3D. La mano abierta gira, el puño desplaza,
   el pellizco hace zoom en la vista bajo el cursor. Elige cómo usa el ratón ese programa
-  (por ejemplo *Middle turns · Shift+middle pans* para Blender) o define tú los botones.
+  (*Right turns · Left+right pans* por defecto, el de los programas CAD dentales, o por
+  ejemplo *Middle turns · Shift+middle pans* para Blender) o define tú los botones.
 - **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
   dos dedos quietos hacen clic derecho.
+
+![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/gestures-mouse.png)
 
 Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versión>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.

@@ -174,10 +174,13 @@ to Blender. Full guide in
 phone (QR code, like the web app). It has two modules:
 
 - **3D**: the gestures of the web app in your 3D program. Open hand turns, fist pans, pinch
-  zooms the view under the cursor. Choose how that program uses the mouse (for example
-  *Middle turns · Shift+middle pans* for Blender) or set the buttons yourself.
+  zooms the view under the cursor. Choose how that program uses the mouse (*Right turns ·
+  Left+right pans* by default, used by dental CAD programs, or for example *Middle turns ·
+  Shift+middle pans* for Blender) or set the buttons yourself.
 - **Mouse**: open hand moves the cursor, one finger held still is a left click, two
   fingers held still a right click.
+
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/gestures-mouse.png)
 
 Download it from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) or `-linux-x64.AppImage`.

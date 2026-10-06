@@ -29,7 +29,7 @@ const LABELS = {
   [Mode.ROTATE]: 'Turn', [Mode.PAN]: 'Pan', [Mode.ZOOM]: 'Zoom',
   [Pose.MOVE]: 'Move', [Pose.LEFT]: 'Left click', [Pose.RIGHT]: 'Right click',
 };
-const BUTTONS = [['left', 'Left button'], ['middle', 'Middle button'], ['right', 'Right button']];
+const BUTTONS = [['left', 'Left button'], ['middle', 'Middle button'], ['right', 'Right button'], ['left+right', 'Left and right buttons']];
 const KEYS = [['', 'No key'], ['shift', 'Shift +'], ['ctrl', 'Ctrl +'], ['alt', 'Alt +']];
 
 const settings = {
@@ -164,11 +164,6 @@ function showPose(lm, pose) {
   badge.hidden = !stream;
   badge.textContent = !lm ? 'No hand' : LABELS[pose] || 'Hand seen';
   badge.style.color = (lm && COLORS[pose]) || '#7d90a0';
-  for (const li of document.querySelectorAll('#panel-mouse li[data-pose]')) {
-    const on = settings.mode === 'mouse' && li.dataset.pose === pose;
-    li.classList.toggle('on', on);
-    li.querySelector('.meter i').style.width = on ? `${pointer.progress * 100}%` : '0';
-  }
 }
 
 // --------------------------------------------------------------- camera

@@ -42,6 +42,7 @@ The app is not signed yet:
 
 | Program mouse | For example |
 | --- | --- |
+| Right turns · Left+right pans | Dental CAD programs, the default |
 | Middle turns · Shift+middle pans | Blender, SketchUp |
 | Middle turns · Ctrl+middle pans | SOLIDWORKS |
 | Shift+middle turns · Middle pans | Fusion |
@@ -51,12 +52,27 @@ The app is not signed yet:
 | Custom | Any button with Shift, Ctrl or Alt, for turning and for panning |
 
 The gestures become mouse drags with those buttons, and the pinch becomes wheel steps.
-The button goes down only once the hand moves, so a gesture held still never clicks.
-When a drag gets long the cursor lets go, jumps back to where it began and goes on, so
-it never leaves the 3D view. **Turn**, **Pan** and **Zoom** set the speed; **Invert zoom**
-is for programs that zoom the other way round.
+Left+right holds both buttons together: the right one goes down first and up last, so the
+left one never clicks alone.
+
+- A new pose must last a fifth of a second before the mouse follows it, so a hand that
+  changes pose for an instant never presses, lets go or moves the cursor.
+- The buttons go down only once the hand has moved a few points, so a gesture held still
+  never clicks and the right button never opens a menu.
+- The cursor moves only by what the hand moves, from where it is. Programs that hold the
+  cursor on one spot while they turn the view keep still when the hand is still.
+- Each move of the hand is spread over small steps until the next frame of the camera, and
+  the pinch goes out in parts of a wheel step on Windows, so turning and zooming flow even
+  with a slow webcam.
+- When a drag gets long the cursor lets go, jumps back to where it began and goes on, so
+  it never leaves the 3D view.
+
+**Turn**, **Pan** and **Zoom** set the speed; **Invert zoom** is for programs that zoom the
+other way round.
 
 ## Mouse
+
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](../../docs/gestures-mouse.png)
 
 | Pose | What it does |
 | --- | --- |

@@ -217,6 +217,9 @@ main { flex: 1; padding: 0 20px 12px; display: flex; flex-direction: column; gap
 .dot.rotate { background: var(--rotate); }
 .dot.pan { background: var(--pan); }
 .dot.zoom { background: var(--zoom); }
+.dot.move { background: var(--accent); }
+.dot.left { background: var(--teal); }
+.dot.right { background: var(--pan); }
 
 .more { border-top: 1px solid var(--line); margin-top: 10px; }
 .more summary {
@@ -277,25 +280,6 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 }
 .seg button.on { background: var(--accent); color: #fff; }
 
-.poses { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; }
-.poses li {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 5px 10px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  overflow: hidden;
-  font-size: 13px;
-}
-.poses b { font-weight: 400; }
-.poses span { color: var(--dim); }
-.poses li.on { border-color: var(--accent); background: rgba(39, 145, 203, 0.1); }
-.meter { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
-.meter i { display: block; height: 100%; width: 0; }
-li[data-pose=left] .meter i { background: var(--teal); }
-li[data-pose=right] .meter i { background: var(--pan); }
 
 /* ------------------------------------------------------------------ footer */
 

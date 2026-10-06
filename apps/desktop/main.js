@@ -27,7 +27,12 @@ const ORIGIN = 'app://leviate';
 // Cmd+Option+M already minimizes windows there.
 const HOTKEY = 'Control+Alt+M';
 const RING = 72;
-const CLUTCH = 220;   // how far a drag goes before it starts again from where it began
+const CLUTCH = 350;   // how far a drag goes before it starts again from where it began
+const PRESS = 6;      // how far the hand moves the cursor before the buttons go down
+const FRAME = 34;     // time between two moves of the hand at 30 fps, in ms
+const STEP = 8;       // time between two moves of the cursor during a drag, in ms
+const WHEEL_GAP = 15; // time between two parts of a wheel step, in ms
+const WHEEL_MAX = 6;  // wheel steps waiting at most, so the zoom stops soon after the hand
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.wasm': 'application/wasm', '.svg': 'image/svg+xml', '.png': 'image/png',
@@ -52,7 +57,7 @@ let win = null;
 let ring = null;
 let ringTimer = null;
 let ringHide = null;
-let drag = null;   // { button, keys, anchor, pos, pressed } in screen points (DIP)
+let drag = null;   // { buttons, keys, anchor, pos, target, pressed } in screen points (DIP)
 
 // ---------------------------------------------------------------- files
 
@@ -178,26 +183,74 @@ function screens(all) {
   return { left, top, right, bottom };
 }
 
-// The button is pressed only once the hand really moves, so a gesture held still
-// never turns into a click (a right click would open a menu in many programs).
+// The buttons are pressed only once the hand has moved a few points, so a gesture held
+// still or barely moved never turns into a click (a right click opens a menu in many
+// programs, a left click selects). Each move of the hand comes about 30 times a second;
+// the cursor covers it in small steps until the next one, so the view turns smoothly.
 function dragMove(dx, dy) {
+  if (!drag) return;
+  const now = Date.now();
+  // The camera may give fewer frames (dim light): spread each move over a bit more than
+  // the time the last ones took, so the cursor is still going when the next one comes.
+  if (drag.last) drag.frame += (Math.min(Math.max(now - drag.last, 16), 200) - drag.frame) * 0.3;
+  drag.last = now;
+  drag.target = { x: drag.target.x + dx, y: drag.target.y + dy };
+  drag.due = now + drag.frame * 1.5;
+  drag.timer ||= setInterval(dragStep, STEP);
+}
+
+function press(d, m) {
+  for (const k of d.keys) m.key(k, true);
+  for (const b of d.buttons) m.down(b);
+  d.pressed = true;
+}
+
+function letGo(d, m) {
+  for (const b of [...d.buttons].reverse()) m.up(b);
+  d.pressed = false;
+}
+
+function dragStep() {
   const m = mouse.load();
-  if (!m || !drag) return;
-  if (!drag.pressed) {
-    for (const k of drag.keys) m.key(k, true);
-    m.down(drag.button);
-    drag.pressed = true;
+  const d = drag;
+  if (!m || !d) return;
+  const now = Date.now();
+  if (!d.pressed) {
+    if (now < d.rest || Math.hypot(d.target.x - d.anchor.x, d.target.y - d.anchor.y) < PRESS) return;
+    press(d, m);
   }
-  drag.pos = { x: drag.pos.x + dx, y: drag.pos.y + dy };
-  if (Math.hypot(drag.pos.x - drag.anchor.x, drag.pos.y - drag.anchor.y) > CLUTCH) {
-    // Far from where it began: let go, jump back and grab again, so the drag never
-    // reaches the edge of the 3D view.
-    m.up(drag.button);
-    moveTo(drag.anchor);
-    m.down(drag.button);
-    drag.pos = { x: drag.anchor.x + dx, y: drag.anchor.y + dy };
+  const k = now >= d.due ? 1 : Math.min(1, STEP / (d.due - now));
+  const next = { x: d.pos.x + (d.target.x - d.pos.x) * k, y: d.pos.y + (d.target.y - d.pos.y) * k };
+  const at = screen.getCursorScreenPoint();
+  if (Math.hypot(at.x - d.anchor.x, at.y - d.anchor.y) > CLUTCH) {
+    // The cursor is far from where it began: let go, jump back and grab again once the
+    // hand has moved on, so the drag never reaches the edge of the 3D view. Programs that
+    // hold the cursor still while they turn the view never get here.
+    letGo(d, m);
+    d.target = { x: d.target.x - (d.pos.x - d.anchor.x), y: d.target.y - (d.pos.y - d.anchor.y) };
+    d.pos = d.anchor;
+    d.carry = { x: 0, y: 0 };
+    moveTo(d.anchor);
+    d.rest = now + STEP * 4;   // the program sees the cursor back before the buttons go down
+    return;
   }
-  moveTo(drag.pos, drag.button);
+  nudge(d, at, next.x - d.pos.x, next.y - d.pos.y);
+  d.pos = next;
+}
+
+// Moves the cursor by whole points from where it really is, never back to a place of our
+// own: some programs hold the cursor on one spot while they turn the view and read only
+// how far it moved, so putting it back where we left it would turn the view again and
+// again with the hand held still.
+function nudge(d, at, dx, dy) {
+  d.carry.x += dx;
+  d.carry.y += dy;
+  const sx = Math.trunc(d.carry.x);
+  const sy = Math.trunc(d.carry.y);
+  if (!sx && !sy) return;
+  d.carry.x -= sx;
+  d.carry.y -= sy;
+  moveTo({ x: at.x + sx, y: at.y + sy }, d.buttons[0]);
 }
 
 function endDrag() {
@@ -205,8 +258,12 @@ function endDrag() {
   if (!drag) return;
   const d = drag;
   drag = null;
-  if (!m || !d.pressed) return;
-  m.up(d.button);
+  clearInterval(d.timer);
+  if (!m) return;
+  if (d.pressed) {
+    nudge(d, screen.getCursorScreenPoint(), d.target.x - d.pos.x, d.target.y - d.pos.y);
+    letGo(d, m);
+  }
   for (const k of [...d.keys].reverse()) m.key(k, false);
   moveTo(d.anchor);
 }
@@ -224,13 +281,39 @@ ipcMain.on('mouse:click', (e, button) => {
 });
 ipcMain.on('drag:start', (e, button, keys) => {
   endDrag();
-  if (!['left', 'middle', 'right'].includes(button)) return;
+  // 'left+right' holds both buttons together. The right one goes down first and up last,
+  // so the left one is never pressed alone: alone it would click in the program.
+  const buttons = String(button).split('+').sort((a, b) => (b === 'right') - (a === 'right'));
+  if (!buttons.every((b) => ['left', 'middle', 'right'].includes(b))) return;
   const p = screen.getCursorScreenPoint();
-  drag = { button, keys: (keys || []).filter((k) => ['shift', 'ctrl', 'alt'].includes(k)), anchor: p, pos: p, pressed: false };
+  drag = {
+    buttons, keys: (keys || []).filter((k) => ['shift', 'ctrl', 'alt'].includes(k)),
+    anchor: p, pos: p, target: p, carry: { x: 0, y: 0 }, pressed: false, rest: 0, due: 0, last: 0, frame: FRAME, timer: null,
+  };
 });
 ipcMain.on('drag:move', (e, dx, dy) => dragMove(dx, dy));
 ipcMain.on('drag:end', () => endDrag());
-ipcMain.on('wheel', (e, steps) => { if (steps) mouse.load()?.wheel(Math.round(steps)); });
+// The wheel goes out in small even parts, so the zoom flows instead of jumping by a few
+// steps on each frame of the camera. Windows takes parts of a step; elsewhere the parts
+// add up to whole steps.
+const WHEEL_PART = process.platform === 'win32' ? 0.2 : 1;
+let wheelLeft = 0;
+let wheelTimer = null;
+ipcMain.on('wheel', (e, steps) => {
+  if (!steps || !mouse.load()) return;
+  if (Math.sign(steps) !== Math.sign(wheelLeft)) wheelLeft = 0;
+  wheelLeft = Math.max(-WHEEL_MAX, Math.min(WHEEL_MAX, wheelLeft + steps));
+  wheelTimer ||= setInterval(() => {
+    if (Math.abs(wheelLeft) < WHEEL_PART) {
+      clearInterval(wheelTimer);
+      wheelTimer = null;
+      return;
+    }
+    const part = Math.sign(wheelLeft) * WHEEL_PART;
+    wheelLeft -= part;
+    mouse.load()?.wheel(part);
+  }, WHEEL_GAP);
+});
 
 ipcMain.on('mouse:ring', (e, mode, progress) => {
   if (!ring) return;

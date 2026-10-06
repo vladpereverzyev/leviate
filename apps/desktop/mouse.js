@@ -7,7 +7,8 @@
 //
 //   move(x, y, held)     held: the button being dragged, or null
 //   down(button) / up(button)      'left', 'middle' or 'right'
-//   wheel(steps)         positive scrolls up (away from the user)
+//   wheel(steps)         positive scrolls up (away from the user); Windows also takes
+//                        parts of a step, the others whole steps
 //   key(name, pressed)   'shift', 'ctrl' or 'alt'
 
 const koffi = require('koffi');
@@ -24,7 +25,7 @@ function windows() {
     move(x, y) { SetCursorPos(Math.round(x), Math.round(y)); },
     down(button) { mouseEvent(BUTTONS[button][0], 0, 0, 0, 0); },
     up(button) { mouseEvent(BUTTONS[button][1], 0, 0, 0, 0); },
-    wheel(steps) { mouseEvent(0x0800, 0, 0, (steps * 120) >>> 0, 0); },
+    wheel(steps) { mouseEvent(0x0800, 0, 0, Math.round(steps * 120) >>> 0, 0); },
     key(name, pressed) { keyEvent(KEYS[name], 0, pressed ? 0 : 0x0002, 0); },
   };
 }
