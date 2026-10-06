@@ -55,7 +55,7 @@ const MAX_SCALE = 20;
 const STORE_KEY = 'leviate.settings';
 const settings = {
   device: '', res: '480', fps: '30', facing: 'user', mirror: true,
-  gestures: true, rotate: 5, pan: 1, zoom: 1, smooth: 0.5,
+  gestures: true, rotate: 5, turn: 1, pan: 1, zoom: 1, smooth: 0.5,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 function saveSettings() {
@@ -642,7 +642,7 @@ function startWorker() {
           if (msg.type !== 'result') return;
           tracker.busy = false;
           detectMs = detectMs * 0.9 + msg.ms * 0.1;
-          if (stream) handleHand(msg.lm);
+          if (stream) handleHand(msg.lm, msg.world);
         };
         resolve(tracker);
       }
@@ -893,7 +893,7 @@ function applyMirror() {
 
 // ------------------------------------------------------------- gestures
 
-const sliders = { 'g-rotate': 'rotate', 'g-pan': 'pan', 'g-zoom': 'zoom', 'g-smooth': 'smooth' };
+const sliders = { 'g-rotate': 'rotate', 'g-turn': 'turn', 'g-pan': 'pan', 'g-zoom': 'zoom', 'g-smooth': 'smooth' };
 for (const [id, key] of Object.entries(sliders)) {
   const input = $(id);
   const out = input.nextElementSibling;
@@ -959,7 +959,14 @@ const axisX = new THREE.Vector3();
 const axisY = new THREE.Vector3();
 const turn = new THREE.Quaternion();
 
-function applyGesture({ mode, dx, dy, zoom }) {
+function applyGesture({ mode, dx, dy, zoom, turn: hand }) {
+  // Turning the hand turns the model the same way, around the camera's axes.
+  if (hand.x || hand.y) {
+    axisX.setFromMatrixColumn(camera.matrixWorld, 0);
+    axisY.setFromMatrixColumn(camera.matrixWorld, 1);
+    if (hand.y) rotatePivot(turn.setFromAxisAngle(axisY, hand.y * settings.turn));
+    if (hand.x) rotatePivot(turn.setFromAxisAngle(axisX, hand.x * settings.turn));
+  }
   if (mode === Mode.ROTATE && (dx || dy)) {
     // Rotate around the camera's own axes so the motion matches the screen.
     axisX.setFromMatrixColumn(camera.matrixWorld, 0);
@@ -1003,11 +1010,11 @@ function track() {
   const t0 = performance.now();
   const result = landmarker.task.detectForVideo(video, t0);
   detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
-  handleHand(result.landmarks?.[0] || null);
+  handleHand(result.landmarks?.[0] || null, result.worldLandmarks?.[0] || null);
 }
 
-function handleHand(lm) {
-  const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
+function handleHand(lm, world) {
+  const cmd = engine.update(lm, world, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
 

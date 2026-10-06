@@ -1,5 +1,11 @@
 # Leviate
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.md)
+[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.it.md)
+[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.es.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.fr.md)
+[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.de.md)
+
 **Try it now: <https://vladpereverzyev.github.io/leviate/>**
 
 Move 3D scans with your bare hands. Leviate is a web app that turns any webcam,
@@ -14,6 +20,7 @@ and your files never leave your device.
 ## Features
 
 - **Hand gestures**: open hand to rotate, fist to pan, thumb and index to zoom.
+  Turn the palm or the fist and the model turns with it.
 - **Any webcam**: built-in or USB cameras on a computer, front or rear camera on a phone.
 - **Your phone as a webcam**: scan a QR code with an iPhone or Android phone and its
   camera streams to the computer. No app to install.
@@ -43,14 +50,19 @@ webcam preview, in the same colors it uses for each gesture.
 
 | Hand pose | Action |
 | --- | --- |
-| Open hand (four or five fingers out) | Move the hand to **rotate** the model |
-| Fist | Move the hand to **pan** the model in space |
+| Open hand (four or five fingers out) | Move the hand to **rotate** the model. Turn the palm left or right to **turn** it left or right |
+| Fist | Move the hand to **pan** the model in space. Turn the fist left, right, up or down to **turn** it the same way |
 | Thumb and index out, other fingers closed | Spread the two fingers to **zoom in** and close them to **zoom out** |
 
 The zoom measures the gap between thumb and index relative to the size of your
 palm, so moving the hand closer to the camera does not zoom by itself. When you
 switch from one pose to another the model does not jump, because every gesture
 starts from where the previous one stopped.
+
+Turning the hand is read from the 3D shape of the wrist and knuckles, so it works
+while the hand is moving too. The model copies the turn: when the palm turns to the
+right the model turns to the right. **Turn** in the Gestures section sets how much
+it follows, 0 switches it off.
 
 The sensitivity of each gesture and the amount of smoothing can be tuned in the
 **Gestures** section of the panel. Settings are remembered in the browser.
@@ -164,7 +176,9 @@ file is missing the app tells you which one.
    one of three poses. A pose must be stable for a few frames before it becomes
    active, which removes flicker.
 4. **Motion**: the palm center is smoothed and its movement between frames becomes
-   rotation or pan. For zoom the ratio between the thumb to index gap and the palm
+   rotation or pan. MediaPipe also gives the hand points in 3D: the orientation of
+   wrist and knuckles is tracked and its left, right, up and down turn is applied to
+   the model. For zoom the ratio between the thumb to index gap and the palm
    size is tracked over time.
 5. **Rendering**: [three.js](https://threejs.org) draws the scans with WebGL.
    Rotation follows the screen axes of the camera, so moving the hand right always

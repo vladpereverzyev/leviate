@@ -55,6 +55,7 @@ self.onmessage = async ({ data }) => {
       self.postMessage({
         type: 'result',
         lm: result.landmarks?.[0] || null,
+        world: result.worldLandmarks?.[0] || null,
         ms: performance.now() - t0,
       });
     } catch (err) {
