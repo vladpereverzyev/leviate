@@ -6,9 +6,14 @@
 Each zip holds the add-on, the MediaPipe hand model and the Python wheels the
 hand tracking needs (MediaPipe, OpenCV, absl-py, flatbuffers) plus the ones the
 phone camera needs (aiortc for WebRTC with its dependencies, websockets, qrcode).
-Blender installs the wheels itself; numpy comes with Blender. The version comes from js/version.js.
+Blender installs the wheels itself; numpy comes with Blender. The version comes from
+js/version.js.
 
-Usage: python scripts/build-blender.py [platform ...]
+With --extensions the zips go to dist/extensions/ for extensions.blender.org, which takes
+only CC0 assets: they leave the hand model out and the add-on downloads the same file
+from Google on the first start.
+
+Usage: python scripts/build-blender.py [--extensions] [platform ...]
 Platforms: windows-x64, macos-arm64, linux-x64 (all by default).
 """
 
@@ -62,9 +67,11 @@ def wheels_for(platform):
     return [wheels[name] for name in sorted(wheels)]
 
 
-def build(platform, version):
+def build(platform, version, extensions=False):
     wheels = wheels_for(platform)
-    out = DIST / f"leviate-blender-{version}-{platform}.zip"
+    folder = DIST / "extensions" if extensions else DIST
+    folder.mkdir(parents=True, exist_ok=True)
+    out = folder / f"leviate-blender-{version}-{platform}.zip"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(SOURCE.rglob("*")):
             if path.is_dir() or "__pycache__" in path.parts or path.suffix == ".pyc":
@@ -79,7 +86,8 @@ def build(platform, version):
                 zf.writestr(name, text)
             else:
                 zf.write(path, name)
-        zf.write(MODEL, "models/hand_landmarker.task")
+        if not extensions:
+            zf.write(MODEL, "models/hand_landmarker.task")
         for w in wheels:
             zf.write(w, f"wheels/{w.name}")
         zf.write(SOURCE.parent / "LICENSE", "LICENSE")
@@ -88,9 +96,12 @@ def build(platform, version):
 
 def main():
     version = re.search(r"VERSION = '([\d.]+)'", (ROOT / "js" / "version.js").read_text()).group(1)
+    args = sys.argv[1:]
+    extensions = "--extensions" in args
+    platforms = [a for a in args if a != "--extensions"] or list(PLATFORMS)
     DIST.mkdir(exist_ok=True)
-    for platform in sys.argv[1:] or PLATFORMS:
-        build(platform, version)
+    for platform in platforms:
+        build(platform, version, extensions)
 
 
 if __name__ == "__main__":

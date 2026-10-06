@@ -9,6 +9,7 @@ Hand Landmarker, the same model and gesture rules as the Leviate web app). Nothi
 recorded.
 """
 
+import os
 import queue
 
 import bpy
@@ -18,7 +19,7 @@ from mathutils import Matrix, Quaternion, Vector
 
 from .gestures import NONE, PAN, ROTATE, ZOOM
 from .phone import PhoneLink, qr_matrix
-from .tracker import Tracker
+from .tracker import Tracker, model_path
 
 _tracker = None
 _draw_handle = None
@@ -359,6 +360,24 @@ def stop_drawing():
 
 # ---------------------------------------------------------------- camera
 
+def hand_model():
+    """Path of the hand model: inside the add-on, or in its user folder once downloaded."""
+    try:
+        user_dir = bpy.utils.extension_path_user(__package__, path="models", create=True)
+    except ValueError:   # loaded as a legacy add-on, not as an extension
+        user_dir = os.path.join(os.path.dirname(__file__), "models")
+    return model_path(user_dir)
+
+
+def online_reason(settings):
+    """Why this start needs Allow Online Access, or an empty string."""
+    if settings.source == "PHONE":
+        return "The phone needs online access"
+    if not os.path.isfile(hand_model()):
+        return "The first start downloads the hand model (8 MB)"
+    return ""
+
+
 def start_camera(context):
     global _tracker, _phone_identity
     settings = context.window_manager.leviate
@@ -367,7 +386,7 @@ def start_camera(context):
     if settings.source == "PHONE":
         phone = PhoneLink(_phone_identity)
         _phone_identity = (phone.id, phone.token)
-    _tracker = Tracker(camera=settings.camera - 1, width=height * 4 // 3, height=height,
+    _tracker = Tracker(hand_model(), camera=settings.camera - 1, width=height * 4 // 3, height=height,
                        mirror=settings.mirror, smoothing=1 - settings.smooth, phone=phone)
     _tracker.start()
     _state["moving"] = False
@@ -392,9 +411,9 @@ class LEVIATE_OT_start(bpy.types.Operator):
     bl_description = "Turn on the camera and move Blender with your hand"
 
     def execute(self, context):
-        if context.window_manager.leviate.source == "PHONE" and not bpy.app.online_access:
-            self.report({"ERROR"}, "The phone needs online access: turn on Allow Online Access "
-                                   "in Preferences > System > Network")
+        reason = online_reason(context.window_manager.leviate)
+        if reason and not bpy.app.online_access:
+            self.report({"ERROR"}, reason + ": turn on Allow Online Access in Preferences > System > Network")
             return {"CANCELLED"}
         start_camera(context)
         return {"FINISHED"}
@@ -451,9 +470,11 @@ class LEVIATE_PT_panel(bpy.types.Panel):
             layout.operator("leviate.start", icon="OUTLINER_OB_CAMERA")
             if _tracker is not None and _tracker.error:
                 layout.label(text=_tracker.error, icon="ERROR")
-            if phone and not bpy.app.online_access:
+            reason = online_reason(settings)
+            if reason and not bpy.app.online_access:
                 col = layout.column(align=True)
-                col.label(text="The phone needs online access:", icon="INFO")
+                col.label(text=reason + ":", icon="INFO")
+                col.label(text="Allow Online Access in")
                 col.label(text="Preferences > System > Network")
 
         layout.prop(settings, "target")

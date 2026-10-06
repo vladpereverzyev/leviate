@@ -21,6 +21,12 @@ Silicon) and Linux (x64).
    webcam only while it is on and never records it, the network and the clipboard serve
    only the phone. On macOS the system also asks once to let Blender use the camera.
 
+The zips of the GitHub releases carry the MediaPipe hand model. The copy on Blender
+Extensions leaves it out, because that platform takes only CC0 assets: on the first
+**Start camera** it downloads the same file once from Google (8 MB, checked with its
+SHA-256 fingerprint) and works offline from then on. That first start needs **Allow
+Online Access**. To build those zips run `python scripts/build-blender.py --extensions`.
+
 ## Use
 
 1. In the 3D view press **N** and open the **Leviate** tab.

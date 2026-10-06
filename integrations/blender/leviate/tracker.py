@@ -3,12 +3,13 @@
 
 """Camera and hand tracking in a background thread.
 
-OpenCV reads the webcam (or PhoneLink hands over the phone video), MediaPipe Hand Landmarker finds the hand on the CPU and
-GestureEngine turns it into moves. Blender reads the results from a timer on the
-main thread: the moves from a queue and the latest preview frame under a lock.
-Nothing is recorded.
+OpenCV reads the webcam (or PhoneLink hands over the phone video), MediaPipe Hand
+Landmarker finds the hand on the CPU and GestureEngine turns it into moves. Blender
+reads the results from a timer on the main thread: the moves from a queue and the
+latest preview frame under a lock. Nothing is recorded.
 """
 
+import hashlib
 import importlib.machinery
 import importlib.util
 import os
@@ -20,8 +21,36 @@ import types
 
 from .gestures import GestureEngine, NONE
 
-MODEL = os.path.join(os.path.dirname(__file__), "models", "hand_landmarker.task")
+# The zips on GitHub carry the hand model. The Blender Extensions zips leave it out,
+# because that platform only takes CC0 assets, and download the very same file from
+# Google once, on the first start.
+MODEL_NAME = "hand_landmarker.task"
+BUNDLED_MODEL = os.path.join(os.path.dirname(__file__), "models", MODEL_NAME)
+MODEL_URL = ("https://storage.googleapis.com/mediapipe-models/hand_landmarker/"
+             "hand_landmarker/float16/1/hand_landmarker.task")
+MODEL_SHA256 = "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
 PREVIEW_WIDTH = 320
+
+
+def model_path(user_dir):
+    """Where the hand model is, or will be once downloaded."""
+    if os.path.isfile(BUNDLED_MODEL):
+        return BUNDLED_MODEL
+    return os.path.join(user_dir, MODEL_NAME)
+
+
+def download_model(path):
+    import urllib.request
+    from .phone import _ssl_context
+    with urllib.request.urlopen(MODEL_URL, timeout=60, context=_ssl_context()) as response:
+        data = response.read()
+    if hashlib.sha256(data).hexdigest() != MODEL_SHA256:
+        raise RuntimeError("the downloaded hand model is not the expected file")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    part = path + ".part"
+    with open(part, "wb") as f:
+        f.write(data)
+    os.replace(part, path)
 
 
 def _import_libraries():
@@ -73,7 +102,8 @@ def _backends(cv2):
 
 
 class Tracker:
-    def __init__(self, camera=0, width=640, height=480, mirror=True, smoothing=0.5, phone=None):
+    def __init__(self, model, camera=0, width=640, height=480, mirror=True, smoothing=0.5, phone=None):
+        self.model = model
         self.camera = camera
         self.phone = phone
         self.width = width
@@ -145,8 +175,18 @@ class Tracker:
             else:
                 self.phone.start()
 
+            if not os.path.isfile(self.model):
+                self.status = "Downloading the hand model, only this once…"
+                try:
+                    download_model(self.model)
+                except Exception as err:
+                    self.error = "Could not download the hand model (%s). Check the internet connection." % (
+                        str(err) or err.__class__.__name__)
+                    return
+                self.status = "Camera on" if self.phone is None else self.phone.status
+
             options = vision.HandLandmarkerOptions(
-                base_options=BaseOptions(model_asset_path=MODEL),
+                base_options=BaseOptions(model_asset_path=self.model),
                 running_mode=vision.RunningMode.VIDEO,
                 num_hands=1,
                 min_hand_detection_confidence=0.6,
