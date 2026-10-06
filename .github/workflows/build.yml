@@ -2,9 +2,9 @@
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
 # Builds the integration zips on every push and pull request. On a version tag (v*)
-# it publishes them in a GitHub Release and removes the older releases with their
-# tags, so there is always one release. The web app itself is not in the release:
-# it runs from https://vladpereverzyev.github.io/leviate/.
+# it publishes them in a new GitHub Release. Older releases stay, so their download
+# counts are kept. The web app itself is not in the release: it runs from
+# https://vladpereverzyev.github.io/leviate/.
 
 name: Build & Release
 
@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # needed to create and remove releases
+  contents: write # needed to create releases
 
 jobs:
   build:
@@ -74,9 +74,10 @@ jobs:
 
           ### Leviate for Blender
 
-          Download \`leviate-blender-${VER}.zip\` below and drag it into Blender 4.2 or later.
-          Then open the **Leviate** tab in the 3D view (N), press **Wait for Leviate** and
-          press **Link app** in Leviate. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
+          Download the zip for your system below and drag it into Blender 4.2 or later:
+          \`leviate-blender-${VER}-windows-x64.zip\`, \`-macos-arm64.zip\` or \`-linux-x64.zip\`.
+          Then open the **Leviate** tab in the 3D view (N) and press **Start camera**: the webcam
+          and the hand tracking run inside Blender. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
@@ -90,14 +91,3 @@ jobs:
           generate_release_notes: true
           fail_on_unmatched_files: true
           make_latest: true
-
-      - name: Keep only this release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq '.[].tagName' |
-          while read -r tag; do
-            if [ "$tag" != "$GITHUB_REF_NAME" ]; then
-              gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes
-            fi
-          done

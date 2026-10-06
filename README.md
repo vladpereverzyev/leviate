@@ -43,8 +43,8 @@ and your files never leave your device.
 - **Rotate around any point**: middle click (or double click, double tap on a phone) a
   point of the model and every rotation turns around it. **Reset** goes back to the center.
 - **Mouse and touch** still work next to the gestures.
-- **Blender and other programs**: **Link app** sends the gestures to Blender with the
-  Leviate add-on, so your hand moves the Blender view or the selected objects.
+- **Blender**: the Leviate for Blender add-on brings the same hand control inside
+  Blender, with its own camera. Your hand moves the view or the selected objects.
 - **Fully offline**: all libraries and the hand model are bundled in the repository.
 
 ## Gestures
@@ -148,21 +148,18 @@ running on your own computer pairs through <https://vladpereverzyev.github.io/le
 
 ## Use it in Blender
 
-Leviate can move Blender too. The hand tracking stays in the browser and the
-**Leviate for Blender** add-on receives the gestures. No program to install besides
-the add-on.
+**Leviate for Blender** brings the hand control inside Blender: the webcam and the hand
+tracking run in Blender itself, no browser needed.
 
-1. Download `leviate-blender-<version>.zip` from the
-   [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) and drag
-   it into Blender 4.2 or later.
-2. In the 3D view press **N**, open the **Leviate** tab and press **Wait for Leviate**.
-3. In Leviate start the camera (or **Use phone**) and press **Link app**.
+1. Download the zip for your system from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
+   `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` or `-linux-x64.zip`.
+   Drag it into Blender 4.2 or later.
+2. In the 3D view press **N**, open the **Leviate** tab and press **Start camera**.
+3. Open hand rotates, fist pans, pinch zooms. **Move** chooses the view or the selected
+   objects.
 
-Open hand orbits, fist pans, pinch zooms. The panel can
-also move the selected objects instead of the view. Everything stays on the computer:
-the page talks to Blender through `127.0.0.1` and sends only the hand movements. The first
-time Chrome or Edge asks to reach apps on this device: press **Allow**. Safari does not
-allow it. Full guide in
+A small camera preview with the hand points appears in the corner of the 3D view. The
+video stays in Blender and is never recorded or sent anywhere. Full guide in
 [integrations/blender](integrations/blender/).
 
 ## Supported files
@@ -215,8 +212,7 @@ file is missing the app tells you which one.
 | `js/hand-worker.js` | Hand tracking in a Web Worker, off the main thread |
 | `js/phone.js` | Phone as webcam: QR pairing on the computer, camera page on the phone |
 | `js/windows.js` | Floating windows: drag, collapse, phone layout |
-| `js/link.js` | Link app: sends the gestures to a program on this computer |
-| `integrations/` | Add-ons for other programs (Blender) and the protocol they use |
+| `integrations/` | Add-ons that bring the hand control inside other programs (Blender) |
 | `scripts/build-blender.py` | Packs the Blender add-on into a zip |
 | `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | WebRTC pairing and QR code generator (MIT) |
@@ -239,7 +235,7 @@ git config core.hooksPath .githooks
 
 For a minor or major release run `node scripts/bump.mjs minor` (or `major`) before
 committing. A tag `v<version>` starts the Build & Release workflow: it builds the
-integration zips and publishes them as the only release on the
+integration zips and publishes them as a new release on the
 [releases page](https://github.com/vladpereverzyev/leviate/releases). The web app is not
 in the release, it always runs from the link at the top.
 
@@ -254,7 +250,6 @@ approved for that purpose.
 The video stream and your scans are processed only inside your browser. Nothing is
 uploaded, there is no tracking and no account. The only outside service is the PeerJS
 broker used by **Use phone**, which sees the connection details but never the video.
-**Link app** sends only the hand movements to a program on the same computer.
 
 ## Contributing
 
@@ -270,9 +265,9 @@ Rhino, Fusion, SolidWorks, Inventor, SketchUp, dental CAD software with an open 
 any program that can be scripted. Blender shows the way. The policy for integrations:
 
 1. One folder per program in `integrations/<program>/` with source, README and LICENSE.
-2. The same protocol for everyone, described in [integrations/README.md](integrations/README.md).
-   Need more? Open an issue first.
-3. Local only: listen on `127.0.0.1`, accept only the Leviate pages, no telemetry.
+2. The same gestures everywhere: reuse the hand tracking of Leviate for Blender
+   (`gestures.py` and the MediaPipe model), see [integrations/README.md](integrations/README.md).
+3. Local only: the camera is read on the computer, nothing is recorded or sent, no telemetry.
 4. Light: use the program's own scripting and add-on system, avoid extra installs.
 5. License: what the program asks for (Blender add-ons are GPL-3.0-or-later), otherwise
    AGPL-3.0. The CLA applies.

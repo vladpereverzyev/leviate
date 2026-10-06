@@ -107,7 +107,6 @@
         </div>
         <div class="row cam-row">
           <button id="phone-link" class="btn small ghost">Use phone</button>
-          <button id="app-link" class="btn small ghost" title="Send the gestures to Blender or another program with the Leviate add-on">Link app</button>
         </div>
         <p class="hint"><i class="dot rotate"></i>Open hand <i class="dot pan"></i>Fist <i class="dot zoom"></i>Pinch</p>
 
@@ -143,16 +142,6 @@
           <div class="field slider"><label for="g-pan">Pan</label><input id="g-pan" type="range" min="0.25" max="3" step="0.25" value="1"><output></output></div>
           <div class="field slider"><label for="g-zoom">Zoom</label><input id="g-zoom" type="range" min="0.25" max="3" step="0.25" value="1"><output></output></div>
           <div class="field slider"><label for="g-smooth">Smooth</label><input id="g-smooth" type="range" min="0" max="0.9" step="0.05" value="0.5"><output></output></div>
-        </details>
-
-        <details class="more">
-          <summary>Link app</summary>
-          <p class="info">Moves Blender or another program on this computer with your hand. Install the add-on from the <a href="https://github.com/vladpereverzyev/leviate/releases/latest" target="_blank" rel="noopener">latest release</a>, press Wait for Leviate in the program, then Link app here.</p>
-          <div class="field two">
-            <label for="link-port" class="check">Port</label>
-            <input id="link-port" type="number" min="1024" max="65535" step="1" value="47800">
-          </div>
-          <p id="link-info" class="info"></p>
         </details>
       </div>
     </section>

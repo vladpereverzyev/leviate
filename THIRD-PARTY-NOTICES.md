@@ -14,7 +14,12 @@ components. Each one keeps its own license.
 | [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `vendor/peerjs/` |
 | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `vendor/qrcode/` |
 | [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `vendor/fonts/` |
-| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` and `integrations/blender/leviate/gestures.py` |
+
+The Leviate for Blender zips in the releases also carry the Python wheels of MediaPipe,
+OpenCV (headless), absl-py and FlatBuffers (all Apache-2.0), downloaded unmodified from
+PyPI when the zips are built. They are not stored in this repository. See
+[integrations/blender/leviate/THIRD-PARTY.md](integrations/blender/leviate/THIRD-PARTY.md).
 
 ## three.js
 

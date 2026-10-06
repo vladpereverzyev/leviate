@@ -21,11 +21,12 @@ is the example to follow. The policy for integrations:
 
 1. **One folder per program**: `integrations/<program>/` with the source, a README
    (install, use, tested versions) and its LICENSE.
-2. **Same protocol for everyone**: the messages in
-   [integrations/README.md](integrations/README.md), as they are. If a program needs
-   something more, open an issue first, so the protocol stays one.
-3. **Local only**: listen on `127.0.0.1`, accept only the Leviate pages, no telemetry
-   and no data sent anywhere else.
+2. **Same gestures everywhere**: reuse the hand tracking of Leviate for Blender
+   (`gestures.py`, `tracker.py` and the MediaPipe model), as described in
+   [integrations/README.md](integrations/README.md). Gesture changes go first in
+   `js/gestures.js` and then in every port, so the hand behaves the same everywhere.
+3. **Local only**: the camera is read on the computer, nothing is recorded or sent,
+   no telemetry.
 4. **Light**: use the program's own scripting and add-on system, avoid extra installs.
    New dependencies must have a permissive or GPL compatible license and go in
    `THIRD-PARTY-NOTICES.md`.

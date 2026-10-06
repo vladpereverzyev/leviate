@@ -47,8 +47,8 @@ richiesta e i tuoi file non lasciano mai il dispositivo.
   sul telefono) su un punto del modello e ogni rotazione gira intorno a quel punto.
   **Reset** torna al centro.
 - **Mouse e touch** funzionano sempre accanto ai gesti.
-- **Blender e altri programmi**: **Link app** manda i gesti a Blender con l'add-on
-  Leviate, così la mano muove la vista di Blender o gli oggetti selezionati.
+- **Blender**: l'add-on Leviate for Blender porta lo stesso controllo con la mano dentro
+  Blender, con la sua camera. La mano muove la vista o gli oggetti selezionati.
 - **Completamente offline**: tutte le librerie e il modello della mano sono nel repository.
 
 ## Gesti
@@ -154,19 +154,18 @@ camera solo lì. Una copia che gira sul tuo computer si collega attraverso
 
 ## Usalo in Blender
 
-Leviate può muovere anche Blender. Il tracciamento della mano resta nel browser e
-l'add-on **Leviate for Blender** riceve i gesti. Niente da installare oltre all'add-on.
+**Leviate for Blender** porta il controllo con la mano dentro Blender: la webcam e il
+tracciamento della mano girano in Blender stesso, senza browser.
 
-1. Scarica `leviate-blender-<versione>.zip` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest)
-   e trascinalo in Blender 4.2 o successivo.
-2. Nella vista 3D premi **N**, apri la scheda **Leviate** e premi **Wait for Leviate**.
-3. In Leviate avvia la camera (o **Use phone**) e premi **Link app**.
+1. Scarica lo zip per il tuo sistema dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest):
+   `leviate-blender-<versione>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
+   Trascinalo in Blender 4.2 o successivo.
+2. Nella vista 3D premi **N**, apri la scheda **Leviate** e premi **Start camera**.
+3. La mano aperta ruota, il pugno sposta, il pizzico fa lo zoom. **Move** sceglie la vista
+   o gli oggetti selezionati.
 
-La mano aperta orbita, il pugno sposta, il pizzico fa lo zoom. Dal pannello puoi anche
-muovere gli oggetti selezionati invece della vista. Tutto resta sul computer: la pagina
-parla con Blender attraverso `127.0.0.1` e manda solo i movimenti della mano. La prima
-volta Chrome o Edge chiede di accedere alle app su questo dispositivo: premi **Consenti**.
-Safari non lo permette. Guida completa in
+Nell'angolo della vista 3D compare una piccola anteprima della camera con i punti della
+mano. Il video resta in Blender e non viene mai registrato né inviato. Guida completa in
 [integrations/blender](integrations/blender/).
 
 ## File supportati
@@ -218,8 +217,7 @@ texture o un file collegato l'app ti dice quale.
 | `js/hand-worker.js` | Tracciamento della mano in un Web Worker, fuori dal thread principale |
 | `js/phone.js` | Telefono come webcam: collegamento con QR sul computer, pagina camera sul telefono |
 | `js/windows.js` | Finestre mobili: trascinamento, chiusura, layout per telefono |
-| `js/link.js` | Link app: manda i gesti a un programma su questo computer |
-| `integrations/` | Add-on per altri programmi (Blender) e il protocollo che usano |
+| `integrations/` | Add-on che portano il controllo con la mano dentro altri programmi (Blender) |
 | `scripts/build-blender.py` | Crea lo zip dell'add-on per Blender |
 | `vendor/three/` | three.js, i suoi loader e decoder (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | Collegamento WebRTC e generatore di codici QR (MIT) |
@@ -242,7 +240,7 @@ git config core.hooksPath .githooks
 
 Per una release minor o major lancia `node scripts/bump.mjs minor` (o `major`) prima
 del commit. Un tag `v<versione>` avvia il workflow Build & Release: crea gli zip delle
-integrazioni e li pubblica come unica release nella
+integrazioni e li pubblica in una nuova release nella
 [pagina delle release](https://github.com/vladpereverzyev/leviate/releases). L'app web
 non è nella release, gira sempre dal link in cima.
 
@@ -257,7 +255,6 @@ le scansioni nel software approvato per quello scopo.
 Il flusso video e le tue scansioni vengono elaborati solo dentro il browser. Non viene
 caricato niente, nessun tracciamento e nessun account. L'unico servizio esterno è il
 broker PeerJS usato da **Use phone**, che vede i dati di connessione ma mai il video.
-**Link app** manda solo i movimenti della mano a un programma sullo stesso computer.
 
 ## Contribuire
 
@@ -274,9 +271,9 @@ qualsiasi programma che si possa programmare con script. Blender apre la strada.
 regole per le integrazioni:
 
 1. Una cartella per programma in `integrations/<programma>/` con sorgente, README e LICENSE.
-2. Lo stesso protocollo per tutti, descritto in [integrations/README.md](integrations/README.md).
-   Serve altro? Apri prima una issue.
-3. Solo in locale: ascolto su `127.0.0.1`, solo le pagine di Leviate, nessun tracciamento.
+2. Gli stessi gesti ovunque: riusa il tracciamento della mano di Leviate for Blender
+   (`gestures.py` e il modello MediaPipe), vedi [integrations/README.md](integrations/README.md).
+3. Solo in locale: la camera viene letta sul computer, niente registrato o inviato, nessun tracciamento.
 4. Leggere: usa gli script e il sistema di add-on del programma, evita installazioni in più.
 5. Licenza: quella che chiede il programma (gli add-on di Blender sono GPL-3.0-or-later),
    altrimenti AGPL-3.0. Vale il CLA.
