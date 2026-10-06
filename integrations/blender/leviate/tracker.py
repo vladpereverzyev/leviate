@@ -9,6 +9,7 @@ main thread: the moves from a queue and the latest preview frame under a lock.
 Nothing is recorded.
 """
 
+import importlib.machinery
 import importlib.util
 import os
 import queue
@@ -25,12 +26,15 @@ PREVIEW_WIDTH = 320
 
 def _import_libraries():
     # MediaPipe imports matplotlib for drawing helpers we never call. When it is
-    # missing an empty stand in is enough, so the add-on does not ship it.
-    if importlib.util.find_spec("matplotlib") is None and "matplotlib" not in sys.modules:
-        mpl = types.ModuleType("matplotlib")
-        mpl.pyplot = types.ModuleType("matplotlib.pyplot")
-        sys.modules["matplotlib"] = mpl
-        sys.modules["matplotlib.pyplot"] = mpl.pyplot
+    # missing an empty stand in is enough, so the add-on does not ship it. The stand
+    # in carries a module spec: find_spec() fails on a module without one, which
+    # broke the second start of the camera and could break other add-ons.
+    if "matplotlib" not in sys.modules and importlib.util.find_spec("matplotlib") is None:
+        for name in ("matplotlib", "matplotlib.pyplot"):
+            module = types.ModuleType(name)
+            module.__spec__ = importlib.machinery.ModuleSpec(name, None)
+            sys.modules[name] = module
+        sys.modules["matplotlib"].pyplot = sys.modules["matplotlib.pyplot"]
     import cv2
     import mediapipe as mp
     import numpy as np
