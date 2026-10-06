@@ -22,3 +22,5 @@ copyright = ["2026 Vladyslav Pereverzyev"]
 
 [permissions]
 camera = "Reads the webcam to follow your hand, nothing is recorded"
+network = "Pairs a phone as the camera through the PeerJS server"
+clipboard = "Copies the phone pairing link"

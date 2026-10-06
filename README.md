@@ -44,7 +44,7 @@ and your files never leave your device.
   point of the model and every rotation turns around it. **Reset** goes back to the center.
 - **Mouse and touch** still work next to the gestures.
 - **Blender**: the Leviate for Blender add-on brings the same hand control inside
-  Blender, with its own camera. Your hand moves the view or the selected objects.
+  Blender, with the webcam or your phone. Your hand moves the view or the selected objects.
 - **Fully offline**: all libraries and the hand model are bundled in the repository.
 
 ## Gestures
@@ -154,12 +154,15 @@ tracking run in Blender itself, no browser needed.
 1. Download the zip for your system from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` or `-linux-x64.zip`.
    Drag it into Blender 4.2 or later.
-2. In the 3D view press **N**, open the **Leviate** tab and press **Start camera**.
+2. In the 3D view press **N** and open the **Leviate** tab. Choose **This computer** for
+   the webcam or **Phone**, then press **Start camera**. With **Phone** a QR code appears:
+   scan it and tap **Start camera** on the phone, no app needed.
 3. Open hand rotates, fist pans, pinch zooms. **Move** chooses the view or the selected
    objects.
 
 A small camera preview with the hand points appears in the corner of the 3D view. The
-video stays in Blender and is never recorded or sent anywhere. Full guide in
+video is never recorded: the webcam stays in Blender, the phone sends its video straight
+to Blender. Full guide in
 [integrations/blender](integrations/blender/).
 
 ## Supported files

@@ -3,10 +3,10 @@
 
 """Camera and hand tracking in a background thread.
 
-OpenCV reads the camera, MediaPipe Hand Landmarker finds the hand on the CPU and
+OpenCV reads the webcam (or PhoneLink hands over the phone video), MediaPipe Hand Landmarker finds the hand on the CPU and
 GestureEngine turns it into moves. Blender reads the results from a timer on the
 main thread: the moves from a queue and the latest preview frame under a lock.
-Nothing is recorded or sent anywhere.
+Nothing is recorded.
 """
 
 import importlib.util
@@ -38,6 +38,28 @@ def _import_libraries():
     return cv2, mp, np, BaseOptions, vision
 
 
+def detect_points(landmarker, image, ts):
+    """21 (x, y) points of the first hand, or None.
+
+    Same call as HandLandmarker.detect_for_video, but the result is read straight
+    from the C struct. MediaPipe 1.0.1 turns every landmark into Python objects and
+    decodes its name pointer, which is sometimes garbage and crashes Blender.
+    Only x and y are read here, the names are never touched.
+    """
+    import ctypes
+    from mediapipe.tasks.python.vision.hand_landmarker import MpHandLandmarkerResultC
+    result = MpHandLandmarkerResultC()
+    landmarker._lib.MpHandLandmarkerDetectForVideo(
+        landmarker._handle, image._image_ptr, None, ts, ctypes.byref(result))
+    try:
+        if not result.hand_landmarks_count:
+            return None
+        hand = result.hand_landmarks[0]
+        return [(hand.landmarks[i].x, hand.landmarks[i].y) for i in range(hand.landmarks_count)]
+    finally:
+        landmarker._lib.MpHandLandmarkerCloseResult(ctypes.byref(result))
+
+
 def _backends(cv2):
     if sys.platform == "win32":
         return (cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY)
@@ -47,8 +69,9 @@ def _backends(cv2):
 
 
 class Tracker:
-    def __init__(self, camera=0, width=640, height=480, mirror=True, smoothing=0.5):
+    def __init__(self, camera=0, width=640, height=480, mirror=True, smoothing=0.5, phone=None):
         self.camera = camera
+        self.phone = phone
         self.width = width
         self.height = height
         self.mirror = mirror
@@ -79,6 +102,8 @@ class Tracker:
 
     def stop(self):
         self._running = False
+        if self.phone is not None:
+            self.phone.stop()
         if self._thread:
             self._thread.join(timeout=3)
             self._thread = None
@@ -101,17 +126,20 @@ class Tracker:
                 self.error = "Hand tracking libraries missing: %s" % err
                 return
 
-            for backend in _backends(cv2):
-                cap = cv2.VideoCapture(self.camera, backend)
-                if cap.isOpened():
-                    break
-                cap.release()
-                cap = None
-            if cap is None:
-                self.error = "Camera %d not found or in use by another program" % (self.camera + 1)
-                return
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+            if self.phone is None:
+                for backend in _backends(cv2):
+                    cap = cv2.VideoCapture(self.camera, backend)
+                    if cap.isOpened():
+                        break
+                    cap.release()
+                    cap = None
+                if cap is None:
+                    self.error = "Camera %d not found or in use by another program" % (self.camera + 1)
+                    return
+                cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
+                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+            else:
+                self.phone.start()
 
             options = vision.HandLandmarkerOptions(
                 base_options=BaseOptions(model_asset_path=MODEL),
@@ -122,27 +150,46 @@ class Tracker:
                 min_tracking_confidence=0.5,
             )
             landmarker = vision.HandLandmarker.create_from_options(options)
-            self.status = "Camera on"
+            if self.phone is None:
+                self.status = "Camera on"
+            phone_serial = 0
 
             t0 = time.monotonic()
             last_ts = -1
             frames = 0
             fps_start = time.monotonic()
             while self._running:
-                ok, frame = cap.read()
-                if not ok:
-                    self.error = "The camera stopped sending images"
-                    break
-                h, w = frame.shape[:2]
+                if self.phone is None:
+                    ok, frame = cap.read()
+                    if not ok:
+                        self.error = "The camera stopped sending images"
+                        break
+                    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                else:
+                    phone_serial, rgb = self.phone.read(phone_serial)
+                    self.status = self.phone.status
+                    if self.phone.error:
+                        self.error = self.phone.error
+                        break
+                    if not self.phone.connected:
+                        # Waiting for the phone: the 3D view shows the QR code instead.
+                        if self._hand_shown():
+                            self._clear_preview()
+                            self.engine.reset()
+                            self.moves.put((NONE, 0.0, 0.0, 1.0, 1.0))
+                            self.fps = 0.0
+                            self.frame_size = (0, 0)
+                        continue
+                    if rgb is None:
+                        continue
+                    # The front camera of the phone is mirrored like a selfie, the rear one is not.
+                    self.mirror = self.phone.facing == "user"
+                h, w = rgb.shape[:2]
                 self.frame_size = (w, h)
-                rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 # Timestamps must grow, even if two frames arrive in the same millisecond.
                 ts = max(int((time.monotonic() - t0) * 1000), last_ts + 1)
                 last_ts = ts
-                result = landmarker.detect_for_video(mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb), ts)
-                lm = None
-                if result.hand_landmarks:
-                    lm = [(p.x, p.y) for p in result.hand_landmarks[0]]
+                lm = detect_points(landmarker, mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb), ts)
                 mode, dx, dy, zoom = self.engine.update(lm, mirror=self.mirror)
                 self.moves.put((mode, dx, dy, zoom, w / max(h, 1)))
                 self._store_preview(cv2, np, rgb, lm, mode)
@@ -165,8 +212,21 @@ class Tracker:
                 cap.release()
             self._running = False
             self.moves.put((NONE, 0.0, 0.0, 1.0, 1.0))
+            if self.phone is not None:
+                self.phone.stop()
             if not self.error:
                 self.status = "Camera off"
+
+    def _hand_shown(self):
+        with self._lock:
+            return self._preview is not None
+
+    def _clear_preview(self):
+        with self._lock:
+            self._preview = None
+            self._hand = None
+            self._mode = NONE
+            self._serial += 1
 
     def _store_preview(self, cv2, np, rgb, lm, mode):
         h, w = rgb.shape[:2]

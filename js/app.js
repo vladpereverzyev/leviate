@@ -77,6 +77,9 @@ camera.position.set(0, 0, 3.4);
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+// Orbiting stops at the top and the bottom of the model, so dragging turns the
+// model itself instead (see dragTurn below), like the open hand does.
+controls.enableRotate = false;
 controls.saveState();
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x30363d, 1.6));
@@ -193,6 +196,35 @@ function rotatePivot(q) {
   }
   pivot.quaternion.premultiply(q);
 }
+
+// Left drag (or one finger) turns the model freely, with no stop at any angle.
+// Shift, Ctrl or Cmd with the left button still pan through OrbitControls.
+const pointers = new Set();
+let dragTurn = null;
+canvas.addEventListener('pointerdown', (e) => {
+  pointers.add(e.pointerId);
+  const free = e.button === 0 && !e.shiftKey && !e.ctrlKey && !e.metaKey;
+  dragTurn = free && pointers.size === 1 ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;
+});
+canvas.addEventListener('pointermove', (e) => {
+  if (!dragTurn || e.pointerId !== dragTurn.id) return;
+  // A drag across the whole height of the view turns the model once around.
+  const k = (2 * Math.PI) / Math.max(canvas.clientHeight, 1);
+  const dx = (e.clientX - dragTurn.x) * k;
+  const dy = (e.clientY - dragTurn.y) * k;
+  dragTurn.x = e.clientX;
+  dragTurn.y = e.clientY;
+  axisX.setFromMatrixColumn(camera.matrixWorld, 0);
+  axisY.setFromMatrixColumn(camera.matrixWorld, 1);
+  rotatePivot(turn.setFromAxisAngle(axisY, dx));
+  rotatePivot(turn.setFromAxisAngle(axisX, dy));
+});
+const endPointer = (e) => {
+  pointers.delete(e.pointerId);
+  if (dragTurn?.id === e.pointerId) dragTurn = null;
+};
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
 
 let middleDown = null;
 canvas.addEventListener('pointerdown', (e) => {

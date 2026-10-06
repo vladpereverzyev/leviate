@@ -3,9 +3,10 @@
 
 """Leviate for Blender: move the 3D view or the selected objects with your bare hands.
 
-Press Start camera in the Leviate tab of the 3D view sidebar. The webcam and the hand
-tracking run inside Blender on the CPU (MediaPipe Hand Landmarker, the same model and
-gesture rules as the Leviate web app). Nothing is recorded or sent anywhere.
+Press Start camera in the Leviate tab of the 3D view sidebar. The webcam, or a phone
+paired with a QR code, and the hand tracking run inside Blender on the CPU (MediaPipe
+Hand Landmarker, the same model and gesture rules as the Leviate web app). Nothing is
+recorded.
 """
 
 import queue
@@ -16,12 +17,14 @@ from gpu_extras.batch import batch_for_shader
 from mathutils import Matrix, Quaternion, Vector
 
 from .gestures import NONE, PAN, ROTATE, ZOOM
+from .phone import PhoneLink, qr_matrix
 from .tracker import Tracker
 
 _tracker = None
 _draw_handle = None
 _texture = {"serial": -1, "tex": None, "size": (0, 0)}
 _state = {"moving": False}
+_qr = {"url": None, "size": 0, "cells": []}
 
 HAND_LINKS = (
     (0, 1), (1, 2), (2, 3), (3, 4),
@@ -58,6 +61,14 @@ def _smooth(self, context):
 
 
 class LeviateSettings(bpy.types.PropertyGroup):
+    source: bpy.props.EnumProperty(
+        name="Camera",
+        items=(
+            ("WEBCAM", "This computer", "A webcam on this computer"),
+            ("PHONE", "Phone", "Your phone as the camera: scan a QR code, no app to install"),
+        ),
+        default="WEBCAM", update=_restart,
+    )
     target: bpy.props.EnumProperty(
         name="Move",
         items=(
@@ -213,8 +224,60 @@ def _shader(*names):
     return None
 
 
+def qr_cells(url):
+    """Dark modules of the QR code of url as (row, column), cached."""
+    if _qr["url"] != url:
+        matrix = qr_matrix(url)
+        _qr.update(url=url, size=len(matrix),
+                   cells=[(r, c) for r, row in enumerate(matrix) for c, dark in enumerate(row) if dark])
+    return _qr["size"], _qr["cells"]
+
+
+def draw_qr(phone):
+    """The pairing QR code in the lower left corner of the 3D view."""
+    region = bpy.context.region
+    flat = _shader("UNIFORM_COLOR")
+    if flat is None:
+        return
+    try:
+        size, cells = qr_cells(phone.url)
+    except ImportError:
+        return
+    scale = bpy.context.preferences.system.ui_scale
+    side = min(220 * scale, region.width * 0.45, region.height * 0.55)
+    x0, y0 = 16 * scale, 16 * scale
+    area = bpy.context.area
+    if area is not None:
+        x0 += sum(r.width for r in area.regions if r.type == "TOOLS" and r.width > 1)
+    cell = side / max(size, 1)
+    top = y0 + side
+    quads = []
+    for r, c in cells:
+        x, y = x0 + c * cell, top - (r + 1) * cell
+        quads += [(x, y), (x + cell, y), (x + cell, y + cell), (x, y), (x + cell, y + cell), (x, y + cell)]
+    flat.bind()
+    flat.uniform_float("color", (1.0, 1.0, 1.0, 1.0))
+    batch_for_shader(flat, "TRIS", {"pos": [(x0, y0), (x0 + side, y0), (x0 + side, top),
+                                            (x0, y0), (x0 + side, top), (x0, top)]}).draw(flat)
+    flat.uniform_float("color", (0.0, 0.0, 0.0, 1.0))
+    batch_for_shader(flat, "TRIS", {"pos": quads}).draw(flat)
+
+    import blf
+    font = 0
+    blf.size(font, 13 * scale)
+    blf.color(font, 0.92, 0.94, 0.96, 1.0)
+    blf.position(font, x0, top + 10 * scale, 0)
+    blf.draw(font, phone.status)
+
+
 def draw_preview():
-    if _tracker is None or not bpy.context.window_manager.leviate.preview:
+    if _tracker is None:
+        return
+    phone = _tracker.phone
+    if phone is not None and not phone.connected and _tracker.running:
+        draw_qr(phone)
+        return
+    if not bpy.context.window_manager.leviate.preview:
         return
     region = bpy.context.region
     serial, w, h, pixels, hand, mode = _tracker.preview()
@@ -297,8 +360,9 @@ def start_camera(context):
     global _tracker
     settings = context.window_manager.leviate
     height = int(settings.resolution)
+    phone = PhoneLink() if settings.source == "PHONE" else None
     _tracker = Tracker(camera=settings.camera - 1, width=height * 4 // 3, height=height,
-                       mirror=settings.mirror, smoothing=1 - settings.smooth)
+                       mirror=settings.mirror, smoothing=1 - settings.smooth, phone=phone)
     _tracker.start()
     _state["moving"] = False
     start_drawing()
@@ -322,6 +386,10 @@ class LEVIATE_OT_start(bpy.types.Operator):
     bl_description = "Turn on the camera and move Blender with your hand"
 
     def execute(self, context):
+        if context.window_manager.leviate.source == "PHONE" and not bpy.app.online_access:
+            self.report({"ERROR"}, "The phone needs online access: turn on Allow Online Access "
+                                   "in Preferences > System > Network")
+            return {"CANCELLED"}
         start_camera(context)
         return {"FINISHED"}
 
@@ -336,6 +404,18 @@ class LEVIATE_OT_stop(bpy.types.Operator):
         return {"FINISHED"}
 
 
+class LEVIATE_OT_copy_link(bpy.types.Operator):
+    bl_idname = "leviate.copy_link"
+    bl_label = "Copy link"
+    bl_description = "Copy the pairing link, to open it on the phone without the QR code"
+
+    def execute(self, context):
+        if _tracker is not None and _tracker.phone is not None:
+            context.window_manager.clipboard = _tracker.phone.url
+            self.report({"INFO"}, "Pairing link copied")
+        return {"FINISHED"}
+
+
 class LEVIATE_PT_panel(bpy.types.Panel):
     bl_label = "Leviate"
     bl_space_type = "VIEW_3D"
@@ -346,7 +426,9 @@ class LEVIATE_PT_panel(bpy.types.Panel):
         layout = self.layout
         settings = context.window_manager.leviate
         on = _tracker is not None and _tracker.running
+        phone = settings.source == "PHONE"
 
+        layout.prop(settings, "source", expand=True)
         if on:
             layout.operator("leviate.stop", icon="CANCEL")
             fw, fh = _tracker.frame_size
@@ -354,10 +436,19 @@ class LEVIATE_PT_panel(bpy.types.Panel):
                 layout.label(text="%s  %dx%d  %.0f fps" % (_tracker.status, fw, fh, _tracker.fps), icon="OUTLINER_OB_CAMERA")
             else:
                 layout.label(text=_tracker.status, icon="TIME")
+            if _tracker.phone is not None and not _tracker.phone.connected:
+                col = layout.column(align=True)
+                col.label(text="Scan the QR code in the 3D view")
+                col.label(text="and tap Start camera on the phone")
+                col.operator("leviate.copy_link", icon="COPYDOWN")
         else:
             layout.operator("leviate.start", icon="OUTLINER_OB_CAMERA")
             if _tracker is not None and _tracker.error:
                 layout.label(text=_tracker.error, icon="ERROR")
+            if phone and not bpy.app.online_access:
+                col = layout.column(align=True)
+                col.label(text="The phone needs online access:", icon="INFO")
+                col.label(text="Preferences > System > Network")
 
         layout.prop(settings, "target")
         col = layout.column(align=True)
@@ -365,11 +456,13 @@ class LEVIATE_PT_panel(bpy.types.Panel):
 
         box = layout.box()
         box.label(text="Camera")
-        row = box.row(align=True)
-        row.prop(settings, "camera")
-        row.prop(settings, "resolution", text="")
+        if not phone:
+            row = box.row(align=True)
+            row.prop(settings, "camera")
+            row.prop(settings, "resolution", text="")
         row = box.row()
-        row.prop(settings, "mirror")
+        if not phone:
+            row.prop(settings, "mirror")
         row.prop(settings, "preview")
 
         box = layout.box()
@@ -385,6 +478,7 @@ classes = (
     LeviateSettings,
     LEVIATE_OT_start,
     LEVIATE_OT_stop,
+    LEVIATE_OT_copy_link,
     LEVIATE_PT_panel,
 )
 

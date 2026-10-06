@@ -76,8 +76,9 @@ jobs:
 
           Download the zip for your system below and drag it into Blender 4.2 or later:
           \`leviate-blender-${VER}-windows-x64.zip\`, \`-macos-arm64.zip\` or \`-linux-x64.zip\`.
-          Then open the **Leviate** tab in the 3D view (N) and press **Start camera**: the webcam
-          and the hand tracking run inside Blender. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
+          Then open the **Leviate** tab in the 3D view (N), choose the webcam or **Phone** and press
+          **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
+          the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF

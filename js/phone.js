@@ -142,7 +142,8 @@ export async function runPhoneCamera(pairId) {
       const Peer = await loadPeer();
       peer = new Peer();
       await new Promise((resolve, reject) => { peer.on('open', resolve); peer.on('error', reject); });
-      conn = peer.connect(pairId);
+      // JSON keeps the small control messages readable for the Blender add-on too.
+      conn = peer.connect(pairId, { serialization: 'json' });
       call = peer.call(pairId, stream, { metadata: { facing } });
       call.peerConnection?.addEventListener('connectionstatechange', () => {
         const state = call.peerConnection.connectionState;

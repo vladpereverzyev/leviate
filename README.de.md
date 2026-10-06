@@ -48,7 +48,7 @@ und deine Dateien verlassen nie dein Gerät.
   zur Mitte.
 - **Maus und Touch** funktionieren weiter neben den Gesten.
 - **Blender**: das Add-on Leviate for Blender bringt dieselbe Handsteuerung in Blender,
-  mit eigener Kamera. Die Hand bewegt die Ansicht oder die ausgewählten Objekte.
+  mit der Webcam oder dem Handy. Die Hand bewegt die Ansicht oder die ausgewählten Objekte.
 - **Komplett offline**: alle Bibliotheken und das Handmodell liegen im Repository.
 
 ## Gesten
@@ -162,12 +162,15 @@ laufen in Blender selbst, ohne Browser.
 1. Lade das Zip für dein System aus dem [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` oder `-linux-x64.zip`.
    Zieh es in Blender 4.2 oder neuer.
-2. Drück in der 3D-Ansicht **N**, öffne den Tab **Leviate** und drück **Start camera**.
+2. Drück in der 3D-Ansicht **N** und öffne den Tab **Leviate**. Wähl **This computer**
+   für die Webcam oder **Phone**, dann drück **Start camera**. Mit **Phone** erscheint ein
+   QR-Code: scanne ihn und tippe auf dem Handy auf **Start camera**, ohne App.
 3. Offene Hand dreht, Faust verschiebt, Pinch zoomt. **Move** wählt die Ansicht oder die
    ausgewählten Objekte.
 
 In der Ecke der 3D-Ansicht erscheint eine kleine Kameravorschau mit den Handpunkten. Das
-Video bleibt in Blender und wird nie aufgenommen oder verschickt. Ausführliche Anleitung
+Video wird nie aufgenommen: die Webcam bleibt in Blender, das Handy schickt sein Video
+direkt an Blender. Ausführliche Anleitung
 in [integrations/blender](integrations/blender/).
 
 ## Unterstützte Dateien

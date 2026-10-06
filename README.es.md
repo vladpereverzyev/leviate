@@ -49,7 +49,7 @@ y tus archivos nunca salen de tu dispositivo.
   **Reset** vuelve al centro.
 - **Ratón y táctil** siguen funcionando junto a los gestos.
 - **Blender**: el add-on Leviate for Blender lleva el mismo control con la mano dentro
-  de Blender, con su propia cámara. La mano mueve la vista o los objetos seleccionados.
+  de Blender, con la webcam o con el teléfono. La mano mueve la vista o los objetos seleccionados.
 - **Totalmente sin conexión**: todas las librerías y el modelo de la mano están en el
   repositorio.
 
@@ -162,12 +162,15 @@ seguimiento de la mano funcionan en Blender mismo, sin navegador.
 1. Descarga el zip para tu sistema de la [última release](https://github.com/vladpereverzyev/leviate/releases/latest):
    `leviate-blender-<versión>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
    Arrástralo a Blender 4.2 o posterior.
-2. En la vista 3D pulsa **N**, abre la pestaña **Leviate** y pulsa **Start camera**.
+2. En la vista 3D pulsa **N** y abre la pestaña **Leviate**. Elige **This computer** para
+   la webcam o **Phone**, luego pulsa **Start camera**. Con **Phone** aparece un código QR:
+   escanéalo y toca **Start camera** en el teléfono, sin instalar apps.
 3. La mano abierta gira, el puño desplaza, el pellizco hace zoom. **Move** elige la vista
    o los objetos seleccionados.
 
 En la esquina de la vista 3D aparece una pequeña vista previa de la cámara con los puntos
-de la mano. El vídeo se queda en Blender y nunca se graba ni se envía. Guía completa en
+de la mano. El vídeo nunca se graba: la webcam se queda en Blender, el teléfono envía su
+vídeo directamente a Blender. Guía completa en
 [integrations/blender](integrations/blender/).
 
 ## Archivos compatibles
