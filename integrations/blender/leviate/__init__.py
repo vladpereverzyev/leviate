@@ -370,11 +370,11 @@ def hand_model():
 
 
 def online_reason(settings):
-    """Why this start needs Allow Online Access, or an empty string."""
+    """What this start needs Allow Online Access for, or an empty string."""
     if settings.source == "PHONE":
-        return "The phone needs online access"
+        return "for the phone"
     if not os.path.isfile(hand_model()):
-        return "The first start downloads the hand model (8 MB)"
+        return "to download the hand model once"
     return ""
 
 
@@ -413,7 +413,7 @@ class LEVIATE_OT_start(bpy.types.Operator):
     def execute(self, context):
         reason = online_reason(context.window_manager.leviate)
         if reason and not bpy.app.online_access:
-            self.report({"ERROR"}, reason + ": turn on Allow Online Access in Preferences > System > Network")
+            self.report({"ERROR"}, "Turn on Allow Online Access in Preferences > System > Network " + reason)
             return {"CANCELLED"}
         start_camera(context)
         return {"FINISHED"}
@@ -473,8 +473,8 @@ class LEVIATE_PT_panel(bpy.types.Panel):
             reason = online_reason(settings)
             if reason and not bpy.app.online_access:
                 col = layout.column(align=True)
-                col.label(text=reason + ":", icon="INFO")
-                col.label(text="Allow Online Access in")
+                col.label(text="Turn on Allow Online Access", icon="INFO")
+                col.label(text=reason)
                 col.label(text="Preferences > System > Network")
 
         layout.prop(settings, "target")
