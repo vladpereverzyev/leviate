@@ -1,0 +1,150 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#011E2E">
+  <title>Leviate</title>
+  <meta name="description" content="Move 3D scans with your bare hands. Webcam hand tracking in the browser.">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="icons/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="Leviate">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="preload" href="vendor/fonts/jost-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="vendor/fonts/jost-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <canvas id="scene"></canvas>
+
+    <header class="top">
+      <span class="brand"><img src="icons/icon.svg" alt="">Leviate</span>
+      <span id="perf" class="perf"></span>
+    </header>
+
+    <section id="empty" class="empty">
+      <p class="eyebrow">STL · PLY · OBJ · GLB · 3MF · FBX</p>
+      <h1>Drop your 3D files</h1>
+      <label class="btn">
+        Choose files
+        <input id="file-empty" type="file" accept=".stl,.ply,.obj,.mtl,.png,.jpg,.jpeg" multiple hidden>
+      </label>
+      <button id="demo" class="link">Demo</button>
+    </section>
+
+    <!-- Files window -->
+    <section class="win" id="win-files">
+      <header class="win-head">
+        <span>Files <span id="obj-count" class="count">0</span></span>
+        <button class="win-fold" aria-label="Collapse"></button>
+      </header>
+      <div class="win-body">
+        <ul id="obj-list" class="obj-list"></ul>
+        <div class="row">
+          <label class="btn small">
+            Add
+            <input id="file" type="file" accept=".stl,.ply,.obj,.mtl,.png,.jpg,.jpeg" multiple hidden>
+          </label>
+          <button id="clear" class="btn small ghost">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Webcam window -->
+    <section class="win" id="win-cam">
+      <header class="win-head">
+        <span>Webcam</span>
+        <button class="win-fold" aria-label="Collapse"></button>
+      </header>
+      <div class="win-body">
+        <div class="preview mirror" id="preview">
+          <video id="video" playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <button id="cam-toggle" class="cam-toggle">Start</button>
+          <span id="badge" class="badge" hidden></span>
+        </div>
+        <p class="hint"><i class="dot rotate"></i>Open hand <i class="dot pan"></i>Fist <i class="dot zoom"></i>Pinch</p>
+
+        <details class="more">
+          <summary>Camera</summary>
+          <div class="field"><select id="cam-select" aria-label="Device"><option value="">Default camera</option></select></div>
+          <div class="field two">
+            <select id="cam-res" aria-label="Resolution">
+              <option value="480">480p</option>
+              <option value="720">720p</option>
+              <option value="1080">1080p</option>
+            </select>
+            <select id="cam-fps" aria-label="Frame rate">
+              <option value="15">15 fps</option>
+              <option value="30">30 fps</option>
+              <option value="60">60 fps</option>
+            </select>
+          </div>
+          <div class="field two">
+            <select id="cam-facing" aria-label="Facing">
+              <option value="user">Front</option>
+              <option value="environment">Rear</option>
+            </select>
+            <label class="check"><input id="cam-mirror" type="checkbox" checked> Mirror</label>
+          </div>
+          <p id="cam-info" class="info"></p>
+        </details>
+
+        <details class="more">
+          <summary>Gestures</summary>
+          <label class="check"><input id="g-enabled" type="checkbox" checked> Active</label>
+          <div class="field slider"><label for="g-rotate">Rotate</label><input id="g-rotate" type="range" min="1" max="12" step="0.5" value="5"><output></output></div>
+          <div class="field slider"><label for="g-pan">Pan</label><input id="g-pan" type="range" min="0.25" max="3" step="0.25" value="1"><output></output></div>
+          <div class="field slider"><label for="g-zoom">Zoom</label><input id="g-zoom" type="range" min="0.25" max="3" step="0.25" value="1"><output></output></div>
+          <div class="field slider"><label for="g-smooth">Smooth</label><input id="g-smooth" type="range" min="0" max="0.9" step="0.05" value="0.5"><output></output></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- View toolbar -->
+    <nav class="tools" aria-label="View">
+      <button class="tool" data-view="front">Front</button>
+      <button class="tool" data-view="top">Top</button>
+      <button class="tool" data-view="left">Left</button>
+      <button class="tool" data-view="right">Right</button>
+      <span class="sep"></span>
+      <label class="tool"><input id="v-wire" type="checkbox" hidden>Wire</label>
+      <label class="tool"><input id="v-spin" type="checkbox" hidden>Spin</label>
+      <span class="sep"></span>
+      <button id="reset" class="tool" title="R">Reset</button>
+      <button id="shot" class="tool" title="S">Shot</button>
+      <button id="fullscreen" class="tool" title="F">Full</button>
+    </nav>
+
+    <footer class="legal">
+      <span id="version"></span> ·
+      © 2026 Vladyslav Pereverzyev ·
+      <a href="LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>, no warranty ·
+      <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+      <a href="THIRD-PARTY-NOTICES.md" target="_blank" rel="noopener">Notices</a> ·
+      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
+    </footer>
+
+    <div id="drop" class="drop" hidden><span>Drop to load</span></div>
+    <div id="toast" class="toast" hidden></div>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
