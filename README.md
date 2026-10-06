@@ -55,8 +55,27 @@ The sensitivity of each gesture and the amount of smoothing can be tuned in the
 
 ## Quick start
 
-Leviate is a static site. It needs to be served over HTTP because browsers do not
-load JavaScript modules or WebAssembly from `file://`.
+Open **<https://vladpereverzyev.github.io/leviate/>** in Chrome, Edge, Safari or Firefox,
+load one or more 3D files and press **Start** in the Webcam window. That is all: no
+install, no account. After the first visit everything the app needs is already in the
+browser.
+
+### On a phone
+
+<img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="260" align="right">
+
+Open the same link on the phone. The Files and Webcam windows stack under the header
+and open one at a time: tap a title to open or close it.
+
+To use the phone only as a camera for a computer, see
+[Use your phone as a webcam](#use-your-phone-as-a-webcam).
+
+<br clear="right">
+
+### Run your own copy
+
+Leviate is a static site, so any web server can host it. Browsers do not load
+JavaScript modules or WebAssembly from `file://`, so serve the folder over HTTP:
 
 ```sh
 git clone https://github.com/vladpereverzyev/leviate.git
@@ -64,21 +83,9 @@ cd leviate
 python -m http.server 8000
 ```
 
-Open <http://localhost:8000>, load one or more scans and press **Start camera**.
-Any static server works, for example `npx serve` instead of Python.
-
-### On a phone
-
-<img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="260" align="right">
-
-Browsers only open the camera on `https://` pages or on `localhost`. To use Leviate
-on a phone, publish the folder on any static HTTPS host (GitHub Pages, Netlify,
-Cloudflare Pages or your own server) and open that address on the phone.
-
-On a phone the Files and Webcam windows stack under the header and open one at a
-time. Tap a title to open or close it.
-
-<br clear="right">
+Then open the address the server prints. Phones need an `https` address to open the
+camera, so publish your copy on an HTTPS host such as GitHub Pages, Netlify or
+Cloudflare Pages.
 
 ## Use your phone as a webcam
 
@@ -97,9 +104,9 @@ handy when you want to send it to the phone another way.
 How it works: the two devices connect with WebRTC. The free [PeerJS](https://peerjs.com)
 server only introduces them to each other and passes the connection details; the video goes
 straight from the phone to the computer, encrypted. If both are on networks that block a
-direct link, the video is relayed through a PeerJS TURN server, still encrypted. When Leviate
-runs on `localhost` the QR code points to the published copy on GitHub Pages, because a phone
-can open the camera only on an `https` page.
+direct link, the video is relayed through a PeerJS TURN server, still encrypted. The QR code
+always points to an `https` page, because a phone can open the camera only there. A copy
+running on your own computer pairs through <https://vladpereverzyev.github.io/leviate/>.
 
 ## Supported files
 
