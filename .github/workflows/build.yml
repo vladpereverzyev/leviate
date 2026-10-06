@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
-# Builds the integration zips on every push and pull request. On a version tag (v*)
-# it publishes them in a new GitHub Release. Older releases stay, so their download
+# Builds the integration zips and the desktop app (Windows, macOS, Linux) on every push
+# and pull request. On a version tag (v*) it publishes them in a new GitHub Release. Older releases stay, so their download
 # counts are kept. The web app itself is not in the release: it runs from
 # https://vladpereverzyev.github.io/leviate/.
 
@@ -52,19 +52,53 @@ jobs:
           path: dist/*.zip
           if-no-files-found: error
 
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+
+      - name: Install
+        working-directory: apps/desktop
+        run: npm ci
+
+      - name: Build Leviate desktop
+        run: node scripts/build-desktop.mjs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            dist/desktop/leviate-*.exe
+            dist/desktop/leviate-*.dmg
+            dist/desktop/leviate-*.AppImage
+          if-no-files-found: error
+
   release:
-    needs: build
+    needs: [build, desktop]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Download the zips
+      - name: Download the builds
         uses: actions/download-artifact@v5
         with:
-          name: integrations
           path: dist
+          merge-multiple: true
 
       - name: Release notes
         run: |
@@ -80,6 +114,15 @@ jobs:
           **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
           the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
 
+          ### Leviate desktop
+
+          Your hand on any program, with the webcam or the phone. **3D**: open hand turns, fist
+          pans, pinch zooms the 3D program under the cursor. **Mouse**: open hand moves the
+          cursor, one finger held still is a left click, two fingers a right click.
+          Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
+          \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
+          Guide: [apps/desktop](https://github.com/vladpereverzyev/leviate/tree/main/apps/desktop).
+
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
 
@@ -87,7 +130,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
-          files: dist/*.zip
+          files: dist/*
           body_path: notes.md
           generate_release_notes: true
           fail_on_unmatched_files: true

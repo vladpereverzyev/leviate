@@ -175,6 +175,21 @@ Video wird nie aufgenommen: die Webcam bleibt in Blender, das Handy schickt sein
 direkt an Blender. Ausführliche Anleitung
 in [integrations/blender](integrations/blender/).
 
+## Leviate desktop
+
+**Leviate desktop** bringt die Hand in jedes Programm des Computers, mit der Webcam oder dem
+Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
+
+- **3D**: die Gesten der Web-App in deinem 3D-Programm. Offene Hand dreht, Faust verschiebt,
+  Pinch zoomt die Ansicht unter dem Cursor. Wähle, wie das Programm die Maus nutzt (zum
+  Beispiel *Middle turns · Shift+middle pans* für Blender) oder lege die Tasten selbst fest.
+- **Mouse**: die offene Hand bewegt den Cursor, ein kurz ruhig gehaltener Finger ist ein
+  Linksklick, zwei Finger ein Rechtsklick.
+
+Download im [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<Version>-windows-x64.exe`,
+`-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) oder `-linux-x64.AppImage`.
+Vollständige Anleitung in [apps/desktop](apps/desktop/) (auf Englisch).
+
 ## Unterstützte Dateien
 
 | Format | Farben | Hinweise |
@@ -227,6 +242,8 @@ eine Begleitdatei, sagt dir die App, welche.
 | `js/windows.js` | Schwebende Fenster: ziehen, einklappen, Handy-Layout |
 | `integrations/` | Add-ons, die die Handsteuerung in andere Programme bringen (Blender) |
 | `scripts/build-blender.py` | Packt das Blender-Add-on als Zip |
+| `apps/desktop/` | Leviate desktop (Electron): die Hand in jedem Programm, Module 3D und Mouse |
+| `scripts/build-desktop.mjs` | Baut die Desktop-App für Windows, macOS oder Linux |
 | `vendor/three/` | three.js, seine Loader und Decoder (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | WebRTC-Kopplung und QR-Code-Generator (MIT) |
 | `vendor/fonts/` | Schrift Jost (SIL OFL 1.1) |

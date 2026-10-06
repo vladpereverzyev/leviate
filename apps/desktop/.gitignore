@@ -1,0 +1,4 @@
+node_modules/
+# Filled by scripts/build-desktop.mjs
+web/
+build/

@@ -177,6 +177,21 @@ de la mano. El vídeo nunca se graba: la webcam se queda en Blender, el teléfon
 vídeo directamente a Blender. Guía completa en
 [integrations/blender](integrations/blender/).
 
+## Leviate desktop
+
+**Leviate desktop** lleva la mano a cualquier programa del ordenador, con la webcam o el
+móvil (código QR, como en la app web). Tiene dos módulos:
+
+- **3D**: los gestos de la app web en tu programa 3D. La mano abierta gira, el puño desplaza,
+  el pellizco hace zoom en la vista bajo el cursor. Elige cómo usa el ratón ese programa
+  (por ejemplo *Middle turns · Shift+middle pans* para Blender) o define tú los botones.
+- **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
+  dos dedos quietos hacen clic derecho.
+
+Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versión>-windows-x64.exe`,
+`-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
+Guía completa en [apps/desktop](apps/desktop/) (en inglés).
+
 ## Archivos compatibles
 
 | Formato | Colores | Notas |
@@ -229,6 +244,8 @@ un archivo asociado la app te dice cuál.
 | `js/windows.js` | Ventanas flotantes: arrastrar, plegar, diseño para teléfono |
 | `integrations/` | Add-ons que llevan el control con la mano a otros programas (Blender) |
 | `scripts/build-blender.py` | Crea el zip del add-on para Blender |
+| `apps/desktop/` | Leviate desktop (Electron): la mano en cualquier programa, módulos 3D y Mouse |
+| `scripts/build-desktop.mjs` | Crea la app de escritorio para Windows, macOS o Linux |
 | `vendor/three/` | three.js, sus cargadores y decodificadores (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | Emparejamiento WebRTC y generador de códigos QR (MIT) |
 | `vendor/fonts/` | Fuente Jost (SIL OFL 1.1) |

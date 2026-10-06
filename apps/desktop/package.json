@@ -1,0 +1,100 @@
+{
+  "name": "leviate",
+  "productName": "Leviate",
+  "version": "0.0.0",
+  "description": "Move 3D scans with your hands, and the mouse of your computer too",
+  "homepage": "https://vladpereverzyev.github.io/leviate/",
+  "author": "Vladyslav Pereverzyev",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "node ../../scripts/build-desktop.mjs"
+  },
+  "dependencies": {
+    "koffi": "3.3.2"
+  },
+  "devDependencies": {
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "io.github.vladpereverzyev.leviate",
+    "productName": "Leviate",
+    "copyright": "Copyright (C) 2026 Vladyslav Pereverzyev",
+    "directories": {
+      "output": "../../dist/desktop",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "ring-preload.js",
+      "mouse.js",
+      "renderer/**",
+      "web/**",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/koffi/**"
+    ],
+    "publish": null,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "leviate-${version}-windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Leviate"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "category": "public.app-category.graphics-design",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "artifactName": "leviate-${version}-macos-${arch}.${ext}",
+      "extendInfo": {
+        "NSCameraUsageDescription": "Leviate reads the camera to follow your hand. Nothing is recorded."
+      }
+    },
+    "dmg": {
+      "artifactName": "leviate-${version}-macos-${arch}.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "category": "Graphics",
+      "artifactName": "leviate-${version}-linux-x64.${ext}"
+    }
+  },
+  "allowScripts": {
+    "koffi@3.3.2": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

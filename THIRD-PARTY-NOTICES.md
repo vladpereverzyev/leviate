@@ -22,6 +22,12 @@ OpenCV (headless), absl-py and FlatBuffers (all Apache-2.0), downloaded unmodifi
 PyPI when the zips are built. They are not stored in this repository. See
 [integrations/blender/leviate/THIRD-PARTY.md](integrations/blender/leviate/THIRD-PARTY.md).
 
+The Leviate desktop downloads in the releases are built with
+[Electron](https://www.electronjs.org) (MIT, with Chromium under BSD-3-Clause and the
+licenses listed in its `LICENSES.chromium.html`) and electron-builder (MIT), and carry
+[koffi](https://koffi.dev) (MIT) to reach the mouse of the system. Their license files are
+inside the app. Versions in [apps/desktop/package.json](apps/desktop/package.json).
+
 ## three.js
 
 Files: `vendor/three/three.module.js`, `vendor/three/three.core.js`,
