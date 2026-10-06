@@ -13,8 +13,7 @@ and your files never leave your device.
 
 ## Features
 
-- **Hand gestures**: turn your open hand to rotate, fist to pan, thumb and index to zoom.
-  Poses are read in 3D, so palm, back, edge or fingertips toward the camera all work.
+- **Hand gestures**: open hand to rotate, fist to pan, thumb and index to zoom.
 - **Any webcam**: built-in or USB cameras on a computer, front or rear camera on a phone.
 - **Your phone as a webcam**: scan a QR code with an iPhone or Android phone and its
   camera streams to the computer. No app to install.
@@ -44,7 +43,7 @@ webcam preview, in the same colors it uses for each gesture.
 
 | Hand pose | Action |
 | --- | --- |
-| Open hand (four or five fingers out) | Turn the hand to **rotate** the model: it copies every turn, tilt and flip of your hand |
+| Open hand (four or five fingers out) | Move the hand to **rotate** the model |
 | Fist | Move the hand to **pan** the model in space |
 | Thumb and index out, other fingers closed | Spread the two fingers to **zoom in** and close them to **zoom out** |
 
@@ -52,11 +51,6 @@ The zoom measures the gap between thumb and index relative to the size of your
 palm, so moving the hand closer to the camera does not zoom by itself. When you
 switch from one pose to another the model does not jump, because every gesture
 starts from where the previous one stopped.
-
-The hand can face the camera any way: palm, back, edge or fingertips. Leviate reads
-the poses from the 3D shape of the hand, so turning it around never confuses them.
-If you prefer, **Gestures** in the Webcam window switches the open hand to the older
-behavior, where moving the hand across the camera rotates the model.
 
 The sensitivity of each gesture and the amount of smoothing can be tuned in the
 **Gestures** section of the panel. Settings are remembered in the browser.
@@ -165,15 +159,13 @@ file is missing the app tells you which one.
    the hand for every new video frame. It runs in a Web Worker (`js/hand-worker.js`),
    so the 3D view never waits for it; browsers without module workers fall back to
    the main thread.
-3. **Pose**: MediaPipe also gives the 21 points in 3D. `js/gestures.js` measures how
-   straight each finger is in 3D (tip distance against the length of its joints). That
-   does not change with the side of the hand the camera sees. The result is one of
-   three poses. A pose must be stable for a few frames before it becomes active,
-   which removes flicker.
-4. **Motion**: for rotation the orientation of the hand (knuckles, wrist to fingers and
-   palm direction) is tracked in 3D and every change is applied to the model. For pan
-   the palm center is smoothed and its movement between frames moves the model. For zoom
-   the ratio between the thumb to index gap and the palm size is tracked over time.
+3. **Pose**: `js/gestures.js` checks which fingers are extended by comparing the
+   direction of each fingertip with the direction of the palm and turns that into
+   one of three poses. A pose must be stable for a few frames before it becomes
+   active, which removes flicker.
+4. **Motion**: the palm center is smoothed and its movement between frames becomes
+   rotation or pan. For zoom the ratio between the thumb to index gap and the palm
+   size is tracked over time.
 5. **Rendering**: [three.js](https://threejs.org) draws the scans with WebGL.
    Rotation follows the screen axes of the camera, so moving the hand right always
    turns the model right whatever the current view is.

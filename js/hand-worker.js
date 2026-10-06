@@ -3,7 +3,7 @@
 
 // Hand tracking off the main thread, so the 3D view never waits for it.
 // The page sends one video frame at a time as an ImageBitmap and gets back
-// the 21 hand points (image and 3D).
+// the 21 hand points.
 
 // MediaPipe loads its WebAssembly glue with importScripts, which module workers
 // do not allow. A synchronous request plus a global eval does the same job.
@@ -55,11 +55,10 @@ self.onmessage = async ({ data }) => {
       self.postMessage({
         type: 'result',
         lm: result.landmarks?.[0] || null,
-        world: result.worldLandmarks?.[0] || null,
         ms: performance.now() - t0,
       });
     } catch (err) {
-      self.postMessage({ type: 'result', lm: null, world: null, ms: 0, error: String(err?.message || err) });
+      self.postMessage({ type: 'result', lm: null, ms: 0, error: String(err?.message || err) });
     } finally {
       bitmap.close();
     }

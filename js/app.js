@@ -54,7 +54,7 @@ const MAX_SCALE = 20;
 const STORE_KEY = 'leviate.settings';
 const settings = {
   device: '', res: '480', fps: '30', facing: 'user', mirror: true,
-  gestures: true, rotateBy: 'turn', rotate: 5, pan: 1, zoom: 1, smooth: 0.5,
+  gestures: true, rotate: 5, pan: 1, zoom: 1, smooth: 0.5,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 function saveSettings() {
@@ -641,7 +641,7 @@ function startWorker() {
           if (msg.type !== 'result') return;
           tracker.busy = false;
           detectMs = detectMs * 0.9 + msg.ms * 0.1;
-          if (stream) handleHand(msg.lm, msg.world);
+          if (stream) handleHand(msg.lm);
         };
         resolve(tracker);
       }
@@ -899,12 +899,6 @@ for (const [id, key] of Object.entries(sliders)) {
 engine.smoothing = 1 - settings.smooth;
 
 $('g-enabled').checked = settings.gestures;
-$('g-rotate-by').value = settings.rotateBy;
-$('g-rotate-by').addEventListener('change', (e) => {
-  settings.rotateBy = e.target.value;
-  turnRef = null;
-  saveSettings();
-});
 $('g-enabled').addEventListener('change', (e) => { settings.gestures = e.target.checked; saveSettings(); });
 
 $('cam-res').value = settings.res;
@@ -955,43 +949,8 @@ const axisX = new THREE.Vector3();
 const axisY = new THREE.Vector3();
 const turn = new THREE.Quaternion();
 
-// Rotation by turning the hand: the model copies every change of the hand
-// orientation, palm, back, edge or fingertips toward the camera alike.
-const handQ = new THREE.Quaternion();
-const handBasis = new THREE.Matrix4();
-const delta = new THREE.Quaternion();
-const camQ = new THREE.Quaternion();
-let turnRef = null;   // { session, q } smoothed hand orientation of the current pose
-
-function turnModel(session, frame) {
-  const v = (a) => new THREE.Vector3(a.x, a.y, a.z);
-  handBasis.makeBasis(v(frame.x), v(frame.y), v(frame.z));
-  handQ.setFromRotationMatrix(handBasis);
-  if (!turnRef || turnRef.session !== session) {
-    turnRef = { session, q: handQ.clone() };
-    return;
-  }
-  const next = turnRef.q.clone().slerp(handQ, engine.smoothing);
-  delta.copy(next).multiply(turnRef.q.clone().invert());
-  turnRef.q.copy(next);
-
-  // Gain: 5 on the slider follows the hand one to one.
-  let angle = 2 * Math.acos(THREE.MathUtils.clamp(delta.w, -1, 1));
-  if (angle > Math.PI) angle -= 2 * Math.PI;
-  if (Math.abs(angle) < 0.004) return;
-  const axis = new THREE.Vector3(delta.x, delta.y, delta.z).normalize();
-  delta.setFromAxisAngle(axis, angle * settings.rotate / 5);
-
-  // From view space to world space.
-  camQ.copy(camera.quaternion);
-  delta.premultiply(camQ).multiply(camQ.clone().invert());
-  rotatePivot(delta);
-}
-
-function applyGesture({ mode, session, dx, dy, zoom, frame }) {
-  if (mode === Mode.ROTATE && settings.rotateBy === 'turn' && frame) {
-    turnModel(session, frame);
-  } else if (mode === Mode.ROTATE && (dx || dy)) {
+function applyGesture({ mode, dx, dy, zoom }) {
+  if (mode === Mode.ROTATE && (dx || dy)) {
     // Rotate around the camera's own axes so the motion matches the screen.
     axisX.setFromMatrixColumn(camera.matrixWorld, 0);
     axisY.setFromMatrixColumn(camera.matrixWorld, 1);
@@ -1034,11 +993,11 @@ function track() {
   const t0 = performance.now();
   const result = landmarker.task.detectForVideo(video, t0);
   detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
-  handleHand(result.landmarks?.[0] || null, result.worldLandmarks?.[0] || null);
+  handleHand(result.landmarks?.[0] || null);
 }
 
-function handleHand(lm, world) {
-  const cmd = engine.update(lm, world, { mirror: phone ? phoneMirror : settings.mirror });
+function handleHand(lm) {
+  const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
 

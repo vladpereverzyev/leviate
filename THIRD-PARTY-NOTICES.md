@@ -14,6 +14,7 @@ components. Each one keeps its own license.
 | [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `vendor/peerjs/` |
 | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `vendor/qrcode/` |
 | [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `vendor/fonts/` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` |
 
 ## three.js
 
@@ -113,11 +114,40 @@ Licensed under the SIL Open Font License 1.1. Full text in `vendor/fonts/OFL.txt
 Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type)
 ```
 
+## kelyonn/vertex
+
+The finger extension test in `js/gestures.js` (fingertip direction compared with
+the palm direction, thumb compared with the pinky base) is adapted from
+`src/gesture_engine.py` of kelyonn/vertex. No code is copied verbatim; the idea was
+rewritten in JavaScript.
+
+```
+MIT License
+
+Copyright (c) 2026 Kalyan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
 ## Projects reviewed but not used
 
 During research these related projects were looked at for ideas only. Nothing from
-them is included:
+them is included, because they have no license or a copyleft license:
 collidingScopes/3d-model-playground, collidingScopes/threejs-handtracking-101
-(no license), jaredrhod/barehands (AGPL-3.0), amerob/gesture-3d-studio (no license)
-and kelyonn/vertex (MIT, an early version of the finger test was based on its idea; the
-current one measures the fingers in 3D and shares nothing with it).
+(no license), jaredrhod/barehands (AGPL-3.0), amerob/gesture-3d-studio (no license).
