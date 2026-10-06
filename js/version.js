@@ -2,4 +2,4 @@
 // Leviate. Copyright (C) 2026 Vladyslav Pereverzyev
 
 // Updated by scripts/bump.mjs, which the pre-commit hook runs on every commit.
-export const VERSION = '1.1.1';
+export const VERSION = '1.1.2';

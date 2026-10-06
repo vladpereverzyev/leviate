@@ -166,6 +166,8 @@ function buildObject(geometry, color, asPoints = false) {
 const MODEL_EXT = ['stl', 'ply', 'obj', 'glb', 'gltf', '3mf', 'fbx', 'dae', '3ds', 'amf', 'vtk', 'vtp', 'pcd', 'xyz'];
 const SIDE_EXT = ['mtl', 'bin', 'png', 'jpg', 'jpeg', 'webp', 'tga', 'bmp'];
 const ACCEPT = [...MODEL_EXT, ...SIDE_EXT].map((e) => '.' + e).join(',');
+const TOUCH_PICKER = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const extOf = (name) => name.split('.').pop().toLowerCase();
 const baseName = (path) => path.split(/[\\/]/).pop().toLowerCase();
 
@@ -323,7 +325,7 @@ async function loadFiles(files) {
   const all = [...files];
   const models = all.filter((f) => MODEL_EXT.includes(extOf(f.name)));
   if (!models.length) {
-    if (all.length) toast('Add the 3D file together with its textures', 5000);
+    if (all.length) toast('No 3D file found. Use ' + MODEL_EXT.map((e) => e.toUpperCase()).join(', '), 6000);
     return;
   }
   const side = sideFiles(all);
@@ -447,7 +449,9 @@ function toast(text, ms = 3000) {
 }
 
 for (const id of ['file', 'file-empty']) {
-  $(id).accept = ACCEPT;
+  // iOS and some Android pickers grey out extensions they do not know (.stl, .ply,
+  // .obj...), so phones get no filter and loadFiles checks the extension instead.
+  if (!TOUCH_PICKER) $(id).accept = ACCEPT;
   $(id).addEventListener('change', (e) => {
     loadFiles(e.target.files);
     e.target.value = '';
