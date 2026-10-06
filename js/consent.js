@@ -41,6 +41,16 @@ document.body.insertAdjacentHTML('beforeend', `
 `);
 
 const $ = (sel) => document.querySelector(sel);
+
+// Opened from the QR code: the banner speaks to the phone that sends its camera.
+if (new URLSearchParams(location.search).has('pair')) {
+  $('.cc__p').innerHTML = 'This page turns your phone into the webcam of your computer. '
+    + 'Leviate sets no cookies and has no analytics or advertising. The camera starts only if you allow it '
+    + 'and its video goes straight to your computer, encrypted, never recorded or kept. To connect the two '
+    + 'devices the PeerJS server sees their IP addresses but never the video. Without your consent Camera and '
+    + 'External services stay off, and the choice is kept on this phone for six months. '
+    + '<a href="privacy.html">Privacy and cookie policy</a>';
+}
 const banner = $('[data-cc]');
 const panel = $('[data-cc-panel]');
 const record = $('[data-cc-record]');
