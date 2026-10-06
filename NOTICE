@@ -46,10 +46,6 @@ This product includes third-party software distributed under its own license:
   Jost font, Copyright 2020 The Jost Project Authors
   SIL Open Font License 1.1, see vendor/fonts/OFL.txt
 
-  Finger extension test adapted from kelyonn/vertex
-  Copyright (c) 2026 Kalyan
-  MIT License
-
 The MediaPipe files are redistributed unmodified, except for the removal of
 the source map comment at the end of vision_bundle.mjs.
 

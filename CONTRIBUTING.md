@@ -15,25 +15,16 @@ Thanks for helping. Bug reports, ideas and pull requests are welcome.
 ## Contributor License Agreement
 
 Leviate is dual licensed: AGPL-3.0 for everyone and a commercial license sold by the
-copyright holder. To keep that possible every contribution needs this agreement.
+copyright holder. To keep that possible every contribution needs the
+[Contributor License Agreement](CLA.md).
 
-By submitting a contribution (code, documentation, images or any other material) to
-this repository you agree that:
-
-1. You wrote the contribution yourself or have the right to submit it.
-2. You keep the copyright of your contribution.
-3. You grant Vladyslav Pereverzyev a perpetual, worldwide, non-exclusive, royalty-free
-   and irrevocable license to use, copy, modify, sublicense and distribute your
-   contribution under the AGPL-3.0 and under any other license, including commercial
-   licenses.
-4. You grant everyone a patent license for your contribution on the same terms as
-   section 11 of the AGPL-3.0.
-5. Your contribution is provided as is, without warranty.
-
-Add this line to the description of your pull request to confirm:
+Signing takes one comment. When you open your first pull request the CLA Assistant bot
+asks you to sign. Reply in the pull request with exactly this sentence:
 
 ```
-I have read the Contributor License Agreement in CONTRIBUTING.md and I agree to it.
+I have read the CLA Document and I hereby sign the CLA
 ```
 
-Pull requests without this line cannot be merged.
+The bot records your GitHub name and the date in the `cla-signatures` branch. You sign
+once for all your future pull requests. Pull requests from people who have not signed
+cannot be merged.

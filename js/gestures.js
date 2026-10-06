@@ -3,13 +3,12 @@
 
 // Turns MediaPipe hand landmarks into view commands.
 //
-//   open hand      -> rotate
+//   open hand      -> rotate (turn the hand or move it)
 //   fist           -> pan
 //   thumb + index  -> zoom (spread to zoom in, close to zoom out)
 //
-// Landmarks are the 21 normalized points of the MediaPipe hand model.
-// The finger test (fingertip direction against the palm direction) is
-// adapted from kelyonn/vertex, MIT License. See THIRD-PARTY-NOTICES.md.
+// Poses are read from the 3D hand points, so they work whatever side of the
+// hand faces the camera: palm, back, edge or fingertips.
 
 export const Mode = Object.freeze({
   NONE: 'none',
@@ -19,33 +18,28 @@ export const Mode = Object.freeze({
 });
 
 const WRIST = 0;
-const THUMB_IP = 3;
 const THUMB_TIP = 4;
 const INDEX_MCP = 5;
-const INDEX_PIP = 6;
 const INDEX_TIP = 8;
 const MIDDLE_MCP = 9;
 const PINKY_MCP = 17;
 
-// [mcp, pip, tip] for index, middle, ring, pinky
-const FINGERS = [[5, 6, 8], [9, 10, 12], [13, 14, 16], [17, 18, 20]];
+// Joint chains, base to tip, for index, middle, ring and pinky.
+const FINGERS = [[5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]];
 
-const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
+const len = (v) => Math.hypot(v.x, v.y, v.z);
+const dist3 = (a, b) => len(sub(a, b));
+const dist2 = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const norm = (v) => { const l = len(v) || 1; return { x: v.x / l, y: v.y / l, z: v.z / l }; };
+const cross = (a, b) => ({ x: a.y * b.z - a.z * b.y, y: a.z * b.x - a.x * b.z, z: a.x * b.y - a.y * b.x });
 
-function fingerExtended(lm, [mcp, pip, tip]) {
-  const px = lm[mcp].x - lm[WRIST].x;
-  const py = lm[mcp].y - lm[WRIST].y;
-  const fx = lm[tip].x - lm[pip].x;
-  const fy = lm[tip].y - lm[pip].y;
-  return px * fx + py * fy > 0;
-}
-
-function thumbExtended(lm) {
-  return dist(lm[THUMB_TIP], lm[PINKY_MCP]) > dist(lm[THUMB_IP], lm[PINKY_MCP]);
-}
-
-export function palmSize(lm) {
-  return dist(lm[WRIST], lm[MIDDLE_MCP]) || 1e-6;
+// How straight a finger is: 1 when fully stretched, about 0.4 when curled into a fist.
+// Measured in 3D, so it does not depend on the direction the camera sees it from.
+export function straightness(p, chain) {
+  let path = 0;
+  for (let i = 1; i < chain.length; i++) path += dist3(p[chain[i]], p[chain[i - 1]]);
+  return path ? dist3(p[chain[chain.length - 1]], p[chain[0]]) / path : 0;
 }
 
 export function palmCenter(lm) {
@@ -55,24 +49,34 @@ export function palmCenter(lm) {
   return { x: x / ids.length, y: y / ids.length };
 }
 
-// Raw pose of a single frame. `current` adds hysteresis so the zoom pose
-// survives the moment thumb and index touch.
-export function classify(lm, current = Mode.NONE) {
-  const [index, middle, ring, pinky] = FINGERS.map((f) => fingerExtended(lm, f));
-  const thumb = thumbExtended(lm);
-  const others = [middle, ring, pinky].filter(Boolean).length;
-  const all = others + (index ? 1 : 0);
+// Pose of a single frame from the 3D points. `current` adds hysteresis so a pose
+// does not flicker at its edges, for example when thumb and index touch.
+export function classify(p, current = Mode.NONE) {
+  const [index, middle, ring, pinky] = FINGERS.map((f) => straightness(p, f));
+  const out = [index, middle, ring, pinky].filter((s) => s > 0.78).length;
+  const keep = current === Mode.ROTATE ? 0.7 : 0.78;
 
-  if (all >= 4 || (all === 3 && thumb)) return Mode.ROTATE;
+  if (out >= 3 || (current === Mode.ROTATE && [index, middle, ring, pinky].filter((s) => s > keep).length >= 3)) {
+    return Mode.ROTATE;
+  }
 
-  if (others === 0) {
-    const tipOut = dist(lm[INDEX_TIP], lm[WRIST]);
-    const enter = tipOut > dist(lm[INDEX_PIP], lm[WRIST]);
-    const stay = tipOut > dist(lm[INDEX_MCP], lm[WRIST]) * 1.05;
-    if (enter || (current === Mode.ZOOM && stay)) return Mode.ZOOM;
-    if (!index) return Mode.PAN;
+  const othersCurled = middle < 0.7 && ring < 0.7 && pinky < 0.72;
+  if (othersCurled) {
+    if (index > 0.78 || (current === Mode.ZOOM && index > 0.55)) return Mode.ZOOM;
+    if (index < 0.7) return Mode.PAN;
   }
   return Mode.NONE;
+}
+
+// Orientation of the hand as three unit axes in view space (x right, y up,
+// z toward the viewer): x across the knuckles, y from wrist to fingers, z out of the palm.
+export function handFrame(p, mirror = false) {
+  const v = (i) => ({ x: mirror ? -p[i].x : p[i].x, y: -p[i].y, z: -p[i].z });
+  const up = norm(sub(v(MIDDLE_MCP), v(WRIST)));
+  const across = norm(sub(v(INDEX_MCP), v(PINKY_MCP)));
+  const out = norm(cross(across, up));
+  const x = norm(cross(up, out));
+  return { x, y: up, z: out };
 }
 
 export class GestureEngine {
@@ -89,18 +93,22 @@ export class GestureEngine {
     this.candidateFrames = 0;
     this.anchor = null;
     this.spread = null;
+    this.session = 0;
   }
 
-  // Returns { mode, dx, dy, zoom }. dx and dy are in screen-oriented,
-  // normalized image units (1 = full frame width or height).
-  update(lm, { mirror = false } = {}) {
-    const idle = { mode: Mode.NONE, dx: 0, dy: 0, zoom: 1 };
+  // lm: the 21 normalized image points. world: the same points in meters (3D).
+  // Returns { mode, session, dx, dy, zoom, frame }. dx and dy are screen-oriented,
+  // in normalized image units. frame is the hand orientation while rotating.
+  // session changes every time a pose starts, so callers can drop old references.
+  update(lm, world, { mirror = false } = {}) {
+    const idle = { mode: Mode.NONE, session: this.session, dx: 0, dy: 0, zoom: 1, frame: null };
     if (!lm) {
       this.reset();
       return idle;
     }
+    const p = world || lm;
 
-    const raw = classify(lm, this.mode);
+    const raw = classify(p, this.mode);
     if (raw === this.candidate) this.candidateFrames++;
     else { this.candidate = raw; this.candidateFrames = 1; }
 
@@ -108,6 +116,7 @@ export class GestureEngine {
       this.mode = this.candidate;
       this.anchor = null;
       this.spread = null;
+      this.session++;
     }
 
     const a = this.smoothing;
@@ -126,8 +135,12 @@ export class GestureEngine {
     if (Math.hypot(dx, dy) < this.deadzone) { dx = 0; dy = 0; }
     if (mirror) dx = -dx;
 
+    const result = { mode: this.mode, session: this.session, dx, dy, zoom, frame: null };
+
     if (this.mode === Mode.ZOOM) {
-      const s = dist(lm[THUMB_TIP], lm[INDEX_TIP]) / palmSize(lm);
+      // Gap between thumb and index relative to the palm, in 3D when available.
+      const d = world ? dist3 : dist2;
+      const s = d(p[THUMB_TIP], p[INDEX_TIP]) / (d(p[WRIST], p[MIDDLE_MCP]) || 1e-6);
       if (this.spread !== null) {
         const next = this.spread + (s - this.spread) * a;
         const ratio = (next + 0.05) / (this.spread + 0.05);
@@ -136,10 +149,11 @@ export class GestureEngine {
       } else {
         this.spread = s;
       }
-      return { mode: this.mode, dx: 0, dy: 0, zoom };
+      return { ...result, dx: 0, dy: 0, zoom };
     }
 
+    if (this.mode === Mode.ROTATE) result.frame = handFrame(p, mirror);
     if (this.mode === Mode.NONE) return idle;
-    return { mode: this.mode, dx, dy, zoom };
+    return result;
   }
 }
