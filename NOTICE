@@ -37,6 +37,12 @@ This product includes third-party software distributed under its own license:
   Draco decoder, Copyright The Draco Authors (Google LLC)
   Apache License 2.0, see vendor/three/addons/libs/draco/LICENSE
 
+  PeerJS 1.5.5, Copyright (c) 2015 Michelle Bu and Eric Zhang
+  MIT License, see vendor/peerjs/LICENSE
+
+  qrcode-generator 2.0.4, Copyright (c) 2009 Kazuhiko Arase
+  MIT License (header in vendor/qrcode/qrcode.mjs)
+
   Jost font, Copyright 2020 The Jost Project Authors
   SIL Open Font License 1.1, see vendor/fonts/OFL.txt
 

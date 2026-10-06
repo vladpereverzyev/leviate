@@ -1,5 +1,7 @@
 # Leviate
 
+**Try it now: <https://vladpereverzyev.github.io/leviate/>**
+
 Move 3D scans with your bare hands. Leviate is a web app that turns any webcam,
 on a computer or a phone, into a hand controller for 3D models. Open a scan, raise
 your hand in front of the camera and rotate, pan or zoom it without touching anything.
@@ -13,6 +15,8 @@ and your files never leave your device.
 
 - **Hand gestures**: open hand to rotate, fist to pan, thumb and index to zoom.
 - **Any webcam**: built-in or USB cameras on a computer, front or rear camera on a phone.
+- **Your phone as a webcam**: scan a QR code with an iPhone or Android phone and its
+  camera streams to the computer. No app to install.
 - **Camera output of your choice**: device, resolution (480p, 720p, 1080p), frame rate,
   front or rear facing and mirror. The panel shows what the camera really delivers.
 - **Many 3D formats**: STL, PLY, OBJ, GLB, GLTF, 3MF, FBX, DAE, 3DS, AMF, VTK, PCD and XYZ.
@@ -76,6 +80,27 @@ time. Tap a title to open or close it.
 
 <br clear="right">
 
+## Use your phone as a webcam
+
+Any iPhone or Android phone can be the camera of Leviate running on a computer.
+Nothing to install on either device.
+
+1. On the computer open the **Webcam** window and press **Use phone**. A QR code appears.
+2. Scan it with the phone camera. Leviate opens in Safari or Chrome on the phone.
+3. Tap **Start camera** and allow the camera. **Flip** switches between rear and front camera.
+4. The phone video shows up in the Webcam window and the gestures work as with a normal webcam.
+
+Keep the phone page open while you use it. Press **Disconnect phone** on the computer or
+**Stop** on the phone to end the session. Clicking the QR code copies the pairing link,
+handy when you want to send it to the phone another way.
+
+How it works: the two devices connect with WebRTC. The free [PeerJS](https://peerjs.com)
+server only introduces them to each other and passes the connection details; the video goes
+straight from the phone to the computer, encrypted. If both are on networks that block a
+direct link, the video is relayed through a PeerJS TURN server, still encrypted. When Leviate
+runs on `localhost` the QR code points to the published copy on GitHub Pages, because a phone
+can open the camera only on an `https` page.
+
 ## Supported files
 
 | Format | Colors | Notes |
@@ -121,8 +146,10 @@ file is missing the app tells you which one.
 | `js/gestures.js` | Hand pose classification and motion (no DOM, easy to test) |
 | `js/version.js` | Current version, shown in the app |
 | `scripts/bump.mjs` | Raises the version (patch, minor or major) |
+| `js/phone.js` | Phone as webcam: QR pairing on the computer, camera page on the phone |
 | `js/windows.js` | Floating windows: drag, collapse, phone layout |
 | `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
+| `vendor/peerjs/`, `vendor/qrcode/` | WebRTC pairing and QR code generator (MIT) |
 | `vendor/fonts/` | Jost font (SIL OFL 1.1) |
 | `docs/` | Screenshots and gesture drawings used in this README |
 | `icons/`, `site.webmanifest` | App icons for browsers, iOS and Android |
@@ -147,7 +174,8 @@ committing. Releases are listed on the
 ## Privacy
 
 The video stream and your scans are processed only inside your browser. Nothing is
-uploaded, there is no tracking and no account.
+uploaded, there is no tracking and no account. The only outside service is the PeerJS
+broker used by **Use phone**, which sees the connection details but never the video.
 
 ## Contributing
 

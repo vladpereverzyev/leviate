@@ -22,10 +22,15 @@ import { FilesetResolver, HandLandmarker } from '../vendor/mediapipe/vision_bund
 import { GestureEngine, Mode } from './gestures.js';
 import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
+import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
 
 const $ = (id) => document.getElementById(id);
 
 $('version').textContent = 'v' + VERSION;
+
+// Opened from the QR code: this device becomes the camera of a computer.
+const pairId = new URLSearchParams(location.search).get('pair');
+if (pairId) runPhoneCamera(pairId);
 
 const MODE_LABEL = {
   [Mode.NONE]: 'Hand seen',
@@ -515,6 +520,7 @@ let landmarker = null;
 let landmarkerLoading = null;
 let lastVideoTime = -1;
 let detectMs = 0;
+let phone = null;        // pairing session while waiting for or using a phone
 
 function getLandmarker() {
   landmarkerLoading ||= (async () => {
@@ -556,6 +562,7 @@ function setCamUi(running) {
 }
 
 function stopCamera() {
+  closePhone();
   stream?.getTracks().forEach((t) => t.stop());
   stream = null;
   video.srcObject = null;
@@ -568,6 +575,7 @@ async function startCamera() {
     toast('The camera needs HTTPS or localhost', 5000);
     return;
   }
+  closePhone();
   stream?.getTracks().forEach((t) => t.stop());
   $('cam-toggle').textContent = '…';
 
@@ -587,11 +595,16 @@ async function startCamera() {
     return;
   }
 
-  video.srcObject = stream;
-  await video.play();
+  await listCameras();
+  await attach(stream);
+}
+
+// Shows a stream in the preview and starts hand tracking on it.
+async function attach(s) {
+  video.srcObject = s;
+  await video.play().catch(() => {});
   engine.reset();
   setCamUi(true);
-  await listCameras();
   showCameraInfo();
 
   if (!landmarker) {
@@ -615,9 +628,84 @@ function showCameraInfo() {
   $('cam-info').textContent = [
     `${s.width || video.videoWidth} × ${s.height || video.videoHeight}`,
     fps,
-    track.label,
+    phone ? 'Phone' : track.label,
   ].filter(Boolean).join(' · ');
 }
+video.addEventListener('resize', showCameraInfo);
+
+// ---------------------------------------------------------- phone camera
+
+function closePhone() {
+  if (!phone) return;
+  const p = phone;
+  phone = null;
+  p.close?.();
+  $('qr').hidden = true;
+  $('phone-link').textContent = 'Use phone';
+  $('phone-link').classList.remove('on');
+  applyMirror();
+}
+
+async function usePhone() {
+  if (phone) {
+    const wasStreaming = !!stream;
+    closePhone();
+    if (wasStreaming) stopCamera();
+    return;
+  }
+  stopCamera();
+  $('qr-code').replaceChildren();
+  $('qr-text').textContent = 'Connecting…';
+  $('qr').hidden = false;
+  $('phone-link').textContent = 'Cancel';
+  $('phone-link').classList.add('on');
+  const session = phone = {};
+
+  try {
+    const host = await hostPhone({
+      onStream: (s, facing) => {
+        if (phone !== session) return;
+        $('qr').hidden = true;
+        $('phone-link').textContent = 'Disconnect phone';
+        stream = s;
+        setPhoneMirror(facing);
+        attach(s);
+      },
+      onFacing: setPhoneMirror,
+      onEnd: () => {
+        if (phone !== session) return;
+        stopCamera();
+        toast('Phone disconnected', 3000);
+      },
+    });
+    if (phone !== session) { host.close(); return; }
+    session.close = host.close;
+    $('qr-code').innerHTML = qrSvg(host.url);
+    $('qr').dataset.url = host.url;
+    $('qr-text').textContent = 'Scan with your phone camera';
+  } catch (err) {
+    console.error(err);
+    closePhone();
+    toast('Phone pairing is not available. ' + err.message, 5000);
+  }
+}
+
+// Mirror the preview only for the phone's front camera; the saved webcam setting stays as it is.
+function setPhoneMirror(facing) {
+  const mirror = facing === 'user';
+  $('preview').classList.toggle('mirror', mirror);
+  phoneMirror = mirror;
+}
+let phoneMirror = false;
+
+$('phone-link').addEventListener('click', usePhone);
+// No camera app at hand: a click on the code copies the pairing link.
+$('qr-code').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText($('qr').dataset.url);
+    toast('Link copied', 2000);
+  } catch {}
+});
 
 async function listCameras() {
   const cams = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'videoinput');
@@ -652,7 +740,7 @@ $('cam-mirror').addEventListener('change', (e) => {
 });
 
 function applyMirror() {
-  $('preview').classList.toggle('mirror', settings.mirror);
+  if (!phone) $('preview').classList.toggle('mirror', settings.mirror);
 }
 
 // ------------------------------------------------------------- gestures
@@ -752,7 +840,7 @@ function track() {
   detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
 
   const lm = result.landmarks?.[0] || null;
-  const cmd = engine.update(lm, { mirror: settings.mirror });
+  const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
 

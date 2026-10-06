@@ -78,6 +78,13 @@
           <canvas id="overlay"></canvas>
           <button id="cam-toggle" class="cam-toggle">Start</button>
           <span id="badge" class="badge" hidden></span>
+          <div id="qr" class="qr" hidden>
+            <div id="qr-code" class="qr-code"></div>
+            <p id="qr-text">Scan with your phone</p>
+          </div>
+        </div>
+        <div class="row cam-row">
+          <button id="phone-link" class="btn small ghost">Use phone</button>
         </div>
         <p class="hint"><i class="dot rotate"></i>Open hand <i class="dot pan"></i>Fist <i class="dot zoom"></i>Pinch</p>
 
@@ -124,19 +131,19 @@
       <button class="tool" data-view="left">Left</button>
       <button class="tool" data-view="right">Right</button>
       <span class="sep"></span>
-      <label class="tool"><input id="v-wire" type="checkbox" hidden>Wire</label>
-      <label class="tool"><input id="v-spin" type="checkbox" hidden>Spin</label>
+      <label class="tool act"><input id="v-wire" type="checkbox" hidden>Wire</label>
+      <label class="tool act"><input id="v-spin" type="checkbox" hidden>Spin</label>
       <span class="sep"></span>
-      <button id="reset" class="tool" title="R">Reset</button>
-      <button id="shot" class="tool" title="S">Shot</button>
-      <button id="fullscreen" class="tool" title="F">Full</button>
+      <button id="reset" class="tool act" title="R">Reset</button>
+      <button id="shot" class="tool act" title="S">Shot</button>
+      <button id="fullscreen" class="tool act" title="F">Full</button>
     </nav>
 
     <footer class="legal">
       © 2026 Vladyslav Pereverzyev ·
-      <a href="LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>, no warranty ·
+      <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a>, no warranty ·
       <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
-      <a href="THIRD-PARTY-NOTICES.md" target="_blank" rel="noopener">Notices</a> ·
+      <a href="https://github.com/vladpereverzyev/leviate/blob/main/THIRD-PARTY-NOTICES.md" target="_blank" rel="noopener">Notices</a> ·
       <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
       <span id="version"></span>
     </footer>
@@ -144,6 +151,18 @@
     <div id="drop" class="drop" hidden><span>Drop to load</span></div>
     <div id="toast" class="toast" hidden></div>
   </main>
+
+  <!-- Shown when the page is opened from the QR code on a phone -->
+  <section id="phone-mode" class="phone-mode" hidden>
+    <header class="pm-head"><img src="icons/icon.svg" alt="">Leviate</header>
+    <p class="eyebrow">Phone camera</p>
+    <div class="pm-preview"><video id="pm-video" playsinline muted></video></div>
+    <p id="pm-status" class="pm-status"></p>
+    <div class="row">
+      <button id="pm-start" class="btn">Start camera</button>
+      <button id="pm-flip" class="btn ghost" hidden>Flip</button>
+    </div>
+  </section>
 
   <script type="module" src="js/app.js"></script>
 </body>

@@ -11,6 +11,8 @@ components. Each one keeps its own license.
 | [fflate](https://github.com/101arrowz/fflate) | 0.8.2 (bundled with three.js) | MIT | `vendor/three/addons/libs/fflate.module.js` |
 | [meshoptimizer decoder](https://github.com/zeux/meshoptimizer) | bundled with three.js | MIT | `vendor/three/addons/libs/meshopt_decoder.module.js` |
 | [Draco decoder](https://github.com/google/draco) | bundled with three.js | Apache-2.0 | `vendor/three/addons/libs/draco/` |
+| [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `vendor/peerjs/` |
+| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `vendor/qrcode/` |
 | [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `vendor/fonts/` |
 | [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` |
 
@@ -80,6 +82,27 @@ compressed with Draco. Full license text in `vendor/three/addons/libs/draco/LICE
 ```
 Copyright The Draco Authors (Google LLC)
 Licensed under the Apache License, Version 2.0
+```
+
+## PeerJS
+
+File: `vendor/peerjs/peerjs.min.js`, copied from the npm package without the source map
+comment. Full license text in `vendor/peerjs/LICENSE`. The phone pairing uses the free
+public PeerJS server (`0.peerjs.com`) to exchange connection details.
+
+```
+Copyright (c) 2015 Michelle Bu and Eric Zhang, http://peerjs.com
+The MIT License
+```
+
+## qrcode-generator
+
+File: `vendor/qrcode/qrcode.mjs`, copied unmodified from the npm package. The license
+is in the header of the file.
+
+```
+Copyright (c) 2009 Kazuhiko Arase
+Licensed under the MIT license
 ```
 
 ## Jost font
