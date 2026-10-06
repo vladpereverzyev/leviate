@@ -194,7 +194,7 @@ ou le téléphone (code QR, comme l'app web). Elle a deux modules :
 - **Mouse** : la main ouverte déplace le curseur, un doigt immobile un instant fait un clic
   gauche, deux doigts immobiles un clic droit.
 
-![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche, deux doigts clic droit](docs/gestures-mouse.png)
+![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche, deux doigts clic droit](docs/mouse-gestures.png)
 
 Téléchargez-la depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) : `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) ou `-linux-x64.AppImage`.

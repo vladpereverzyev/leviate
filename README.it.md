@@ -186,7 +186,7 @@ telefono (codice QR, come nell'app web). Ha due moduli:
 - **Mouse**: la mano aperta sposta il cursore, un dito fermo per un momento fa clic
   sinistro, due dita ferme fanno clic destro.
 
-![Le pose del modulo Mouse: mano aperta sposta il cursore, un dito fermo fa clic sinistro, due dita clic destro](docs/gestures-mouse.png)
+![Le pose del modulo Mouse: mano aperta sposta il cursore, un dito fermo fa clic sinistro, due dita clic destro](docs/mouse-gestures.png)
 
 Scaricala dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versione>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
