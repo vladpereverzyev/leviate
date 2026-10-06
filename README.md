@@ -62,15 +62,26 @@ browser.
 
 ### On a phone
 
-<img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="260" align="right">
+<table>
+<tr>
+<td width="220"><img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="200"></td>
+<td valign="middle">
 
-Open the same link on the phone. The Files and Webcam windows stack under the header
-and open one at a time: tap a title to open or close it.
+Open the same link on the phone and everything works there too:
+
+- **Files**: pick scans from the Files app, iCloud Drive or Google Drive.
+- **Gestures**: the front camera watches your hand while you look at the screen.
+- **Windows**: Files and Webcam stack under the header and open one at a time.
+  Tap a title to open or close it.
+- **Touch**: drag with one finger to rotate, two fingers to pan, pinch to zoom.
+- **Toolbar**: view presets and tools stay at the bottom, one tap away.
 
 To use the phone only as a camera for a computer, see
 [Use your phone as a webcam](#use-your-phone-as-a-webcam).
 
-<br clear="right">
+</td>
+</tr>
+</table>
 
 ### Run your own copy
 
@@ -92,10 +103,22 @@ Cloudflare Pages.
 Any iPhone or Android phone can be the camera of Leviate running on a computer.
 Nothing to install on either device.
 
-1. On the computer open the **Webcam** window and press **Use phone**. A QR code appears.
+<table>
+<tr>
+<td width="260"><img src="docs/phone-qr.png" alt="Webcam window showing the pairing QR code" width="240"></td>
+<td valign="middle">
+
+1. On the computer open the **Webcam** window and press **Use phone**.
+   A QR code appears in the preview.
 2. Scan it with the phone camera. Leviate opens in Safari or Chrome on the phone.
-3. Tap **Start camera** and allow the camera. **Flip** switches between rear and front camera.
-4. The phone video shows up in the Webcam window and the gestures work as with a normal webcam.
+3. Tap **Start camera** and allow the camera.
+   **Flip** switches between rear and front camera.
+4. The phone video shows up in the Webcam window and the gestures work as with a
+   normal webcam.
+
+</td>
+</tr>
+</table>
 
 Keep the phone page open while you use it. Press **Disconnect phone** on the computer or
 **Stop** on the phone to end the session. Clicking the QR code copies the pairing link,
@@ -158,7 +181,7 @@ file is missing the app tells you which one.
 | `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
 | `vendor/peerjs/`, `vendor/qrcode/` | WebRTC pairing and QR code generator (MIT) |
 | `vendor/fonts/` | Jost font (SIL OFL 1.1) |
-| `docs/` | Screenshots and gesture drawings used in this README |
+| `docs/` | Screenshots, QR window and gesture drawings used in this README |
 | `icons/`, `site.webmanifest` | App icons for browsers, iOS and Android |
 | `vendor/mediapipe/` | MediaPipe Tasks Vision and its WebAssembly runtime (Apache-2.0) |
 | `models/hand_landmarker.task` | MediaPipe hand model (Apache-2.0) |
