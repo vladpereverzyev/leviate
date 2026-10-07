@@ -115,7 +115,7 @@
       list-style: none;
       color: var(--text);
       font-weight: 400;
-      font-size: 16px;
+      font-size: clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
     }
     .faq__item summary::-webkit-details-marker { display: none; }
     .faq__item summary::after {
@@ -126,7 +126,8 @@
       transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .faq__item[open] summary::after { transform: rotate(135deg); }
-    .faq__item p { margin: 0.9rem 0 0; color: var(--muted); font-weight: 300; font-size: 15px; line-height: 1.7; }
+    .faq__ans { overflow: hidden; }
+    .faq__item p { max-width: 60ch; margin: 0.9rem 0 0; color: var(--muted); font-weight: 300; line-height: 1.7; }
     .faq-block .note { margin-top: 18px; color: var(--dim); font-size: 13px; }
     @media (max-width: 720px) { .faq { display: block; } }
     @media (prefers-reduced-motion: reduce) { .faq__item summary::after { transition: none; } }
@@ -225,29 +226,29 @@
         <div class="faq__col">
           <details class="faq__item">
             <summary>Do I need to install anything?</summary>
-            <p>No. The Web App runs in Chrome, Edge, Firefox or Safari, on a computer or a phone. Install Leviate for Desktop to move your own 3D program or the mouse with your hand, and the add-on to use it inside Blender 4.2 or later. Everywhere your phone can be the camera: choose Use phone and scan the QR code, no app needed.</p>
+            <div class="faq__ans"><p>No. The Web App runs in Chrome, Edge, Firefox or Safari, on a computer or a phone. Install Leviate for Desktop to move your own 3D program or the mouse with your hand, and the add-on to use it inside Blender 4.2 or later. Everywhere your phone can be the camera: choose Use phone and scan the QR code, no app needed.</p></div>
           </details>
           <details class="faq__item">
             <summary>The camera does not start. What can I do?</summary>
-            <p>Allow the camera when the browser or the system asks for it. Close other programs that use the camera, such as video calls or another Leviate window, then press Start again. With several cameras, choose another one in the Camera section.</p>
+            <div class="faq__ans"><p>Allow the camera when the browser or the system asks for it. Close other programs that use the camera, such as video calls or another Leviate window, then press Start again. With several cameras, choose another one in the Camera section.</p></div>
           </details>
           <details class="faq__item">
             <summary>Windows, macOS or Linux stops the app.</summary>
-            <p>Leviate for Desktop is not signed yet. On Windows choose More info and then Run anyway; Smart App Control, on some Windows 11 computers, can block it without that choice, so there use the Web App for now. On macOS open System Settings, Privacy &amp; Security, choose Open Anyway, then allow Leviate in Accessibility. On Linux choose the Xorg (X11) session: Wayland does not let programs move the mouse.</p>
+            <div class="faq__ans"><p>Leviate for Desktop is not signed yet. On Windows choose More info and then Run anyway; Smart App Control, on some Windows 11 computers, can block it without that choice, so there use the Web App for now. On macOS open System Settings, Privacy &amp; Security, choose Open Anyway, then allow Leviate in Accessibility. On Linux choose the Xorg (X11) session: Wayland does not let programs move the mouse.</p></div>
           </details>
         </div>
         <div class="faq__col">
           <details class="faq__item">
             <summary>Which Program mouse should I choose for my 3D program?</summary>
-            <p>Look at which buttons your program uses with the real mouse to turn and to move the view, and choose the same scheme under Program. The default, Right turns and Left+right pans, fits dental CAD programs; Blender uses Middle turns and Shift+middle pans. Custom takes any button with Shift, Ctrl or Alt. Put the cursor on the 3D view first.</p>
+            <div class="faq__ans"><p>Look at which buttons your program uses with the real mouse to turn and to move the view, and choose the same scheme under Program. The default, Right turns and Left+right pans, fits dental CAD programs; Blender uses Middle turns and Shift+middle pans. Custom takes any button with Shift, Ctrl or Alt. Put the cursor on the 3D view first.</p></div>
           </details>
           <details class="faq__item">
             <summary>How do I stop the hand?</summary>
-            <p>Press Ctrl+Alt+M, or Ctrl+Option+M on macOS, from any program: the hand turns off, and the same keys bring it back. You can also choose Off in Leviate, or simply lower the hand.</p>
+            <div class="faq__ans"><p>Press Ctrl+Alt+M, or Ctrl+Option+M on macOS, from any program: the hand turns off, and the same keys bring it back. You can also choose Off in Leviate, or simply lower the hand.</p></div>
           </details>
           <details class="faq__item">
             <summary>Is the video recorded or sent anywhere?</summary>
-            <p>No. The hand is tracked on your device and the video is never recorded or uploaded. With a phone as the camera, the free PeerJS server only introduces the two devices and sees their IP addresses; the video goes straight between them, encrypted.</p>
+            <div class="faq__ans"><p>No. The hand is tracked on your device and the video is never recorded or uploaded. With a phone as the camera, the free PeerJS server only introduces the two devices and sees their IP addresses; the video goes straight between them, encrypted.</p></div>
           </details>
         </div>
       </div>
@@ -320,6 +321,45 @@
       }
     });
     latest();
+
+    // Questions open and close smoothly, as on vladpereverzyev.com (a plain details snaps).
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      for (const item of document.querySelectorAll('.faq__item')) {
+        const summary = item.querySelector('summary');
+        const ans = item.querySelector('.faq__ans');
+        const DUR = 300;
+        const reset = () => {
+          ans.style.transition = '';
+          ans.style.height = '';
+          ans.style.opacity = '';
+          delete item.dataset.anim;
+        };
+        summary.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (item.dataset.anim) return;
+          item.dataset.anim = '1';
+          if (item.open) {
+            ans.style.height = ans.scrollHeight + 'px';
+            ans.style.opacity = '1';
+            ans.getBoundingClientRect();
+            ans.style.transition = `height ${DUR}ms ease, opacity ${DUR}ms ease`;
+            ans.style.height = '0px';
+            ans.style.opacity = '0';
+            setTimeout(() => { item.open = false; reset(); }, DUR);
+          } else {
+            item.open = true;
+            const target = ans.scrollHeight;
+            ans.style.height = '0px';
+            ans.style.opacity = '0';
+            ans.getBoundingClientRect();
+            ans.style.transition = `height ${DUR}ms ease, opacity ${DUR}ms ease`;
+            ans.style.height = target + 'px';
+            ans.style.opacity = '1';
+            setTimeout(reset, DUR);
+          }
+        });
+      }
+    }
   </script>
   <script type="module" src="js/consent.js"></script>
 </body>
