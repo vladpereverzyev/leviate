@@ -260,7 +260,7 @@ select {
   border: 1px solid var(--line);
   /* One simple arrow drawn by us, the same on every browser, phone and computer. */
   appearance: none;
-  background: var(--panel-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 12px center / 12px 8px no-repeat;
+  background: var(--panel-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 14px center / 10px 6px no-repeat;
   font-size: 13px;
 }
 /* The open list of every select in the style of the app: dark, rounded, blue for the
@@ -271,7 +271,7 @@ select option { background: var(--panel-solid); color: var(--text); }
   select, select::picker(select) { appearance: base-select; }
   select { display: flex; align-items: center; gap: 6px; cursor: pointer; }
   select::picker-icon { display: none; }
-  select:open { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 6.5l5-5 5 5' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  select:open { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 5l4-4 4 4' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
   select::picker(select) {
     /* Always open downwards, under the select; a long list scrolls. */
     position-try-order: normal;

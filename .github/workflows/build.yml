@@ -118,8 +118,12 @@ jobs:
           merge-multiple: true
 
       - name: Release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VER="${GITHUB_REF_NAME#v}"
+          # The newest release of Leviate for Blender, linked straight from the notes.
+          BLENDER="$(gh release list --repo "$GITHUB_REPOSITORY" --limit 50 --json tagName -q '[.[] | select(.tagName | startswith("blender-v"))][0].tagName')"
           cat > notes.md <<EOF
           **Leviate runs in the browser, nothing to download:** <https://vladpereverzyev.github.io/leviate/>
 
@@ -132,8 +136,10 @@ jobs:
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
-          Leviate for Blender has releases of its own (tags blender-v...), on the
-          [download page](https://vladpereverzyev.github.io/leviate/download.html#blender).
+          ### Leviate for Blender
+
+          The add-on has releases of its own, made only when it changes. Newest:
+          [${BLENDER}](https://github.com/vladpereverzyev/leviate/releases/tag/${BLENDER}).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
