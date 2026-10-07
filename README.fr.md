@@ -211,7 +211,7 @@ Téléchargez-la depuis la [dernière version](https://github.com/vladpereverzye
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) ou `-linux-x64.AppImage`.
 Guide complet dans [desktop](desktop/) (en anglais).
 
-![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche, deux doigts clic droit](docs/mouse-gestures.png)
+![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche puis double clic, deux doigts clic droit](docs/mouse-gestures.png)
 
 ## Fichiers pris en charge
 

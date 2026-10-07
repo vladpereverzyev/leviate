@@ -81,7 +81,7 @@ other way round.
 
 ## Mouse
 
-![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](../docs/mouse-gestures.png)
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left and then double clicks, two fingers click right](../docs/mouse-gestures.png)
 
 | Pose | What it does |
 | --- | --- |

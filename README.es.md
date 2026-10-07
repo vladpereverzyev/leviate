@@ -206,7 +206,7 @@ Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
 Guía completa en [desktop](desktop/) (en inglés).
 
-![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
+![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo y luego doble clic, dos dedos clic derecho](docs/mouse-gestures.png)
 
 ## Archivos compatibles
 
