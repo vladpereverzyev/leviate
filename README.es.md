@@ -201,11 +201,11 @@ móvil (código QR, como en la app web). Tiene dos módulos:
 </tr>
 </table>
 
-![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
-
 Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versión>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
 Guía completa en [desktop](desktop/) (en inglés).
+
+![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
 
 ## Archivos compatibles
 

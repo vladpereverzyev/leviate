@@ -192,11 +192,11 @@ phone (QR code, like the web app). It has two modules:
 </tr>
 </table>
 
-![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/mouse-gestures.png)
-
 Download it from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) or `-linux-x64.AppImage`.
 Full guide in [desktop](desktop/).
+
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/mouse-gestures.png)
 
 ## Supported files
 

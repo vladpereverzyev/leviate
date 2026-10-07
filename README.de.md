@@ -199,11 +199,11 @@ Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
 </tr>
 </table>
 
-![Die Posen des Moduls Mouse: offene Hand bewegt den Cursor, ein ruhiger Finger klickt links, zwei Finger rechts](docs/mouse-gestures.png)
-
 Download im [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<Version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) oder `-linux-x64.AppImage`.
 Vollständige Anleitung in [desktop](desktop/) (auf Englisch).
+
+![Die Posen des Moduls Mouse: offene Hand bewegt den Cursor, ein ruhiger Finger klickt links, zwei Finger rechts](docs/mouse-gestures.png)
 
 ## Unterstützte Dateien
 
