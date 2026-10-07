@@ -230,8 +230,14 @@ footer.foot a:hover { color: var(--text); }
 
 .win {
   position: absolute;
-  width: 280px;
+  /* Grow and shrink with the screen, and never reach the tools at the bottom: on a low
+     screen the inside of the window scrolls. */
+  width: clamp(250px, 22vw, 360px);
   max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 64px - 104px);
+  max-height: calc(100dvh - 64px - 104px);
+  display: flex;
+  flex-direction: column;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -239,7 +245,7 @@ footer.foot a:hover { color: var(--text); }
   z-index: 10;
 }
 #win-files { top: 64px; left: 20px; }
-#win-cam { top: 64px; right: 20px; }
+#win-cam { top: 64px; right: 20px; width: clamp(270px, 24vw, 400px); }
 
 .win-head {
   display: flex;
@@ -288,7 +294,7 @@ footer.foot a:hover { color: var(--text); }
 }
 .win.collapsed .win-body { display: none; }
 
-.win-body { padding: 0 14px 14px; }
+.win-body { padding: 0 14px 14px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 
 .count {
   margin-left: 6px;
@@ -570,7 +576,7 @@ section.phone-mode {
   .kofi { top: 76px; }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
-  .win { width: calc(100vw - 24px); max-width: none; }
+  .win, #win-cam { width: calc(100vw - 24px); max-width: none; max-height: calc(100dvh - 76px - 130px); }
   .win:not(.collapsed) { z-index: 30; }
   .win-head { padding: 8px 8px 8px 12px; }
   .obj-list { max-height: 30vh; }

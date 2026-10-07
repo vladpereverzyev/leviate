@@ -46,6 +46,8 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     html, body { height: auto; overflow: auto; }
+    /* Room for the scroll bar on every page, so short and long pages line up. */
+    html { scrollbar-gutter: stable; }
     body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
     .page { max-width: var(--maxw); margin: 0 auto; padding: 32px var(--gutter) 24px; }
     .page a { color: var(--accent-2); }
@@ -54,7 +56,6 @@
     .page a.btn.ghost:hover { color: var(--text); }
     .head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .page a.brand { color: var(--text); text-decoration: none; }
-    .head .open { font-size: 13px; margin: -2px 0; }
     .hero { text-align: center; padding: 56px 0 36px; }
     .hero h1 { margin: 10px 0 12px; font-weight: 300; font-size: clamp(32px, 5vw, 52px); letter-spacing: -0.03em; line-height: 1.1; }
     .hero p { max-width: 38rem; margin: 0 auto; color: var(--muted); font-weight: 300; font-size: 17px; line-height: 1.6; }
@@ -147,7 +148,6 @@
   <main class="page">
     <header class="head">
       <a class="brand" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
-      <a class="btn small ghost open" href="./">Open the Web App</a>
     </header>
 
     <section class="hero">

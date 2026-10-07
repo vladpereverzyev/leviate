@@ -9,6 +9,8 @@ const STORE_KEY = 'leviate.windows';
 const MARGIN = 8;
 const PHONE_TOP = 76;
 const PHONE_GAP = 8;
+// Room left free at the bottom for the view tools and the footer.
+const TOOLS = 104;
 
 function load() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; }
@@ -30,11 +32,34 @@ export function setupWindows(root = document) {
     win.style.bottom = 'auto';
   };
 
+  // The whole window stays on the screen; the top keeps room for the title bar.
   const clamp = (win) => {
     const r = win.getBoundingClientRect();
-    const x = Math.min(Math.max(r.left, MARGIN), window.innerWidth - Math.min(r.width, 120) - MARGIN);
+    const x = Math.min(Math.max(r.left, MARGIN), Math.max(MARGIN, window.innerWidth - r.width - MARGIN));
     const y = Math.min(Math.max(r.top, MARGIN), window.innerHeight - 44 - MARGIN);
     place(win, x, y);
+  };
+
+  // The window ends above the view tools wherever it is; a low screen scrolls its inside.
+  const fitHeight = (win) => {
+    if (phone()) { win.style.maxHeight = ''; return; }
+    const top = win.getBoundingClientRect().top;
+    win.style.maxHeight = Math.max(120, window.innerHeight - top - TOOLS) + 'px';
+  };
+
+  // A window keeps its distance from the side it is closer to, so when the page gets
+  // narrower or wider the Webcam window stays on the right and Files on the left.
+  const anchor = (win, saved) => {
+    const r = win.getBoundingClientRect();
+    const right = saved.side === 'right';
+    let x = Math.max(MARGIN, saved.x);
+    if (x + r.width + MARGIN > window.innerWidth) x = Math.max(MARGIN, window.innerWidth - r.width - MARGIN);
+    const y = Math.min(Math.max(saved.y, MARGIN), window.innerHeight - 44 - MARGIN);
+    win.style.top = y + 'px';
+    win.style.bottom = 'auto';
+    win.style.left = right ? 'auto' : x + 'px';
+    win.style.right = right ? x + 'px' : 'auto';
+    fitHeight(win);
   };
 
   const remember = (win) => {
@@ -42,7 +67,8 @@ export function setupWindows(root = document) {
     saved.collapsed = win.classList.contains('collapsed');
     if (!phone()) {
       const r = win.getBoundingClientRect();
-      saved.x = r.left;
+      saved.side = r.left + r.width / 2 > window.innerWidth / 2 ? 'right' : 'left';
+      saved.x = saved.side === 'right' ? window.innerWidth - r.right : r.left;
       saved.y = r.top;
     }
     state[win.id] = saved;
@@ -57,6 +83,7 @@ export function setupWindows(root = document) {
       win.style.right = 'auto';
       win.style.bottom = 'auto';
       win.style.top = y + 'px';
+      win.style.maxHeight = '';
       y += win.offsetHeight + PHONE_GAP;
     }
   };
@@ -66,10 +93,18 @@ export function setupWindows(root = document) {
     for (const win of wins) {
       const saved = state[win.id];
       if (saved && saved.x !== undefined) {
-        place(win, saved.x, saved.y);
-        clamp(win);
+        // Positions saved before the side was remembered were taken from the left.
+        if (!saved.side) {
+          saved.side = 'left';
+          if (saved.x > window.innerWidth / 2) {
+            saved.side = 'right';
+            saved.x = Math.max(MARGIN, window.innerWidth - saved.x - win.offsetWidth);
+          }
+        }
+        anchor(win, saved);
       } else {
         win.style.left = win.style.top = win.style.right = win.style.bottom = '';
+        fitHeight(win);
       }
     }
   };
@@ -120,13 +155,14 @@ export function setupWindows(root = document) {
         win.classList.add('dragging');
         place(win, ev.clientX - dx, ev.clientY - dy);
         clamp(win);
+        fitHeight(win);
       };
       const end = () => {
         head.removeEventListener('pointermove', move);
         win.classList.remove('dragging');
         // A tap on the title bar opens or closes the window on touch screens.
         if (!moved && (e.pointerType !== 'mouse' || phone())) toggle(win);
-        else if (moved) remember(win);
+        else if (moved) { remember(win); anchor(win, state[win.id]); }
       };
       head.addEventListener('pointermove', move);
       head.addEventListener('pointerup', end, { once: true });
