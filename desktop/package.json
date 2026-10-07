@@ -10,7 +10,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "node ../../scripts/build-desktop.mjs"
+    "build": "node ../scripts/build-desktop.mjs"
   },
   "dependencies": {
     "koffi": "3.3.2"
@@ -24,7 +24,7 @@
     "productName": "Leviate",
     "copyright": "Copyright (C) 2026 Vladyslav Pereverzyev",
     "directories": {
-      "output": "../../dist/desktop",
+      "output": "../dist/desktop",
       "buildResources": "build"
     },
     "files": [
@@ -33,7 +33,7 @@
       "ring-preload.js",
       "mouse.js",
       "renderer/**",
-      "web/**",
+      "shared/**",
       "package.json"
     ],
     "asarUnpack": [

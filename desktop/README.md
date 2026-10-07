@@ -72,7 +72,7 @@ other way round.
 
 ## Mouse
 
-![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](../../docs/mouse-gestures.png)
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](../docs/mouse-gestures.png)
 
 | Pose | What it does |
 | --- | --- |
@@ -110,20 +110,20 @@ once, before the first pairing. Details in the
 ## Build
 
 The app is [Electron](https://www.electronjs.org). It uses the files of the web app as they
-are, served through the `app://` scheme: `web/js/hand-worker.js` (MediaPipe hand tracking),
-`web/js/gestures.js` (the 3D gestures), `web/js/phone.js` (phone pairing), `web/vendor/` and
-`web/models/`. Nothing of the web app or of Leviate for Blender is changed.
+are, served through the `app://` scheme: `shared/js/hand-worker.js` (MediaPipe hand tracking),
+`shared/js/gestures.js` (the 3D gestures), `shared/js/phone.js` (phone pairing), `web/vendor/` and
+`shared/models/`. Nothing of the web app or of Leviate for Blender is changed.
 
 ```sh
-cd apps/desktop
+cd desktop
 npm ci
 npm start                              # run it from the repository
-cd ../..
+cd ..
 node scripts/build-desktop.mjs         # installer for this system in dist/desktop/
 ```
 
 The Build & Release workflow builds Windows, macOS and Linux on every version tag. The
-version comes from `web/js/version.js`, like the other downloads.
+version comes from `shared/js/version.js`, like the other downloads.
 
 | File | What it does |
 | --- | --- |

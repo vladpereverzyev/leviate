@@ -7,7 +7,7 @@ Each zip holds the add-on, the MediaPipe hand model and the Python wheels the
 hand tracking needs (MediaPipe, OpenCV, absl-py, flatbuffers) plus the ones the
 phone camera needs (aiortc for WebRTC with its dependencies, websockets, qrcode).
 Blender installs the wheels itself; numpy comes with Blender. The version comes from
-web/js/version.js.
+shared/js/version.js.
 
 With --extensions the zips go to dist/extensions/ for extensions.blender.org, which takes
 only CC0 assets: they leave the hand model out and the add-on downloads the same file
@@ -25,7 +25,7 @@ import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "integrations" / "blender" / "leviate"
-MODEL = ROOT / "web" / "models" / "hand_landmarker.task"
+MODEL = ROOT / "shared" / "models" / "hand_landmarker.task"
 DIST = ROOT / "dist"
 CACHE = DIST / "wheels"
 
@@ -95,7 +95,7 @@ def build(platform, version, extensions=False):
 
 
 def main():
-    version = re.search(r"VERSION = '([\d.]+)'", (ROOT / "web" / "js" / "version.js").read_text()).group(1)
+    version = re.search(r"VERSION = '([\d.]+)'", (ROOT / "shared" / "js" / "version.js").read_text()).group(1)
     args = sys.argv[1:]
     extensions = "--extensions" in args
     platforms = [a for a in args if a != "--extensions"] or list(PLATFORMS)

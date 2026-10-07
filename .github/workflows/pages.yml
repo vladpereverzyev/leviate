@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
-# Publishes the web app (the web/ folder) to https://vladpereverzyev.github.io/leviate/
-# on every push to main that changes it.
+# Publishes the website to https://vladpereverzyev.github.io/leviate/ on every push to main
+# that changes it: scripts/build-web.mjs puts web/ and shared/ together in dist/web.
 
 name: Website
 
 on:
   push:
     branches: [main]
-    paths: ["web/**", ".github/workflows/pages.yml"]
+    paths: ["web/**", "shared/**", "scripts/build-web.mjs", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -32,13 +32,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Put the website together
+        run: node scripts/build-web.mjs
+
       - name: Set up Pages
         uses: actions/configure-pages@v5
 
       - name: Upload the website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: web
+          path: dist/web
 
       - name: Publish
         id: deployment

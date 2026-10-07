@@ -6,11 +6,11 @@
 //   macOS    leviate-<version>-macos-arm64.dmg and -macos-x64.dmg
 //   Linux    leviate-<version>-linux-x64.AppImage
 //
-// The files it shares with the web app (hand worker, gestures, phone pairing, MediaPipe,
-// PeerJS, the font, the hand model) are copied unchanged into apps/desktop/web/. The
-// version comes from web/js/version.js, like the other downloads.
+// The app uses the files of shared/ (hand worker, gestures, phone pairing, MediaPipe,
+// PeerJS, the font, the hand model, the icon), copied unchanged into desktop/shared/ with
+// the license files. The version comes from shared/js/version.js, like the other downloads.
 //
-//   cd apps/desktop && npm ci
+//   cd desktop && npm ci
 //   node scripts/build-desktop.mjs          (from the repository root)
 //   node scripts/build-desktop.mjs --dir    (unpacked app only, quicker to try)
 
@@ -20,24 +20,20 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const APP = path.join(ROOT, 'apps', 'desktop');
-const SITE = path.join(ROOT, 'web');
-const WEB = path.join(APP, 'web');
+const APP = path.join(ROOT, 'desktop');
+const SHARED = path.join(ROOT, 'shared');
+const COPY = path.join(APP, 'shared');
 const BUILD = path.join(APP, 'build');
 
-// What the desktop app uses of the web app (in web/), nothing else, and the license files.
-const FILES = ['js/hand-worker.js', 'js/gestures.js', 'js/phone.js', 'js/consent.js', 'js/version.js',
-  'vendor/mediapipe', 'vendor/peerjs', 'vendor/qrcode', 'vendor/fonts', 'models', 'icons/icon.svg',
-  'icons/icon-512.png'];
 const LICENSES = ['LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.md'];
 
-const version = /VERSION = '([\d.]+)'/.exec(fs.readFileSync(path.join(SITE, 'js', 'version.js'), 'utf8'))[1];
+const version = /VERSION = '([\d.]+)'/.exec(fs.readFileSync(path.join(SHARED, 'js', 'version.js'), 'utf8'))[1];
 
-fs.rmSync(WEB, { recursive: true, force: true });
-for (const name of FILES) fs.cpSync(path.join(SITE, name), path.join(WEB, name), { recursive: true });
-for (const name of LICENSES) fs.copyFileSync(path.join(ROOT, name), path.join(WEB, name));
+fs.rmSync(COPY, { recursive: true, force: true });
+fs.cpSync(SHARED, COPY, { recursive: true });
+for (const name of LICENSES) fs.copyFileSync(path.join(ROOT, name), path.join(COPY, name));
 fs.mkdirSync(BUILD, { recursive: true });
-fs.copyFileSync(path.join(SITE, 'icons', 'icon-512.png'), path.join(BUILD, 'icon.png'));
+fs.copyFileSync(path.join(SHARED, 'icons', 'icon-512.png'), path.join(BUILD, 'icon.png'));
 
 const platform = { win32: '--win', darwin: '--mac', linux: '--linux' }[process.platform];
 const builder = path.join(APP, 'node_modules', 'electron-builder', 'cli.js');

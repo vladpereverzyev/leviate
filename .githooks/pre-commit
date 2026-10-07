@@ -1,8 +1,8 @@
 #!/bin/sh
 # Raises the patch version on every commit, unless the version was already
 # changed by hand in this commit (for example a minor or major release).
-if git diff --cached --name-only | grep -qx 'web/js/version.js'; then
+if git diff --cached --name-only | grep -qx 'shared/js/version.js'; then
   exit 0
 fi
 node scripts/bump.mjs patch >/dev/null || exit 1
-git add web/js/version.js
+git add shared/js/version.js

@@ -36,9 +36,9 @@ jobs:
       - name: Tag matches the app version
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          APP="v$(grep -oP "VERSION = '\K[0-9.]+" web/js/version.js)"
+          APP="v$(grep -oP "VERSION = '\K[0-9.]+" shared/js/version.js)"
           if [ "$APP" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match web/js/version.js ($APP)"
+            echo "Tag $GITHUB_REF_NAME does not match shared/js/version.js ($APP)"
             exit 1
           fi
 
@@ -67,10 +67,10 @@ jobs:
         with:
           node-version: "24"
           cache: npm
-          cache-dependency-path: apps/desktop/package-lock.json
+          cache-dependency-path: desktop/package-lock.json
 
       - name: Install
-        working-directory: apps/desktop
+        working-directory: desktop
         run: npm ci
 
       - name: Build Leviate for Desktop
@@ -121,7 +121,7 @@ jobs:
           cursor, one finger held still is a left click, two fingers a right click.
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
-          Guide: [apps/desktop](https://github.com/vladpereverzyev/leviate/tree/main/apps/desktop).
+          Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF

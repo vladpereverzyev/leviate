@@ -21,7 +21,7 @@ nada.
 Todo funciona en el navegador sobre la CPU. Sin instalación, sin servidor, sin GPU
 y tus archivos nunca salen de tu dispositivo.
 
-![Leviate en un navegador de escritorio](web/docs/screenshot.png)
+![Leviate en un navegador de escritorio](docs/screenshot.png)
 
 ## Funciones
 
@@ -55,7 +55,7 @@ y tus archivos nunca salen de tu dispositivo.
 
 ## Gestos
 
-![Las tres posturas de la mano: la mano abierta gira, el puño desplaza, pulgar e índice hacen zoom](web/docs/gestures.png)
+![Las tres posturas de la mano: la mano abierta gira, el puño desplaza, pulgar e índice hacen zoom](docs/gestures.png)
 
 Los dibujos muestran los 21 puntos de la mano que la app sigue y dibuja sobre la vista
 previa de la webcam, con los mismos colores que usa para cada gesto.
@@ -84,7 +84,7 @@ está en el navegador.
 
 <table>
 <tr>
-<td width="220"><img src="web/docs/screenshot-phone.png" alt="Leviate en un teléfono" width="200"></td>
+<td width="220"><img src="docs/screenshot-phone.png" alt="Leviate en un teléfono" width="200"></td>
 <td valign="middle">
 
 Abre el mismo enlace en el teléfono y todo funciona también allí:
@@ -112,8 +112,9 @@ la carpeta por HTTP:
 
 ```sh
 git clone https://github.com/vladpereverzyev/leviate.git
-cd leviate/web
-python -m http.server 8000
+cd leviate
+node scripts/build-web.mjs
+python -m http.server 8000 --directory dist/web
 ```
 
 Luego abre la dirección que muestra el servidor. Los teléfonos necesitan una dirección
@@ -127,7 +128,7 @@ Nada que instalar en ninguno de los dos.
 
 <table>
 <tr>
-<td width="260"><img src="web/docs/phone-qr.png" alt="Ventana Webcam con el código QR para emparejar" width="240"></td>
+<td width="260"><img src="docs/phone-qr.png" alt="Ventana Webcam con el código QR para emparejar" width="240"></td>
 <td valign="middle">
 
 1. En el ordenador abre la ventana **Webcam** y pulsa **Use phone**.
@@ -189,11 +190,11 @@ móvil (código QR, como en la app web). Tiene dos módulos:
 - **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
   dos dedos quietos hacen clic derecho.
 
-![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](web/docs/mouse-gestures.png)
+![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
 
 Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versión>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
-Guía completa en [apps/desktop](apps/desktop/) (en inglés).
+Guía completa en [desktop](desktop/) (en inglés).
 
 ## Archivos compatibles
 
@@ -218,10 +219,10 @@ un archivo asociado la app te dice cuál.
    por segundo pedidos.
 2. **Seguimiento de la mano**: [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
    funciona en WebAssembly con el delegado de CPU (XNNPACK) y devuelve 21 puntos de la
-   mano por cada nuevo fotograma. Funciona en un Web Worker (`web/js/hand-worker.js`), así
+   mano por cada nuevo fotograma. Funciona en un Web Worker (`shared/js/hand-worker.js`), así
    la vista 3D nunca lo espera; los navegadores sin module workers vuelven al hilo
    principal.
-3. **Postura**: `web/js/gestures.js` comprueba qué dedos están extendidos comparando la
+3. **Postura**: `shared/js/gestures.js` comprueba qué dedos están extendidos comparando la
    dirección de cada punta con la dirección de la palma y obtiene una de las tres
    posturas. Una postura debe ser estable durante unos fotogramas antes de activarse,
    lo que elimina el parpadeo.
@@ -236,31 +237,34 @@ un archivo asociado la app te dice cuál.
 
 | Ruta | Para qué sirve |
 | --- | --- |
-| `web/` | La app web, publicada en GitHub Pages por `.github/workflows/pages.yml` |
+| `web/` | Solo el sitio: páginas, estilos, la app web, three.js, iconos, imágenes, sitemap |
 | `web/index.html` | Diseño: escena, objetos, webcam, gestos y paneles de vista |
 | `web/css/style.css` | Estilos para escritorio y móvil |
 | `web/js/app.js` | Escena, carga de archivos, cámara, bucle de seguimiento e interfaz |
-| `web/js/gestures.js` | Clasificación de posturas y movimiento (sin DOM, fácil de probar) |
-| `web/js/version.js` | Versión actual, mostrada en la app |
-| `scripts/bump.mjs` | Sube la versión (patch, minor o major) |
-| `web/js/hand-worker.js` | Seguimiento de la mano en un Web Worker, fuera del hilo principal |
-| `web/js/phone.js` | Teléfono como webcam: emparejamiento con QR en el ordenador, página de cámara en el teléfono |
 | `web/js/windows.js` | Ventanas flotantes: arrastrar, plegar, diseño para teléfono |
-| `integrations/` | Add-ons que llevan el control con la mano a otros programas (Blender) |
-| `scripts/build-blender.py` | Crea el zip del add-on para Blender |
-| `apps/desktop/` | Leviate for Desktop (Electron): la mano en cualquier programa, módulos 3D y Mouse |
-| `scripts/build-desktop.mjs` | Crea la app de escritorio para Windows, macOS o Linux |
 | `web/vendor/three/` | three.js, sus cargadores y decodificadores (MIT, Draco Apache-2.0) |
-| `web/vendor/peerjs/`, `web/vendor/qrcode/` | Emparejamiento WebRTC y generador de códigos QR (MIT) |
-| `web/vendor/fonts/` | Fuente Jost (SIL OFL 1.1) |
-| `web/docs/` | Capturas, ventana QR y dibujos de gestos usados en este README |
 | `web/icons/`, `web/site.webmanifest` | Iconos de la app para navegadores, iOS y Android |
-| `web/vendor/mediapipe/` | MediaPipe Tasks Vision y su runtime WebAssembly (Apache-2.0) |
-| `web/models/hand_landmarker.task` | Modelo de la mano de MediaPipe (Apache-2.0) |
+| `web/img/` | Imágenes del sitio: dibujos de los gestos, captura, imagen para redes sociales |
+| `shared/` | Lo que comparten el sitio, la app de escritorio y Blender: seguimiento de la mano, gestos, emparejamiento del móvil, MediaPipe, PeerJS, fuentes, modelo de la mano, versión |
+| `shared/js/gestures.js` | Clasificación de posturas y movimiento (sin DOM, fácil de probar) |
+| `shared/js/version.js` | Versión actual, mostrada en la app |
+| `shared/js/hand-worker.js` | Seguimiento de la mano en un Web Worker, fuera del hilo principal |
+| `shared/js/phone.js` | Teléfono como webcam: emparejamiento con QR en el ordenador, página de cámara en el teléfono |
+| `shared/vendor/peerjs/`, `shared/vendor/qrcode/` | Emparejamiento WebRTC y generador de códigos QR (MIT) |
+| `shared/vendor/fonts/` | Fuente Jost (SIL OFL 1.1) |
+| `shared/vendor/mediapipe/` | MediaPipe Tasks Vision y su runtime WebAssembly (Apache-2.0) |
+| `shared/models/hand_landmarker.task` | Modelo de la mano de MediaPipe (Apache-2.0) |
+| `desktop/` | Leviate for Desktop (Electron): la mano en cualquier programa, módulos 3D y Mouse |
+| `integrations/` | Add-ons que llevan el control con la mano a otros programas (Blender) |
+| `docs/` | Capturas, ventana QR y dibujos de gestos usados en este README |
+| `scripts/build-web.mjs` | Junta `web/` y `shared/` en `dist/web/`, publicada en GitHub Pages por `.github/workflows/pages.yml` |
+| `scripts/bump.mjs` | Sube la versión (patch, minor o major) |
+| `scripts/build-blender.py` | Crea el zip del add-on para Blender |
+| `scripts/build-desktop.mjs` | Crea la app de escritorio para Windows, macOS o Linux |
 
 ## Versiones
 
-La versión se ve junto al nombre en la app y está en `web/js/version.js`. Sigue el
+La versión se ve junto al nombre en la app y está en `shared/js/version.js`. Sigue el
 [versionado semántico](https://semver.org) y crece con cada commit: el hook pre-commit
 en `.githooks/` sube el número de patch automáticamente. Actívalo una vez después de
 clonar:

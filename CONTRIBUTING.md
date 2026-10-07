@@ -24,7 +24,7 @@ is the example to follow. The policy for integrations:
 2. **Same gestures everywhere**: reuse the hand tracking of Leviate for Blender
    (`gestures.py`, `tracker.py` and the MediaPipe model), as described in
    [integrations/README.md](integrations/README.md). Gesture changes go first in
-   `web/js/gestures.js` and then in every port, so the hand behaves the same everywhere.
+   `shared/js/gestures.js` and then in every port, so the hand behaves the same everywhere.
 3. **Local only**: the camera is read on the computer, nothing is recorded or sent,
    no telemetry.
 4. **Light**: use the program's own scripting and add-on system, avoid extra installs.

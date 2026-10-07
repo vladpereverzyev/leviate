@@ -9,8 +9,8 @@
 //   Mouse  the hand moves the cursor and clicks (renderer/pointer.js)
 //
 // The window is renderer/control.html. Camera, hand tracking, phone pairing and the 3D
-// gestures are the files of the web app (js/hand-worker.js, js/gestures.js,
-// js/phone.js), served unchanged through the app:// scheme. mouse.js talks to the system.
+// gestures are the files of shared/ (js/hand-worker.js, js/gestures.js, js/phone.js), the
+// same ones the website uses, served through the app:// scheme. mouse.js talks to the system.
 
 const { app, BrowserWindow, Menu, dialog, globalShortcut, ipcMain, protocol, screen, session, shell,
   systemPreferences } = require('electron');
@@ -18,9 +18,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const mouse = require('./mouse');
 
-// Packed app: the web app files are copied into web/ by scripts/build-desktop.mjs.
-// Development: the web/ folder of the repository.
-const WEB = app.isPackaged ? path.join(__dirname, 'web') : path.resolve(__dirname, '..', '..', 'web');
+// Packed app: shared/ is copied next to this file by scripts/build-desktop.mjs.
+// Development: the shared/ folder of the repository.
+const SHARED = app.isPackaged ? path.join(__dirname, 'shared') : path.resolve(__dirname, '..', 'shared');
 const RENDERER = path.join(__dirname, 'renderer');
 const ORIGIN = 'app://leviate';
 // Turns the hand off and back on from any program. Control, not Cmd, on macOS too:
@@ -39,7 +39,7 @@ const TYPES = {
   '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.txt': 'text/plain',
 };
 
-const VERSION = /VERSION = '([\d.]+)'/.exec(fs.readFileSync(path.join(WEB, 'js', 'version.js'), 'utf8'))[1];
+const VERSION = /VERSION = '([\d.]+)'/.exec(fs.readFileSync(path.join(SHARED, 'js', 'version.js'), 'utf8'))[1];
 
 // The camera must keep running while other programs are in front or the window is
 // minimized: that is when the hand works the most.
@@ -61,10 +61,10 @@ let drag = null;   // { buttons, keys, anchor, pos, target, pressed } in screen 
 
 // ---------------------------------------------------------------- files
 
-// app://leviate/desktop/... is this app, everything else the web app.
+// app://leviate/desktop/... is this app, everything else shared/.
 async function serve(request) {
   let rel = decodeURIComponent(new URL(request.url).pathname).replace(/^\/+/, '');
-  let base = WEB;
+  let base = SHARED;
   if (rel.startsWith('desktop/')) {
     base = RENDERER;
     rel = rel.slice('desktop/'.length);
@@ -90,7 +90,7 @@ function createWindow() {
     minHeight: 600,
     title: 'Leviate',
     backgroundColor: '#011E2E',
-    icon: path.join(WEB, 'icons', 'icon-512.png'),
+    icon: path.join(SHARED, 'icons', 'icon-512.png'),
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

@@ -20,7 +20,7 @@ program that can be scripted.
 1. **One folder per program**: `integrations/<program>/` with the source, a README
    (install, use, tested versions) and its LICENSE.
 2. **Same gestures everywhere**: reuse the hand tracking of Leviate for Blender, described
-   below. Gesture changes go first in `web/js/gestures.js` and then in every port.
+   below. Gesture changes go first in `shared/js/gestures.js` and then in every port.
 3. **Local only**: the camera is read on the computer, nothing is recorded or sent
    anywhere, no telemetry.
 4. **Light**: use what the program already offers (its scripting language and add-on
@@ -43,9 +43,9 @@ so a Python based program can take these files as they are:
 
 | File | What it does |
 | --- | --- |
-| `blender/leviate/gestures.py` | Open hand, fist and pinch from the 21 hand points. A line by line port of `web/js/gestures.js`, tested to give the same results |
+| `blender/leviate/gestures.py` | Open hand, fist and pinch from the 21 hand points. A line by line port of `shared/js/gestures.js`, tested to give the same results |
 | `blender/leviate/tracker.py` | Reads the camera with OpenCV, runs MediaPipe Hand Landmarker on the CPU in a thread and queues the moves |
-| `web/models/hand_landmarker.task` | The MediaPipe hand model (Apache-2.0) |
+| `shared/models/hand_landmarker.task` | The MediaPipe hand model (Apache-2.0) |
 
 The Python wheels are MediaPipe, OpenCV (headless), absl-py and flatbuffers; numpy is
 usually already there. See `scripts/build-blender.py` for the exact versions.

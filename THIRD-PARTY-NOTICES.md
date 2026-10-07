@@ -6,16 +6,16 @@ components. Each one keeps its own license.
 | Component | Version | License | Files in this repository |
 | --- | --- | --- | --- |
 | [three.js](https://github.com/mrdoob/three.js) | r186 (npm `three@0.186.1`) | MIT | `web/vendor/three/` |
-| [MediaPipe Tasks Vision](https://github.com/google-ai-edge/mediapipe) | npm `@mediapipe/tasks-vision@1.0.1` | Apache-2.0 | `web/vendor/mediapipe/` |
-| [MediaPipe Hand Landmarker model](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker) | float16, latest | Apache-2.0 | `web/models/hand_landmarker.task` |
+| [MediaPipe Tasks Vision](https://github.com/google-ai-edge/mediapipe) | npm `@mediapipe/tasks-vision@1.0.1` | Apache-2.0 | `shared/vendor/mediapipe/` |
+| [MediaPipe Hand Landmarker model](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker) | float16, latest | Apache-2.0 | `shared/models/hand_landmarker.task` |
 | [fflate](https://github.com/101arrowz/fflate) | 0.8.2 (bundled with three.js) | MIT | `web/vendor/three/addons/libs/fflate.module.js` |
 | [meshoptimizer decoder](https://github.com/zeux/meshoptimizer) | bundled with three.js | MIT | `web/vendor/three/addons/libs/meshopt_decoder.module.js` |
 | [Draco decoder](https://github.com/google/draco) | bundled with three.js | Apache-2.0 | `web/vendor/three/addons/libs/draco/` |
-| [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `web/vendor/peerjs/` |
-| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `web/vendor/qrcode/` |
-| [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `web/vendor/jsqr/` |
-| [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `web/vendor/fonts/` |
-| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `web/js/gestures.js` and `integrations/blender/leviate/gestures.py` |
+| [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `shared/vendor/peerjs/` |
+| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `shared/vendor/qrcode/` |
+| [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `shared/vendor/jsqr/` |
+| [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `shared/vendor/fonts/` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `shared/js/gestures.js` and `integrations/blender/leviate/gestures.py` |
 
 The Leviate for Blender zips in the releases also carry the Python wheels of MediaPipe,
 OpenCV (headless), absl-py and FlatBuffers (all Apache-2.0), downloaded unmodified from
@@ -26,7 +26,7 @@ The Leviate for Desktop downloads in the releases are built with
 [Electron](https://www.electronjs.org) (MIT, with Chromium under BSD-3-Clause and the
 licenses listed in its `LICENSES.chromium.html`) and electron-builder (MIT), and carry
 [koffi](https://koffi.dev) (MIT) to reach the mouse of the system. Their license files are
-inside the app. Versions in [apps/desktop/package.json](apps/desktop/package.json).
+inside the app. Versions in [desktop/package.json](desktop/package.json).
 
 ## three.js
 
@@ -44,11 +44,11 @@ Copyright © 2010-2026 three.js authors
 
 ## MediaPipe Tasks Vision
 
-Files: `web/vendor/mediapipe/vision_bundle.mjs` and `web/vendor/mediapipe/wasm/`
+Files: `shared/vendor/mediapipe/vision_bundle.mjs` and `shared/vendor/mediapipe/wasm/`
 (SIMD and non-SIMD WebAssembly builds).
 Copied from the npm package. The only change is the removal of the
 `sourceMappingURL` comment at the end of `vision_bundle.mjs`, because the source
-map is not shipped. Full license text in `web/vendor/mediapipe/LICENSE`.
+map is not shipped. Full license text in `shared/vendor/mediapipe/LICENSE`.
 
 ```
 Copyright Google LLC
@@ -60,9 +60,9 @@ NOTICE text to carry over.
 
 ## MediaPipe Hand Landmarker model
 
-File: `web/models/hand_landmarker.task`, downloaded unmodified from
+File: `shared/models/hand_landmarker.task`, downloaded unmodified from
 `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task`.
-Released by Google under the Apache License 2.0 (same text as `web/vendor/mediapipe/LICENSE`).
+Released by Google under the Apache License 2.0 (same text as `shared/vendor/mediapipe/LICENSE`).
 
 ## fflate
 
@@ -98,8 +98,8 @@ Licensed under the Apache License, Version 2.0
 
 ## PeerJS
 
-File: `web/vendor/peerjs/peerjs.min.js`, copied from the npm package without the source map
-comment. Full license text in `web/vendor/peerjs/LICENSE`. The phone pairing uses the free
+File: `shared/vendor/peerjs/peerjs.min.js`, copied from the npm package without the source map
+comment. Full license text in `shared/vendor/peerjs/LICENSE`. The phone pairing uses the free
 public PeerJS server (`0.peerjs.com`) to exchange connection details.
 
 ```
@@ -109,7 +109,7 @@ The MIT License
 
 ## qrcode-generator
 
-File: `web/vendor/qrcode/qrcode.mjs`, copied unmodified from the npm package. The license
+File: `shared/vendor/qrcode/qrcode.mjs`, copied unmodified from the npm package. The license
 is in the header of the file.
 
 ```
@@ -119,9 +119,9 @@ Licensed under the MIT license
 
 ## jsQR
 
-File: `web/vendor/jsqr/jsQR.js`, copied unmodified from the npm package (`dist/jsQR.js`).
+File: `shared/vendor/jsqr/jsQR.js`, copied unmodified from the npm package (`dist/jsQR.js`).
 It reads the QR code on phones whose browser has no built in QR reader (Safari on
-iPhone). The full license is in `web/vendor/jsqr/LICENSE`.
+iPhone). The full license is in `shared/vendor/jsqr/LICENSE`.
 
 ```
 jsQR by Cosmo Wolfe and contributors
@@ -130,8 +130,8 @@ Licensed under the Apache License, Version 2.0
 
 ## Jost font
 
-Files: `web/vendor/fonts/jost-300.woff2`, `jost-400.woff2` and `jost-500.woff2`.
-Licensed under the SIL Open Font License 1.1. Full text in `web/vendor/fonts/OFL.txt`.
+Files: `shared/vendor/fonts/jost-300.woff2`, `jost-400.woff2` and `jost-500.woff2`.
+Licensed under the SIL Open Font License 1.1. Full text in `shared/vendor/fonts/OFL.txt`.
 
 ```
 Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type)
@@ -139,7 +139,7 @@ Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type)
 
 ## kelyonn/vertex
 
-The finger extension test in `web/js/gestures.js` (fingertip direction compared with
+The finger extension test in `shared/js/gestures.js` (fingertip direction compared with
 the palm direction, thumb compared with the pinky base) is adapted from
 `src/gesture_engine.py` of kelyonn/vertex. No code is copied verbatim; the idea was
 rewritten in JavaScript.

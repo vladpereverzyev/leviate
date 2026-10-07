@@ -22,11 +22,11 @@ This product includes third-party software distributed under its own license:
 
   MediaPipe Tasks Vision 1.0.1 (vision_bundle.mjs and WebAssembly runtime)
   Copyright Google LLC
-  Apache License 2.0, see web/vendor/mediapipe/LICENSE
+  Apache License 2.0, see shared/vendor/mediapipe/LICENSE
 
-  MediaPipe Hand Landmarker model (web/models/hand_landmarker.task)
+  MediaPipe Hand Landmarker model (shared/models/hand_landmarker.task)
   Copyright Google LLC
-  Apache License 2.0, see web/vendor/mediapipe/LICENSE
+  Apache License 2.0, see shared/vendor/mediapipe/LICENSE
 
   fflate 0.8.2, Copyright (c) 2023 Arjun Barrett
   MIT License (header in web/vendor/three/addons/libs/fflate.module.js)
@@ -38,13 +38,13 @@ This product includes third-party software distributed under its own license:
   Apache License 2.0, see web/vendor/three/addons/libs/draco/LICENSE
 
   PeerJS 1.5.5, Copyright (c) 2015 Michelle Bu and Eric Zhang
-  MIT License, see web/vendor/peerjs/LICENSE
+  MIT License, see shared/vendor/peerjs/LICENSE
 
   qrcode-generator 2.0.4, Copyright (c) 2009 Kazuhiko Arase
-  MIT License (header in web/vendor/qrcode/qrcode.mjs)
+  MIT License (header in shared/vendor/qrcode/qrcode.mjs)
 
   Jost font, Copyright 2020 The Jost Project Authors
-  SIL Open Font License 1.1, see web/vendor/fonts/OFL.txt
+  SIL Open Font License 1.1, see shared/vendor/fonts/OFL.txt
 
   Finger extension test adapted from kelyonn/vertex
   Copyright (c) 2026 Kalyan
