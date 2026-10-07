@@ -189,6 +189,8 @@ telefono (codice QR, come nell'app web). Ha due moduli:
 - **Mouse**: la mano aperta sposta il cursore, un dito fermo per un momento fa clic
   sinistro, due dita ferme fanno clic destro.
 
+<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop con il modulo 3D" width="300">
+
 ![Le pose del modulo Mouse: mano aperta sposta il cursore, un dito fermo fa clic sinistro, due dita clic destro](docs/mouse-gestures.png)
 
 Scaricala dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versione>-windows-x64.exe`,

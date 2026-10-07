@@ -192,6 +192,8 @@ móvil (código QR, como en la app web). Tiene dos módulos:
 - **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
   dos dedos quietos hacen clic derecho.
 
+<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop con el módulo 3D" width="300">
+
 ![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
 
 Descárgala de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versión>-windows-x64.exe`,

@@ -182,7 +182,7 @@ a.link { text-decoration: none; }
 }
 
 /* The Ko-fi note, the same as in Leviate for Desktop, under the header in the middle. */
-.note {
+.kofi {
   position: absolute;
   top: 64px;
   left: 50%;
@@ -198,14 +198,14 @@ a.link { text-decoration: none; }
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   z-index: 150;
 }
-.note[hidden] { display: none; }
-.note-copy { flex: 1; min-width: 0; }
-.note p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text); }
-.note .note-sub { margin-top: 2px; font-size: 12px; color: var(--muted); }
-.note .note-links { margin-top: 8px; font-size: 12px; color: var(--dim); }
-.note-links button { padding: 0; border: 0; background: none; font: inherit; color: var(--muted); cursor: pointer; }
-.note-links button:hover { color: var(--text); }
-.note > .btn { flex: none; text-decoration: none; color: #fff; }
+.kofi[hidden] { display: none; }
+.kofi-copy { flex: 1; min-width: 0; }
+.kofi p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text); }
+.kofi .kofi-sub { margin-top: 2px; font-size: 12px; color: var(--muted); }
+.kofi .kofi-links { margin-top: 8px; font-size: 12px; color: var(--dim); }
+.kofi-links button { padding: 0; border: 0; background: none; font: inherit; color: var(--muted); cursor: pointer; }
+.kofi-links button:hover { color: var(--text); }
+.kofi > .btn { flex: none; text-decoration: none; color: #fff; }
 
 .legal {
   position: absolute;
@@ -567,7 +567,7 @@ section.phone-mode {
 @media (max-width: 700px) {
   /* Header and footer in the same place and size as on the other pages. */
   .top { top: max(32px, env(safe-area-inset-top)); left: var(--gutter); right: var(--gutter); }
-  .note { top: 76px; }
+  .kofi { top: 76px; }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win { width: calc(100vw - 24px); max-width: none; }

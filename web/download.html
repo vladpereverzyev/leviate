@@ -76,6 +76,10 @@
     .card b { color: var(--text); font-weight: 400; }
     .card ul { margin: 0 0 12px; padding-left: 20px; }
     .card img { display: block; width: 100%; height: auto; margin: 18px 0 6px; border-radius: 10px; border: 1px solid var(--line); }
+    /* The three poses side by side, each in its own frame, with nothing behind them. */
+    .poses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 18px 0 6px; }
+    .card .poses img { margin: 0; border: 0; border-radius: 0; }
+    @media (max-width: 560px) { .poses { grid-template-columns: minmax(0, 300px); justify-content: center; } }
     .note { color: var(--dim) !important; font-size: 13px !important; }
 
     .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 14px; }
@@ -166,7 +170,11 @@
       <div class="buttons">
         <a class="btn" href="./">Open Leviate<small>Chrome, Edge, Firefox, Safari</small></a>
       </div>
-      <img src="img/gestures.png" alt="Open hand rotates, fist pans, thumb and index zoom" width="2400" height="1238" loading="lazy">
+      <div class="poses">
+        <img src="img/pose-rotate.png" alt="Open hand: rotate" width="710" height="1054" loading="lazy">
+        <img src="img/pose-pan.png" alt="Fist: pan" width="710" height="1054" loading="lazy">
+        <img src="img/pose-zoom.png" alt="Thumb and index: zoom" width="710" height="1054" loading="lazy">
+      </div>
     </section>
 
     <!-- Desktop -->
@@ -192,7 +200,11 @@
       More info and Run anyway. On macOS open System Settings, Privacy &amp; Security and choose Open
       Anyway, then allow Leviate in Accessibility. Linux needs an X11 (Xorg) session.
       <a href="https://github.com/vladpereverzyev/leviate/tree/main/desktop" target="_blank" rel="noopener">Full guide</a></p>
-      <img src="img/mouse-gestures.png" alt="Mouse module: open hand moves the cursor, one finger held still clicks left, two fingers click right" width="2400" height="1238" loading="lazy">
+      <div class="poses">
+        <img src="img/pose-move.png" alt="Open hand: move the cursor" width="710" height="1054" loading="lazy">
+        <img src="img/pose-left-click.png" alt="One finger held still: left click" width="710" height="1054" loading="lazy">
+        <img src="img/pose-right-click.png" alt="Two fingers held still: right click" width="710" height="1054" loading="lazy">
+      </div>
     </section>
 
     <!-- Blender -->

@@ -190,6 +190,8 @@ Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
 - **Mouse**: die offene Hand bewegt den Cursor, ein kurz ruhig gehaltener Finger ist ein
   Linksklick, zwei Finger ein Rechtsklick.
 
+<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop mit dem Modul 3D" width="300">
+
 ![Die Posen des Moduls Mouse: offene Hand bewegt den Cursor, ein ruhiger Finger klickt links, zwei Finger rechts](docs/mouse-gestures.png)
 
 Download im [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<Version>-windows-x64.exe`,

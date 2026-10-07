@@ -183,6 +183,8 @@ phone (QR code, like the web app). It has two modules:
 - **Mouse**: open hand moves the cursor, one finger held still is a left click, two
   fingers held still a right click.
 
+<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="300">
+
 ![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/mouse-gestures.png)
 
 Download it from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<version>-windows-x64.exe`,
