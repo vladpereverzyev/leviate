@@ -16,12 +16,22 @@
   <main>
     <!-- A newer release on GitHub: shown by control.js -->
     <section class="update" id="update" hidden>
-      <p id="update-text"></p>
-      <div class="update-bar" id="update-bar" hidden><i></i></div>
-      <div class="update-actions">
-        <button id="update-now" class="btn small">Update</button>
-        <button id="update-later" class="btn small ghost">Later</button>
+      <div class="update-copy">
+        <p id="update-text"></p>
+        <p id="update-sub" class="update-sub"></p>
+        <div class="update-bar" id="update-bar" hidden><i></i></div>
+        <p class="update-links" id="update-links"><a id="update-notes" target="_blank" rel="noopener">What's new</a> · <button id="update-later">Remind me later</button></p>
       </div>
+      <button id="update-now" class="btn small">Update</button>
+    </section>
+    <!-- A word for Ko-fi after some use: shown by control.js -->
+    <section class="update" id="support" hidden>
+      <div class="update-copy">
+        <p>Do you like Leviate?</p>
+        <p class="update-sub">It is free and open source. Your support on Ko-fi helps it grow.</p>
+        <p class="update-links"><button id="support-later">Remind me later</button> · <button id="support-never">Don't ask again</button></p>
+      </div>
+      <a id="support-kofi" class="btn small" href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
     </section>
     <!-- Same webcam window as the web app -->
     <section class="win" id="win-cam">

@@ -183,12 +183,16 @@ a.link { text-decoration: none; }
 
 .legal {
   position: absolute;
+  left: 20px;
   right: 20px;
   bottom: max(10px, env(safe-area-inset-bottom));
+  text-align: center;
   color: var(--dim);
   font-size: 11px;
 }
-.legal a { color: var(--dim); text-decoration: none; }
+/* Full width to sit in the middle; only the links take clicks, the rest goes to the 3D view. */
+.legal { pointer-events: none; }
+.legal a { color: var(--dim); text-decoration: none; pointer-events: auto; }
 .legal a:hover { color: var(--text); }
 
 /* The same footer at the bottom of the other pages (download, privacy, 404). */

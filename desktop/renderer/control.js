@@ -38,6 +38,7 @@ const settings = {
   rotate: 1, pan: 1, zoom: 1, invertZoom: false,
   dwell: 1, reach: 0.6, smoothing: 0.5, allScreens: true, ring: true, phoneNotice: false,
   checkUpdates: true,
+  useSeconds: 0, supportAt: 15 * 60, supportDone: false,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 // The hand starts off on every launch: it takes over the mouse only when asked to.
@@ -325,6 +326,7 @@ function setMode(mode) {
   $('error').hidden = true;
   if (mode !== 'off') desktop.enable();
   showSettings();
+  askSupport();
 }
 
 function modeInfo() {
@@ -363,21 +365,69 @@ const FORMAT = {
 
 // --------------------------------------------------------------- updates
 
+// A word for Ko-fi after 15 minutes with the camera on, and again after 2 more hours of use
+// with Later; never again after Ko-fi or Don't ask again. Only while the hand is off, so it
+// never comes up in the middle of work, and never together with an update.
+const SUPPORT_AGAIN = 2 * 60 * 60;
+
+function askSupport() {
+  if (settings.supportDone || settings.mode !== 'off' || settings.useSeconds < settings.supportAt) return;
+  if (!$('update').hidden) return;
+  $('support').hidden = false;
+}
+
+function setupSupport() {
+  const never = () => {
+    settings.supportDone = true;
+    $('support').hidden = true;
+    save();
+  };
+  $('support-kofi').addEventListener('click', never);
+  $('support-never').onclick = never;
+  $('support-later').onclick = () => {
+    settings.supportAt = settings.useSeconds + SUPPORT_AGAIN;
+    $('support').hidden = true;
+    save();
+  };
+  setInterval(() => {
+    if (!video.srcObject) return;
+    settings.useSeconds += 60;
+    save();
+    askSupport();
+  }, 60 * 1000);
+  askSupport();
+}
+
+// What happens after Update, told before and while it happens.
+const UPDATE_STEPS = {
+  win32: { offer: 'Downloads and installs by itself, then Leviate opens again.',
+    during: 'When it is done Leviate closes and opens again by itself, already updated.',
+    done: (v) => [`Installing Leviate ${v}`, 'Leviate opens again by itself in a few seconds. Windows may ask for permission: choose Yes.'] },
+  darwin: { offer: 'Downloads the new version and opens it in Finder: drag Leviate to Applications.',
+    during: 'When it is done the new version opens in Finder.',
+    done: (v) => [`Leviate ${v} is open in Finder`, 'Drag Leviate to Applications, then start it again.'] },
+  linux: { offer: 'Downloads and installs by itself, then Leviate opens again.',
+    during: 'When it is done Leviate opens again by itself, already updated.',
+    done: (v) => [`Starting Leviate ${v}`, 'Leviate opens again by itself in a moment.'] },
+};
+
 function offerUpdate(found) {
   if (!found) return;
+  const steps = UPDATE_STEPS[desktop.platform] || UPDATE_STEPS.linux;
   const text = $('update-text');
-  text.replaceChildren(`Leviate ${found.version} is available. `);
-  const notes = document.createElement('a');
-  notes.href = found.notes;
-  notes.target = '_blank';
-  notes.textContent = "What's new";
-  text.append(notes);
+  const sub = $('update-sub');
+  text.textContent = `Leviate ${found.version} is available`;
+  sub.textContent = steps.offer;
+  $('update-notes').href = found.notes;
+  $('support').hidden = true;
   $('update').hidden = false;
   $('update-later').onclick = () => { $('update').hidden = true; };
   $('update-now').onclick = async () => {
-    $('update-now').parentElement.hidden = true;
+    $('update-now').hidden = true;
+    $('update-links').hidden = true;
     const bar = $('update-bar');
     text.textContent = `Downloading Leviate ${found.version}…`;
+    sub.textContent = steps.during;
     bar.hidden = false;
     desktop.onUpdateProgress((part) => {
       text.textContent = `Downloading Leviate ${found.version}… ${Math.round(part * 100)}%`;
@@ -386,18 +436,16 @@ function offerUpdate(found) {
     const error = await desktop.installUpdate();
     bar.hidden = true;
     if (error) {
-      text.textContent = `The update did not work: ${error}. `;
+      text.textContent = 'The update did not work';
+      sub.textContent = `${error}. `;
       const page = document.createElement('a');
       page.href = 'https://vladpereverzyev.github.io/leviate/download.html';
       page.target = '_blank';
       page.textContent = 'Download it from the site';
-      text.append(page);
+      sub.append(page);
       return;
     }
-    text.textContent = {
-      win32: `Installing Leviate ${found.version}: it opens again by itself in a few seconds.`,
-      darwin: `Leviate ${found.version} is open in Finder: drag Leviate to Applications, then start it again.`,
-    }[desktop.platform] || 'Starting the new version…';
+    [text.textContent, sub.textContent] = steps.done(found.version);
   };
 }
 
@@ -465,6 +513,7 @@ function setup() {
 
   $('checkUpdates').checked = settings.checkUpdates;
   $('checkUpdates').onchange = (e) => { settings.checkUpdates = e.target.checked; save(); };
+  setupSupport();
   if (settings.checkUpdates) desktop.checkUpdate().then(offerUpdate);
   desktop.onToggle(() => setMode(settings.mode === 'off' ? settings.lastMode : 'off'));
   desktop.onError((text) => {
