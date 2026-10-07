@@ -171,7 +171,7 @@ a.link { text-decoration: none; }
 .toast {
   position: absolute;
   left: 50%;
-  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 70px);
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 84px);
   transform: translateX(-50%);
   max-width: calc(100% - 32px);
   padding: 8px 16px;
@@ -180,6 +180,32 @@ a.link { text-decoration: none; }
   border: 1px solid var(--line);
   z-index: 100;
 }
+
+/* The Ko-fi note, the same as in Leviate for Desktop, under the header in the middle. */
+.note {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(440px, calc(100% - 40px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: linear-gradient(rgba(39, 145, 203, 0.12), rgba(39, 145, 203, 0.12)), var(--panel-solid);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  z-index: 150;
+}
+.note[hidden] { display: none; }
+.note-copy { flex: 1; min-width: 0; }
+.note p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text); }
+.note .note-sub { margin-top: 2px; font-size: 12px; color: var(--muted); }
+.note .note-links { margin-top: 8px; font-size: 12px; color: var(--dim); }
+.note-links button { padding: 0; border: 0; background: none; font: inherit; color: var(--muted); cursor: pointer; }
+.note-links button:hover { color: var(--text); }
+.note > .btn { flex: none; text-decoration: none; color: #fff; }
 
 .legal {
   position: absolute;
@@ -505,7 +531,7 @@ section.phone-mode {
 .tools {
   position: absolute;
   left: 50%;
-  bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px));
+  bottom: max(44px, calc(env(safe-area-inset-bottom) + 28px));
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -541,6 +567,7 @@ section.phone-mode {
 @media (max-width: 700px) {
   /* Header and footer in the same place and size as on the other pages. */
   .top { top: max(32px, env(safe-area-inset-top)); left: var(--gutter); right: var(--gutter); }
+  .note { top: 76px; }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win { width: calc(100vw - 24px); max-width: none; }
@@ -556,7 +583,7 @@ section.phone-mode {
     flex-wrap: wrap;
     justify-content: center;
     border-radius: 18px;
-    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 44px);
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 56px);
   }
   .tool { padding: 6px 9px; font-size: 12.5px; }
   .sep, #fullscreen { display: none; }

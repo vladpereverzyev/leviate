@@ -24,6 +24,7 @@ import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
 import { ensure } from './consent.js';
+import { setupSupport } from './support.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -648,6 +649,7 @@ setupWindows();
 // --------------------------------------------------------------- webcam
 
 const video = $('video');
+if (!pairId) setupSupport(() => !!video.srcObject);
 const engine = new GestureEngine();
 let stream = null;
 let landmarker = null;
