@@ -103,11 +103,12 @@ Leviate is minimized or behind your program.
 
 When a new version is out, Leviate says so at the top of the window when it starts:
 **Update** downloads the file for this computer from the
-[releases](https://github.com/vladpereverzyev/leviate/releases) and opens it. On Windows the
-installer replaces Leviate, on macOS the dmg opens in Finder (drag Leviate to Applications
+[releases](https://github.com/vladpereverzyev/leviate/releases), with a bar that shows how far
+it is, and opens it. On Windows the installer runs without its windows, replaces Leviate and
+starts it again (Windows asks for permission when Leviate is installed for all users), on macOS the dmg opens in Finder (drag Leviate to Applications
 again), on Linux the new AppImage takes the place of the old one and Leviate restarts.
-**Later** asks again at the next start. **Check for new versions at start**, at the bottom of
-the window, turns the check off. Versions older than 1.3.19 do not check yet.
+**Later** asks again at the next start. **Check for new versions at start**, in the Settings
+section, turns the check off. Versions older than 1.3.19 do not check yet.
 
 ## Privacy
 

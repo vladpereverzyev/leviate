@@ -5,13 +5,15 @@
 // the user turned it off); when a newer release has the file for this computer it offers
 // it, and install() downloads that file and opens it:
 //
-//   Windows  the installer, then Leviate closes so the installer can replace it
+//   Windows  the installer, run without its windows; it replaces Leviate once Leviate has
+//            closed and starts the new version
 //   macOS    the dmg, opened in Finder: drag Leviate to Applications as the first time
 //   Linux    the new AppImage takes the place of the running one, then Leviate restarts
 //
 // No signing is needed, unlike the updater of Electron, which needs a signed app on macOS.
 
 const { app, net, shell } = require('electron');
+const { spawn } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -80,8 +82,21 @@ async function install(update, progress) {
   fs.renameSync(part, target);
 
   if (process.platform === 'win32') {
-    const error = await shell.openPath(target);
-    if (error) throw new Error(error);
+    // /S installs without the windows of the installer, in the folder of the installed
+    // version, --updated keeps the shortcuts as they are and --force-run starts Leviate
+    // again at the end. Windows still asks for permission when Leviate is installed for all
+    // users. If the installer cannot start this way it opens as usual.
+    try {
+      await new Promise((resolve, reject) => {
+        const child = spawn(target, ['/S', '--updated', '--force-run'], { detached: true, stdio: 'ignore' });
+        child.once('error', reject);
+        child.once('spawn', resolve);
+        child.unref();
+      });
+    } catch {
+      const error = await shell.openPath(target);
+      if (error) throw new Error(error);
+    }
     app.quit();   // the installer replaces Leviate once it has closed
   } else if (process.platform === 'darwin') {
     const error = await shell.openPath(target);

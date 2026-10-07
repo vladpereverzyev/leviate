@@ -376,11 +376,15 @@ function offerUpdate(found) {
   $('update-later').onclick = () => { $('update').hidden = true; };
   $('update-now').onclick = async () => {
     $('update-now').parentElement.hidden = true;
+    const bar = $('update-bar');
     text.textContent = `Downloading Leviate ${found.version}…`;
+    bar.hidden = false;
     desktop.onUpdateProgress((part) => {
       text.textContent = `Downloading Leviate ${found.version}… ${Math.round(part * 100)}%`;
+      bar.firstElementChild.style.width = `${part * 100}%`;
     });
     const error = await desktop.installUpdate();
+    bar.hidden = true;
     if (error) {
       text.textContent = `The update did not work: ${error}. `;
       const page = document.createElement('a');
@@ -391,7 +395,7 @@ function offerUpdate(found) {
       return;
     }
     text.textContent = {
-      win32: 'Starting the installer…',
+      win32: `Installing Leviate ${found.version}: it opens again by itself in a few seconds.`,
       darwin: `Leviate ${found.version} is open in Finder: drag Leviate to Applications, then start it again.`,
     }[desktop.platform] || 'Starting the new version…';
   };
@@ -414,7 +418,7 @@ function setup() {
   };
   // Windows open and close like the windows of the web app, and stay as they were left.
   for (const win of document.querySelectorAll('.win')) {
-    win.classList.toggle('collapsed', !!settings.collapsed[win.id]);
+    win.classList.toggle('collapsed', settings.collapsed[win.id] ?? win.hasAttribute('data-folded'));
     win.querySelector('.win-head').onclick = () => {
       settings.collapsed[win.id] = win.classList.toggle('collapsed');
       save();

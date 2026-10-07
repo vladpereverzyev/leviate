@@ -402,6 +402,17 @@ footer.foot a:hover { color: var(--text); }
 .more summary::-webkit-details-marker { display: none; }
 .more summary:hover { color: var(--text); }
 .more[open] summary { color: var(--muted); }
+.more summary { position: relative; padding-right: 30px; }
+/* The same plus and minus as the windows, so it is clear the section opens and closes. */
+.more summary::before,
+.more summary::after {
+  content: "";
+  position: absolute;
+  background: var(--muted);
+}
+.more summary::before { right: 3px; width: 10px; top: 15.25px; height: 1.5px; }
+.more summary::after { right: 7.25px; width: 1.5px; top: 11px; height: 10px; }
+.more[open] summary::after { display: none; }
 
 .field { margin-top: 8px; }
 .field.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }

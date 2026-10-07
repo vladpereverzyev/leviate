@@ -34,6 +34,7 @@ fs.cpSync(SHARED, COPY, { recursive: true });
 for (const name of LICENSES) fs.copyFileSync(path.join(ROOT, name), path.join(COPY, name));
 fs.mkdirSync(BUILD, { recursive: true });
 fs.copyFileSync(path.join(SHARED, 'icons', 'icon-512.png'), path.join(BUILD, 'icon.png'));
+fs.copyFileSync(path.join(SHARED, 'icons', 'icon.ico'), path.join(BUILD, 'icon.ico'));
 
 const platform = { win32: '--win', darwin: '--mac', linux: '--linux' }[process.platform];
 const builder = path.join(APP, 'node_modules', 'electron-builder', 'cli.js');

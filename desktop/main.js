@@ -23,6 +23,9 @@ const update = require('./update');
 // Development: the shared/ folder of the repository.
 const SHARED = app.isPackaged ? path.join(__dirname, 'shared') : path.resolve(__dirname, '..', 'shared');
 const RENDERER = path.join(__dirname, 'renderer');
+// Windows gets the .ico with every size drawn on its own: the taskbar and the title bar
+// show 16 to 48 pixels, and the 512 PNG made smaller there loses the feather.
+const ICON = path.join(SHARED, 'icons', process.platform === 'win32' ? 'icon.ico' : 'icon-512.png');
 const ORIGIN = 'app://leviate';
 // Turns the hand off and back on from any program. Control, not Cmd, on macOS too:
 // Cmd+Option+M already minimizes windows there.
@@ -91,7 +94,7 @@ function createWindow() {
     minHeight: 600,
     title: 'Leviate',
     backgroundColor: '#011E2E',
-    icon: path.join(SHARED, 'icons', 'icon-512.png'),
+    icon: ICON,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -369,6 +372,10 @@ ipcMain.handle('phone:notice', async () => {
 });
 
 // ------------------------------------------------------------- lifetime
+
+// Same id as the installer shortcut (appId in package.json), so Windows shows the icon of
+// Leviate in the taskbar and keeps a pinned Leviate together with the open window.
+if (process.platform === 'win32') app.setAppUserModelId('io.github.vladpereverzyev.leviate');
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

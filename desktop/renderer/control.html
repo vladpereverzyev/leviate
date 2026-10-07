@@ -17,6 +17,7 @@
     <!-- A newer release on GitHub: shown by control.js -->
     <section class="update" id="update" hidden>
       <p id="update-text"></p>
+      <div class="update-bar" id="update-bar" hidden><i></i></div>
       <div class="update-actions">
         <button id="update-now" class="btn small">Update</button>
         <button id="update-later" class="btn small ghost">Later</button>
@@ -103,14 +104,22 @@
             <div class="field slider"><label for="smoothing">Smooth</label><input id="smoothing" type="range" min="0" max="1" step="0.05"><output></output></div>
             <label class="check"><input id="allScreens" type="checkbox"> All screens</label>
             <label class="check"><input id="ring" type="checkbox"> Ring around the cursor</label>
-            <p class="info">Hold: how long a finger stays still before the click. Reach: smaller crosses the screen with a shorter move of the hand.</p>
           </details>
         </div>
       </div>
     </section>
-  </main>
 
-  <label class="check updates"><input id="checkUpdates" type="checkbox"> Check for new versions at start</label>
+    <!-- Settings of the program itself, closed until opened. -->
+    <section class="win" id="win-settings" data-folded>
+      <header class="win-head">
+        <span>Settings</span>
+        <button class="win-fold" aria-label="Collapse"></button>
+      </header>
+      <div class="win-body">
+        <label class="check"><input id="checkUpdates" type="checkbox"> Check for new versions at start</label>
+      </div>
+    </section>
+  </main>
 
   <!-- Same footer as the web app (index.html); its links open in the browser. -->
   <footer class="legal">
