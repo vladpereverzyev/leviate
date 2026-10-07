@@ -44,15 +44,16 @@
     body > .foot { max-width: var(--maxw); margin-left: auto; margin-right: auto; padding: 0 var(--gutter) 24px; }
     .doc { max-width: var(--maxw); margin: 0 auto; padding: 40px var(--gutter) 20px; font-size: 15px; line-height: 1.7; font-weight: 300; }
     .doc a { color: var(--accent-2); }
-    .doc h1 { margin: 6px 0 4px; font-size: 34px; font-weight: 300; letter-spacing: -0.02em; }
-    .doc h2 { margin: 36px 0 8px; font-size: 19px; font-weight: 400; }
+    /* Same sizes as the download and 404 pages. */
+    .doc h1 { margin: 10px 0 12px; font-size: clamp(32px, 5vw, 52px); font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; }
+    .doc h2 { margin: 40px 0 10px; font-size: 28px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.5; }
     .doc p, .doc li { color: var(--muted); }
     .doc b { color: var(--text); font-weight: 500; }
     .doc .updated { color: var(--dim); font-size: 13px; margin: 0 0 28px; }
-    .doc table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    .doc table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
     .doc th, .doc td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--muted); }
     .doc th { color: var(--text); font-weight: 400; }
-    @media (max-width: 560px) { .doc h1 { font-size: 27px; } .doc table { font-size: 12px; } }
+    @media (max-width: 560px) { .doc h2 { font-size: 24px; } }
   </style>
 </head>
 <body>
