@@ -29,6 +29,8 @@ richiesta e i tuoi file non lasciano mai il dispositivo.
 
 - **Gesti della mano**: mano aperta per ruotare, pugno per spostare, pollice e indice
   per lo zoom.
+- **Guanti medicali**: la mano viene riconosciuta anche con guanti in nitrile o lattice,
+  anche blu, viola e neri. Niente da attivare.
 - **Qualsiasi webcam**: integrata o USB sul computer, anteriore o posteriore sul telefono.
 - **Il telefono come webcam**: inquadri un codice QR con un iPhone o un Android e la sua
   camera trasmette al computer. Nessuna app da installare.

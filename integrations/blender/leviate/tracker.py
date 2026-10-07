@@ -20,6 +20,7 @@ import time
 import types
 
 from .gestures import GestureEngine, NONE
+from .gloves import Gloves
 
 # The zips on GitHub carry the hand model. The Blender Extensions zips leave it out,
 # because that platform only takes CC0 assets, and download the very same file from
@@ -194,6 +195,7 @@ class Tracker:
                 min_tracking_confidence=0.5,
             )
             landmarker = vision.HandLandmarker.create_from_options(options)
+            gloves = Gloves()
             if self.phone is None:
                 self.status = "Camera on"
             phone_serial = 0
@@ -236,7 +238,10 @@ class Tracker:
                 # Timestamps must grow, even if two frames arrive in the same millisecond.
                 ts = max(int((time.monotonic() - t0) * 1000), last_ts + 1)
                 last_ts = ts
-                lm = detect_points(landmarker, mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb), ts)
+                glove_filter = gloves.next()
+                seen = gloves.prepare(cv2, np, rgb, glove_filter)
+                lm = detect_points(landmarker, mp.Image(image_format=mp.ImageFormat.SRGB, data=seen), ts)
+                gloves.seen(lm is not None, glove_filter)
                 mode, dx, dy, zoom = self.engine.update(lm, mirror=self.mirror)
                 self.moves.put((mode, dx, dy, zoom, w / max(h, 1)))
                 self._store_preview(cv2, np, rgb, lm, mode)

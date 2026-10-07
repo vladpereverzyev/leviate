@@ -29,6 +29,8 @@ y tus archivos nunca salen de tu dispositivo.
 
 - **Gestos de la mano**: mano abierta para girar, puño para desplazar, pulgar e índice
   para el zoom.
+- **Guantes médicos**: la mano se reconoce también con guantes de nitrilo o látex,
+  también azules, morados y negros. Nada que activar.
 - **Cualquier webcam**: integrada o USB en el ordenador, frontal o trasera en el teléfono.
 - **Tu teléfono como webcam**: escanea un código QR con un iPhone o un Android y su
   cámara transmite al ordenador. Sin apps que instalar.

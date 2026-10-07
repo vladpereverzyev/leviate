@@ -27,6 +27,8 @@ and your files never leave your device.
 ## Features
 
 - **Hand gestures**: open hand to rotate, fist to pan, thumb and index to zoom.
+- **Medical gloves**: the hand is found with nitrile or latex gloves too, blue, purple
+  and black included. Nothing to turn on.
 - **Any webcam**: built-in or USB cameras on a computer, front or rear camera on a phone.
 - **Your phone as a webcam**: scan a QR code with an iPhone or Android phone and its
   camera streams to the computer. No app to install.

@@ -29,6 +29,8 @@ und deine Dateien verlassen nie dein Gerät.
 
 - **Handgesten**: offene Hand zum Drehen, Faust zum Verschieben, Daumen und Zeigefinger
   zum Zoomen.
+- **Medizinische Handschuhe**: die Hand wird auch mit Nitril- oder Latexhandschuhen
+  erkannt, auch blau, lila und schwarz. Nichts einzuschalten.
 - **Jede Webcam**: eingebaute oder USB-Kameras am Computer, Front- oder Rückkamera am Handy.
 - **Dein Handy als Webcam**: scanne einen QR-Code mit einem iPhone oder Android-Handy
   und seine Kamera streamt zum Computer. Keine App zu installieren.

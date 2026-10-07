@@ -18,8 +18,10 @@ self.importScripts = (...urls) => {
 };
 
 const { FilesetResolver, HandLandmarker } = await import('../vendor/mediapipe/vision_bundle.mjs');
+const { Gloves } = await import('./gloves.js');
 
 let landmarker = null;
+const gloves = new Gloves();
 let lastTs = 0;
 
 async function init() {
@@ -51,10 +53,13 @@ self.onmessage = async ({ data }) => {
       const ts = Math.max(data.ts, lastTs + 1);
       lastTs = ts;
       const t0 = performance.now();
-      const result = landmarker.detectForVideo(bitmap, ts);
+      const filter = gloves.next();
+      const image = filter ? gloves.apply(bitmap, bitmap.width, bitmap.height, filter) : bitmap;
+      const lm = landmarker.detectForVideo(image, ts).landmarks?.[0] || null;
+      gloves.seen(!!lm, filter);
       self.postMessage({
         type: 'result',
-        lm: result.landmarks?.[0] || null,
+        lm,
         ms: performance.now() - t0,
       });
     } catch (err) {

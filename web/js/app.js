@@ -20,6 +20,7 @@ import { PCDLoader } from 'three/addons/loaders/PCDLoader.js';
 import { XYZLoader } from 'three/addons/loaders/XYZLoader.js';
 import { FilesetResolver, HandLandmarker } from '../vendor/mediapipe/vision_bundle.mjs';
 import { GestureEngine, Mode } from './gestures.js';
+import { Gloves, frameBitmap } from './gloves.js';
 import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
@@ -692,7 +693,7 @@ async function startMainThread() {
     minHandPresenceConfidence: 0.6,
     minTrackingConfidence: 0.5,
   });
-  return { task };
+  return { task, gloves: new Gloves() };
 }
 
 function getLandmarker() {
@@ -1035,15 +1036,18 @@ function track() {
     if (landmarker.busy) return;
     lastVideoTime = video.currentTime;
     landmarker.busy = true;
-    createImageBitmap(video)
+    frameBitmap(video)
       .then((bitmap) => landmarker.worker.postMessage({ type: 'frame', bitmap, ts: performance.now() }, [bitmap]))
       .catch(() => { landmarker.busy = false; });
     return;
   }
 
   lastVideoTime = video.currentTime;
-  const result = landmarker.task.detectForVideo(video, performance.now());
-  handleHand(result.landmarks?.[0] || null);
+  const filter = landmarker.gloves.next();
+  const image = filter ? landmarker.gloves.apply(video, video.videoWidth, video.videoHeight, filter) : video;
+  const lm = landmarker.task.detectForVideo(image, performance.now()).landmarks?.[0] || null;
+  landmarker.gloves.seen(!!lm, filter);
+  handleHand(lm);
 }
 
 function handleHand(lm) {

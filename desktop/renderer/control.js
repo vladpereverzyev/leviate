@@ -11,6 +11,7 @@
 
 import './no-banner.js';
 import { GestureEngine, Mode } from '../js/gestures.js';
+import { frameBitmap } from '../js/gloves.js';
 import { hostPhone, qrSvg } from '../js/phone.js';
 import { Control3D, PROFILES } from './control3d.js';
 import { Pointer, Pose } from './pointer.js';
@@ -89,7 +90,7 @@ function tick() {
   if (!worker || !stream || busy || video.readyState < 2 || video.currentTime === lastTime) return;
   lastTime = video.currentTime;
   busy = true;
-  createImageBitmap(video)
+  frameBitmap(video)
     .then((bitmap) => worker.postMessage({ type: 'frame', bitmap, ts: performance.now() }, [bitmap]))
     .catch(() => { busy = false; });
 }

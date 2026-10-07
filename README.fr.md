@@ -29,6 +29,8 @@ GPU nécessaire et vos fichiers ne quittent jamais votre appareil.
 
 - **Gestes de la main** : main ouverte pour tourner, poing pour déplacer, pouce et index
   pour zoomer.
+- **Gants médicaux** : la main est reconnue aussi avec des gants en nitrile ou latex,
+  bleus, violets et noirs compris. Rien à activer.
 - **N'importe quelle webcam** : intégrée ou USB sur un ordinateur, avant ou arrière sur
   un téléphone.
 - **Votre téléphone comme webcam** : scannez un code QR avec un iPhone ou un Android et
