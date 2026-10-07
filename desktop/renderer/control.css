@@ -281,6 +281,25 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .seg button.on { background: var(--accent); color: #fff; }
 
 
+/* ---------------------------------------------------------------- update */
+
+.update {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: rgba(39, 145, 203, 0.12);
+}
+.update p { margin: 0; font-size: 13px; color: var(--text); }
+.update p a { color: var(--accent-2); }
+.update-actions { display: flex; gap: 8px; }
+.update-actions[hidden] { display: none; }
+.updates { justify-content: center; margin: 0 0 6px; font-size: 12px; color: var(--dim); }
+
 /* ------------------------------------------------------------------ footer */
 
 .legal { padding: 4px 20px 12px; text-align: center; color: var(--dim); font-size: 11px; }

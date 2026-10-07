@@ -18,6 +18,9 @@ contextBridge.exposeInMainWorld('leviateDesktop', {
   ring: (mode, progress) => ipcRenderer.send('mouse:ring', mode, progress),
   flash: (mode) => ipcRenderer.send('mouse:flash', mode),
   phoneNotice: () => ipcRenderer.invoke('phone:notice'),
+  checkUpdate: () => ipcRenderer.invoke('update:check'),
+  installUpdate: () => ipcRenderer.invoke('update:install'),
+  onUpdateProgress: (callback) => ipcRenderer.on('update:progress', (e, part) => callback(part)),
   onToggle: (callback) => ipcRenderer.on('mode:toggle', () => callback()),
   onError: (callback) => ipcRenderer.on('mouse:error', (e, text) => callback(text)),
 });

@@ -37,6 +37,7 @@ const settings = {
   profile: PROFILES[0].id, customRotate: { button: 'middle', keys: [] }, customPan: { button: 'middle', keys: ['shift'] },
   rotate: 1, pan: 1, zoom: 1, invertZoom: false,
   dwell: 1, reach: 0.6, smoothing: 0.5, allScreens: true, ring: true, phoneNotice: false,
+  checkUpdates: true,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 // The hand starts off on every launch: it takes over the mouse only when asked to.
@@ -360,6 +361,43 @@ const FORMAT = {
   zoom: (v) => `${v.toFixed(2)}×`,
 };
 
+// --------------------------------------------------------------- updates
+
+function offerUpdate(found) {
+  if (!found) return;
+  const text = $('update-text');
+  text.replaceChildren(`Leviate ${found.version} is available. `);
+  const notes = document.createElement('a');
+  notes.href = found.notes;
+  notes.target = '_blank';
+  notes.textContent = "What's new";
+  text.append(notes);
+  $('update').hidden = false;
+  $('update-later').onclick = () => { $('update').hidden = true; };
+  $('update-now').onclick = async () => {
+    $('update-now').parentElement.hidden = true;
+    text.textContent = `Downloading Leviate ${found.version}…`;
+    desktop.onUpdateProgress((part) => {
+      text.textContent = `Downloading Leviate ${found.version}… ${Math.round(part * 100)}%`;
+    });
+    const error = await desktop.installUpdate();
+    if (error) {
+      text.textContent = `The update did not work: ${error}. `;
+      const page = document.createElement('a');
+      page.href = 'https://vladpereverzyev.github.io/leviate/download.html';
+      page.target = '_blank';
+      page.textContent = 'Download it from the site';
+      text.append(page);
+      return;
+    }
+    text.textContent = {
+      win32: 'Starting the installer…',
+      darwin: `Leviate ${found.version} is open in Finder: drag Leviate to Applications, then start it again.`,
+    }[desktop.platform] || 'Starting the new version…';
+  };
+}
+
+
 function setup() {
   $('footer-version').textContent = 'v' + new URLSearchParams(location.search).get('version');
 
@@ -421,6 +459,9 @@ function setup() {
     } catch {}
   };
 
+  $('checkUpdates').checked = settings.checkUpdates;
+  $('checkUpdates').onchange = (e) => { settings.checkUpdates = e.target.checked; save(); };
+  if (settings.checkUpdates) desktop.checkUpdate().then(offerUpdate);
   desktop.onToggle(() => setMode(settings.mode === 'off' ? settings.lastMode : 'off'));
   desktop.onError((text) => {
     if (text) setMode('off');

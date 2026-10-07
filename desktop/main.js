@@ -17,6 +17,7 @@ const { app, BrowserWindow, Menu, dialog, globalShortcut, ipcMain, protocol, scr
 const fs = require('node:fs');
 const path = require('node:path');
 const mouse = require('./mouse');
+const update = require('./update');
 
 // Packed app: shared/ is copied next to this file by scripts/build-desktop.mjs.
 // Development: the shared/ folder of the repository.
@@ -331,6 +332,25 @@ ipcMain.on('mouse:flash', (e, mode) => {
   showRing(true);
   clearTimeout(ringHide);
   ringHide = setTimeout(() => { ringHide = null; showRing(false); }, 380);
+});
+
+// New versions: the window asks once it is open, if the user did not turn it off.
+let pending = null;
+ipcMain.handle('update:check', async () => {
+  // A development copy is no release; LEVIATE_UPDATE_FROM pretends a version to try this.
+  const current = app.isPackaged ? VERSION : process.env.LEVIATE_UPDATE_FROM;
+  if (!current) return null;
+  pending = await update.check(current);
+  return pending && { version: pending.version, notes: pending.notes };
+});
+ipcMain.handle('update:install', async (e) => {
+  if (!pending) return 'There is no update to install';
+  try {
+    await update.install(pending, (part) => e.sender.send('update:progress', part));
+    return '';
+  } catch (err) {
+    return err.message || String(err);
+  }
 });
 
 ipcMain.handle('phone:notice', async () => {

@@ -14,6 +14,14 @@
   </header>
 
   <main>
+    <!-- A newer release on GitHub: shown by control.js -->
+    <section class="update" id="update" hidden>
+      <p id="update-text"></p>
+      <div class="update-actions">
+        <button id="update-now" class="btn small">Update</button>
+        <button id="update-later" class="btn small ghost">Later</button>
+      </div>
+    </section>
     <!-- Same webcam window as the web app -->
     <section class="win" id="win-cam">
       <header class="win-head">
@@ -101,6 +109,8 @@
       </div>
     </section>
   </main>
+
+  <label class="check updates"><input id="checkUpdates" type="checkbox"> Check for new versions at start</label>
 
   <!-- Same footer as the web app (index.html); its links open in the browser. -->
   <footer class="legal">

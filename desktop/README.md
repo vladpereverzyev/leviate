@@ -99,13 +99,24 @@ and tap **Start camera** on the phone, no app needed. Every window and section o
 closes like on the web, and stays as you left it. The hand tracking keeps running while
 Leviate is minimized or behind your program.
 
+## Updates
+
+When a new version is out, Leviate says so at the top of the window when it starts:
+**Update** downloads the file for this computer from the
+[releases](https://github.com/vladpereverzyev/leviate/releases) and opens it. On Windows the
+installer replaces Leviate, on macOS the dmg opens in Finder (drag Leviate to Applications
+again), on Linux the new AppImage takes the place of the old one and Leviate restarts.
+**Later** asks again at the next start. **Check for new versions at start**, at the bottom of
+the window, turns the check off. Versions older than 1.3.19 do not check yet.
+
 ## Privacy
 
 There is no cookie banner: the program stores only its own settings on this computer, the
 system asks for the camera, and the video is read on this computer and never recorded or
-sent. The only connection out is for **Phone**: the free PeerJS server introduces the
-phone and the computer and sees their IP addresses, never the video. Leviate explains this
-once, before the first pairing. Details in the
+sent. The connections out are the check for new versions, which asks GitHub for the
+latest release when the app starts (it can be turned off), and **Phone**: the free PeerJS
+server introduces the phone and the computer and sees their IP addresses, never the video.
+Leviate explains this once, before the first pairing. Details in the
 [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html#desktop).
 
 ## Build
@@ -129,6 +140,7 @@ version comes from `shared/js/version.js`, like the other downloads.
 | File | What it does |
 | --- | --- |
 | `main.js` | Window, `app://` files, mouse drags and clicks, the ring, permissions |
+| `update.js` | New versions: asks GitHub for the latest release, downloads and opens it |
 | `mouse.js` | Mouse, wheel and Shift, Ctrl, Alt on Windows, macOS and Linux (X11), through koffi |
 | `preload.js` | What the window may ask of the app |
 | `renderer/control.html`, `control.css`, `control.js` | The window, camera, phone and hand tracking |
