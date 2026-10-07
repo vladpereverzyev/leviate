@@ -182,6 +182,11 @@ vídeo directamente a Blender. Guía completa en
 
 ## Leviate for Desktop
 
+<table>
+<tr>
+<td width="220"><img src="docs/screenshot-desktop.png" alt="Leviate for Desktop con el módulo 3D" width="200"></td>
+<td valign="middle">
+
 **Leviate for Desktop** lleva la mano a cualquier programa del ordenador, con la webcam o el
 móvil (código QR, como en la app web). Tiene dos módulos:
 
@@ -192,7 +197,9 @@ móvil (código QR, como en la app web). Tiene dos módulos:
 - **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
   dos dedos quietos hacen clic derecho.
 
-<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop con el módulo 3D" width="300">
+</td>
+</tr>
+</table>
 
 ![Las poses del módulo Mouse: mano abierta mueve el cursor, un dedo quieto hace clic izquierdo, dos dedos clic derecho](docs/mouse-gestures.png)
 

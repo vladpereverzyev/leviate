@@ -173,6 +173,11 @@ to Blender. Full guide in
 
 ## Leviate for Desktop
 
+<table>
+<tr>
+<td width="220"><img src="docs/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200"></td>
+<td valign="middle">
+
 **Leviate for Desktop** puts the hand on any program of the computer, with the webcam or the
 phone (QR code, like the web app). It has two modules:
 
@@ -183,7 +188,9 @@ phone (QR code, like the web app). It has two modules:
 - **Mouse**: open hand moves the cursor, one finger held still is a left click, two
   fingers held still a right click.
 
-<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="300">
+</td>
+</tr>
+</table>
 
 ![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/mouse-gestures.png)
 

@@ -180,6 +180,11 @@ in [integrations/blender](integrations/blender/).
 
 ## Leviate for Desktop
 
+<table>
+<tr>
+<td width="220"><img src="docs/screenshot-desktop.png" alt="Leviate for Desktop mit dem Modul 3D" width="200"></td>
+<td valign="middle">
+
 **Leviate for Desktop** bringt die Hand in jedes Programm des Computers, mit der Webcam oder dem
 Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
 
@@ -190,7 +195,9 @@ Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
 - **Mouse**: die offene Hand bewegt den Cursor, ein kurz ruhig gehaltener Finger ist ein
   Linksklick, zwei Finger ein Rechtsklick.
 
-<img src="docs/screenshot-desktop.png" alt="Leviate for Desktop mit dem Modul 3D" width="300">
+</td>
+</tr>
+</table>
 
 ![Die Posen des Moduls Mouse: offene Hand bewegt den Cursor, ein ruhiger Finger klickt links, zwei Finger rechts](docs/mouse-gestures.png)
 
