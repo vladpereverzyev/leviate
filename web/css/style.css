@@ -458,20 +458,12 @@ section.phone-mode {
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+  padding: max(32px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
   background: radial-gradient(ellipse at 50% 30%, #06324c 0%, var(--bg) 70%);
   text-align: center;
 }
-.pm-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 300;
-  font-size: 18px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-.pm-head img { width: 26px; height: 26px; }
+/* The header sits where it is on the other pages, at the top left. */
+.pm-head { align-self: stretch; }
 .pm-preview {
   width: 100%;
   max-width: 480px;
@@ -523,9 +515,8 @@ section.phone-mode {
 /* --------------------------------------------------------------- mobile */
 
 @media (max-width: 700px) {
-  .top { left: 14px; right: 14px; }
-  .brand { font-size: 17px; }
-  .brand img { width: 24px; height: 24px; }
+  /* Header and footer in the same place and size as on the other pages. */
+  .top { top: max(32px, env(safe-area-inset-top)); left: 20px; right: 20px; }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win { width: calc(100vw - 24px); max-width: none; }
@@ -541,13 +532,13 @@ section.phone-mode {
     flex-wrap: wrap;
     justify-content: center;
     border-radius: 18px;
-    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 36px);
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 44px);
   }
   .tool { padding: 6px 9px; font-size: 12.5px; }
   .sep, #fullscreen { display: none; }
 
   .toast { bottom: calc(max(6px, env(safe-area-inset-bottom)) + 110px); }
-  .legal { left: 12px; right: 12px; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 10px; line-height: 1.5; }
+  .legal { left: 20px; right: 20px; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 11px; line-height: 1.6; }
 }
 
 /* --------------------------------------------------------------- consent */

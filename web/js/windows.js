@@ -7,7 +7,7 @@
 
 const STORE_KEY = 'leviate.windows';
 const MARGIN = 8;
-const PHONE_TOP = 56;
+const PHONE_TOP = 76;
 const PHONE_GAP = 8;
 
 function load() {
