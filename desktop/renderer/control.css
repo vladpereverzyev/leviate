@@ -48,6 +48,8 @@ button, select, input { font: inherit; color: inherit; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: #2f5872; background-clip: padding-box; border: 3px solid transparent; border-radius: 999px; }
 ::-webkit-scrollbar-track { background: transparent; }
+/* Firefox has no ::-webkit-scrollbar: the same colors there. */
+@supports not selector(::-webkit-scrollbar) { * { scrollbar-width: thin; scrollbar-color: #2f5872 transparent; } }
 
 .top { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; }
 .brand {
@@ -283,6 +285,9 @@ select option { background: var(--panel-solid); color: var(--text); }
     position-try-fallbacks: none;
     max-height: min(320px, calc(100% - 12px));
     overflow-y: auto;
+    /* The open list is a layer of its own: our scroll bar there too. */
+    scrollbar-width: thin;
+    scrollbar-color: #2f5872 transparent;
     margin-top: 6px;
     padding: 4px;
     border: 1px solid var(--line);

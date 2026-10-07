@@ -579,7 +579,7 @@ function toast(text, ms = 3000) {
   if (text && ms) toastTimer = setTimeout(() => { el.hidden = true; }, ms);
 }
 
-for (const id of ['file', 'file-empty']) {
+for (const id of ['file']) {
   // iOS and some Android pickers grey out extensions they do not know (.stl, .ply,
   // .obj...), so phones get no filter and loadFiles checks the extension instead.
   if (!TOUCH_PICKER) $(id).accept = ACCEPT;

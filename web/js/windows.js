@@ -9,8 +9,10 @@ const STORE_KEY = 'leviate.windows';
 const MARGIN = 8;
 const PHONE_TOP = 76;
 const PHONE_GAP = 8;
-// Room left free at the bottom for the view tools and the footer.
+// Room left free at the bottom for the view tools and the footer, when they are missing.
 const TOOLS = 104;
+// Space kept between a window and the view tools.
+const GAP = 12;
 
 function load() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; }
@@ -41,10 +43,13 @@ export function setupWindows(root = document) {
   };
 
   // The window ends above the view tools wherever it is; a low screen scrolls its inside.
+  const toolsTop = () => {
+    const tools = document.querySelector('.tools');
+    return tools ? tools.getBoundingClientRect().top - GAP : window.innerHeight - TOOLS;
+  };
   const fitHeight = (win) => {
-    if (phone()) { win.style.maxHeight = ''; return; }
     const top = win.getBoundingClientRect().top;
-    win.style.maxHeight = Math.max(120, window.innerHeight - top - TOOLS) + 'px';
+    win.style.maxHeight = Math.max(phone() ? 44 : 120, toolsTop() - top) + 'px';
   };
 
   // A window keeps its distance from the side it is closer to, so when the page gets
@@ -83,7 +88,7 @@ export function setupWindows(root = document) {
       win.style.right = 'auto';
       win.style.bottom = 'auto';
       win.style.top = y + 'px';
-      win.style.maxHeight = '';
+      win.style.maxHeight = Math.max(44, toolsTop() - y) + 'px';
       y += win.offsetHeight + PHONE_GAP;
     }
   };
