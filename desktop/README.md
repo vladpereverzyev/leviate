@@ -87,11 +87,14 @@ other way round.
 | --- | --- |
 | Open hand | The cursor follows the palm |
 | One finger (index), held still | Left click |
+| One finger, still held after the click | Double click |
 | Two fingers (index and middle), held still | Right click |
 | Anything else, a fist for example | The cursor stays where it is |
 
 While a finger pose is held a ring around the cursor fills up, and the click comes when it
-is full (**Hold to click**, 1 second by default). Move the finger and it starts again. The
+is full (**Hold to click**, 1 second by default). Move the finger and it starts again. Keep
+the finger still after a left click: half a second later a smaller ring fills inside the first
+one and ends in a double click. Move the finger before and there is no double click. The
 cursor stops as soon as the hand closes, so the click lands where the palm left it.
 **Hand reach** is the part of the camera picture that covers the screen. To stop, press
 **Ctrl+Alt+M**, choose **Off** or lower the hand.

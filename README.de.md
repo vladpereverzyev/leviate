@@ -193,7 +193,8 @@ Handy (QR-Code, wie in der Web-App). Sie hat zwei Module:
   (Dental-CAD als Standard, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino und weitere) oder
   lege die Tasten selbst fest.
 - **Mouse**: die offene Hand bewegt den Cursor, ein kurz ruhig gehaltener Finger ist ein
-  Linksklick, zwei Finger ein Rechtsklick.
+  Linksklick (bleibt er ruhig, macht ein zweiter Kreis daraus einen Doppelklick), zwei Finger
+  ein Rechtsklick.
 
 </td>
 </tr>

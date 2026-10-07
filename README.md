@@ -185,8 +185,8 @@ phone (QR code, like the web app). It has two modules:
   zooms the view under the cursor. Choose your program under Program (dental CAD
   by default, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino and more) or set the buttons
   yourself.
-- **Mouse**: open hand moves the cursor, one finger held still is a left click, two
-  fingers held still a right click.
+- **Mouse**: open hand moves the cursor, one finger held still is a left click (keep it
+  still and a second ring makes it a double click), two fingers held still a right click.
 
 </td>
 </tr>

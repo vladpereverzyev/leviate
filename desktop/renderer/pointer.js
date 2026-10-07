@@ -5,6 +5,7 @@
 //
 //   open hand                    -> the cursor follows the palm
 //   index finger, held still     -> left click
+//   ... still held after it      -> a second ring, then a double click
 //   index + middle, held still   -> right click
 //
 // The web app keeps its own gestures in js/gestures.js; the finger test here is the
@@ -87,10 +88,11 @@ class OneEuro {
 }
 
 export class Pointer {
-  // out.move(u, v) with u, v from 0 to 1 across the screens, out.click('left' | 'right').
+  // out.move(u, v) with u, v from 0 to 1 across the screens,
+  // out.click('left' | 'right' | 'double').
   constructor(out, { dwell = 1, reach = 0.6, smoothing = 0.5, debounce = 3, still = 0.3,
-    clock = () => performance.now() / 1000 } = {}) {
-    Object.assign(this, { out, dwell, reach, debounce, still, clock });
+    gap = 0.5, clock = () => performance.now() / 1000 } = {}) {
+    Object.assign(this, { out, dwell, reach, debounce, still, gap, clock });
     this.enabled = true;
     this.fx = new OneEuro();
     this.fy = new OneEuro();
@@ -116,6 +118,7 @@ export class Pointer {
     this.dwellStart = null;
     this.dwellTip = null;
     this.fired = false;
+    this.second = false;
     this.fx.reset();
     this.fy.reset();
   }
@@ -145,6 +148,7 @@ export class Pointer {
       this.progress = 0;
       this.dwellStart = null;
       this.fired = false;
+      this.second = false;
     }
 
     const now = this.clock();
@@ -161,10 +165,32 @@ export class Pointer {
     return this.mode;
   }
 
+  // What the ring around the cursor shows: 'left', 'right' or 'double'.
+  get stage() { return this.second ? 'double' : this.mode; }
+
   hold(lm, now) {
-    if (this.fired) return;
     const tip = lm[INDEX_TIP];
-    if (this.dwellStart === null || dist(tip, this.dwellTip) > this.still * palmSize(lm)) {
+    const moved = this.dwellStart !== null && dist(tip, this.dwellTip) > this.still * palmSize(lm);
+    if (this.second) {
+      // After a left click the finger may stay still: a short pause, then a second ring
+      // that ends in a double click. Moving the finger gives it up.
+      if (moved) {
+        this.second = false;
+        this.progress = 0;
+        return;
+      }
+      this.progress = Math.min(1, Math.max(0, now - this.dwellStart - this.gap) / Math.max(this.dwell, 0.1));
+      if (this.progress >= 1) {
+        this.second = false;
+        this.progress = 0;
+        this.lastClick = 'double';
+        this.clicks++;
+        this.out.click('double');
+      }
+      return;
+    }
+    if (this.fired) return;
+    if (this.dwellStart === null || moved) {
       // The finger moved: count again from here.
       this.dwellStart = now;
       this.dwellTip = { x: tip.x, y: tip.y };
@@ -176,6 +202,10 @@ export class Pointer {
       this.lastClick = this.mode;
       this.clicks++;
       this.out.click(this.mode);
+      if (this.mode === Pose.LEFT) {
+        this.second = true;
+        this.dwellStart = now;
+      }
     }
   }
 }

@@ -192,7 +192,8 @@ telefono (codice QR, come nell'app web). Ha due moduli:
   (CAD dentale di serie, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino e altri) o imposta tu
   i tasti.
 - **Mouse**: la mano aperta sposta il cursore, un dito fermo per un momento fa clic
-  sinistro, due dita ferme fanno clic destro.
+  sinistro (tenuto ancora fermo, un secondo cerchio lo fa diventare doppio clic), due dita
+  ferme fanno clic destro.
 
 </td>
 </tr>

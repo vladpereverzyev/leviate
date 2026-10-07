@@ -194,8 +194,9 @@ móvil (código QR, como en la app web). Tiene dos módulos:
   el pellizco hace zoom en la vista bajo el cursor. Elige tu programa en Program
   (CAD dental por defecto, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino y otros) o define tú
   los botones.
-- **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo,
-  dos dedos quietos hacen clic derecho.
+- **Mouse**: la mano abierta mueve el cursor, un dedo quieto un momento hace clic izquierdo
+  (si sigue quieto, un segundo círculo lo convierte en doble clic), dos dedos quietos hacen
+  clic derecho.
 
 </td>
 </tr>

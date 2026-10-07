@@ -279,9 +279,19 @@ ipcMain.on('mouse:move', (e, u, v, all) => {
   moveTo({ x: r.left + u * (r.right - r.left - 1), y: r.top + v * (r.bottom - r.top - 1) });
 });
 ipcMain.on('mouse:click', (e, button) => {
+  const m = mouse.load();
+  if (!m) return;
+  if (button === 'double') {
+    // Two left clicks right after each other, the second one marked as such for macOS.
+    m.down('left');
+    m.up('left');
+    m.down('left', 2);
+    m.up('left', 2);
+    return;
+  }
   const b = button === 'right' ? 'right' : 'left';
-  mouse.load()?.down(b);
-  mouse.load()?.up(b);
+  m.down(b);
+  m.up(b);
 });
 ipcMain.on('drag:start', (e, button, keys) => {
   endDrag();

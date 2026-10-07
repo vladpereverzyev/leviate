@@ -6,7 +6,8 @@
 // Windows and Linux (X11), points on macOS.
 //
 //   move(x, y, held)     held: the button being dragged, or null
-//   down(button) / up(button)      'left', 'middle' or 'right'
+//   down(button, clicks) / up(button, clicks)   'left', 'middle' or 'right'; clicks 2
+//                        is the second click of a double click (macOS needs to be told)
 //   wheel(steps)         positive scrolls up (away from the user); Windows also takes
 //                        parts of a step, the others whole steps
 //   key(name, pressed)   'shift', 'ctrl' or 'alt'
@@ -40,6 +41,7 @@ function macos() {
   // wheelCount and wheel1 are named parameters, so the fixed signature is the right call.
   const scrollEvent = cg.func('void *CGEventCreateScrollWheelEvent(void *source, uint32 units, uint32 count, int32 wheel1)');
   const setFlags = cg.func('void CGEventSetFlags(void *event, uint64 flags)');
+  const setField = cg.func('void CGEventSetIntegerValueField(void *event, uint32 field, int64 value)');
   const post = cg.func('void CGEventPost(uint32 tap, void *event)');
   const release = cf.func('void CFRelease(void *ref)');
   // [down, up, dragged, button number]
@@ -52,6 +54,10 @@ function macos() {
     post(0, event);   // kCGHIDEventTap
     release(event);
   };
+  const counted = (event, clicks) => {
+    setField(event, 1, clicks);   // kCGMouseEventClickState
+    return event;
+  };
   const here = () => {
     const event = create(null);
     const pos = location(event);
@@ -63,8 +69,8 @@ function macos() {
       const [, , dragged, number] = held ? BUTTONS[held] : [0, 0, 5, 0];   // 5: mouse moved
       send(mouseEvent(null, dragged, { x, y }, number));
     },
-    down(button) { send(mouseEvent(null, BUTTONS[button][0], here(), BUTTONS[button][3])); },
-    up(button) { send(mouseEvent(null, BUTTONS[button][1], here(), BUTTONS[button][3])); },
+    down(button, clicks = 1) { send(counted(mouseEvent(null, BUTTONS[button][0], here(), BUTTONS[button][3]), clicks)); },
+    up(button, clicks = 1) { send(counted(mouseEvent(null, BUTTONS[button][1], here(), BUTTONS[button][3]), clicks)); },
     wheel(steps) { send(scrollEvent(null, 1, 1, steps)); },   // 1: lines
     key(name, pressed) { flags = pressed ? flags | FLAGS[name] : flags & ~FLAGS[name]; },
   };

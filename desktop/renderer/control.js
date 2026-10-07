@@ -125,10 +125,10 @@ function onHand(lm) {
 function ring() {
   const show = settings.mode === 'mouse' && settings.ring
     && (pointer.mode === Pose.LEFT || pointer.mode === Pose.RIGHT) && pointer.progress > 0;
-  const state = show ? `${pointer.mode}:${pointer.progress.toFixed(2)}` : '';
+  const state = show ? `${pointer.stage}:${pointer.progress.toFixed(2)}` : '';
   if (state === lastRing) return;
   lastRing = state;
-  desktop.ring(show ? pointer.mode : null, show ? pointer.progress : 0);
+  desktop.ring(show ? pointer.stage : null, show ? pointer.progress : 0);
 }
 
 function draw(lm, pose) {

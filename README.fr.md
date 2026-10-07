@@ -200,7 +200,8 @@ ou le téléphone (code QR, comme l'app web). Elle a deux modules :
   (CAO dentaire par défaut, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino et d'autres) ou
   réglez les boutons.
 - **Mouse** : la main ouverte déplace le curseur, un doigt immobile un instant fait un clic
-  gauche, deux doigts immobiles un clic droit.
+  gauche (s'il reste immobile, un deuxième cercle en fait un double clic), deux doigts
+  immobiles un clic droit.
 
 </td>
 </tr>
