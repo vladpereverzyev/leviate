@@ -1,0 +1,251 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#011E2E">
+  <title>Download - Leviate</title>
+  <meta name="description" content="Download Leviate: the web app that runs in the browser, Leviate desktop for Windows, macOS and Linux to move any 3D program and the mouse with your hand, and the add-on for Blender. Free and open source.">
+  <meta name="author" content="Vladyslav Pereverzyev">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vladpereverzyev.github.io/leviate/download.html">
+  <meta property="og:site_name" content="Leviate">
+  <meta property="og:title" content="Download - Leviate">
+  <meta property="og:description" content="Download Leviate: the web app that runs in the browser, Leviate desktop for Windows, macOS and Linux to move any 3D program and the mouse with your hand, and the add-on for Blender. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vladpereverzyev.github.io/leviate/download.html">
+  <meta property="og:image" content="https://vladpereverzyev.github.io/leviate/docs/screenshot.png">
+  <meta property="og:image:width" content="2160">
+  <meta property="og:image:height" content="1290">
+  <meta property="og:image:alt" content="Leviate showing a dental scan moved by hand gestures in front of a webcam">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@vladpereverzyev">
+  <meta name="twitter:creator" content="@vladpereverzyev">
+  <meta name="twitter:title" content="Download - Leviate">
+  <meta name="twitter:description" content="Download Leviate: the web app that runs in the browser, Leviate desktop for Windows, macOS and Linux to move any 3D program and the mouse with your hand, and the add-on for Blender. Free and open source.">
+  <meta name="twitter:image" content="https://vladpereverzyev.github.io/leviate/docs/screenshot.png">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Leviate","url":"https://vladpereverzyev.github.io/leviate/download.html","applicationCategory":"MultimediaApplication","operatingSystem":"Windows, macOS, Linux, any modern browser","description":"Move 3D scans, any 3D program and the mouse with your hand, using a webcam or your phone.","image":"https://vladpereverzyev.github.io/leviate/docs/screenshot.png","license":"https://www.gnu.org/licenses/agpl-3.0.html","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Vladyslav Pereverzyev","url":"https://www.vladpereverzyev.com"}}
+  </script>
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="preload" href="vendor/fonts/jost-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="vendor/fonts/jost-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body { height: auto; overflow: auto; }
+    body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
+    .page { max-width: 64rem; margin: 0 auto; padding: 32px 20px 40px; }
+    .page a { color: var(--accent-2); }
+    .page a.btn { text-decoration: none; color: #fff; }
+    .page a.btn.ghost { color: var(--muted); }
+    .page a.btn.ghost:hover { color: var(--text); }
+    .head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { color: var(--text); text-decoration: none; }
+    .head .open { font-size: 13px; }
+    .hero { text-align: center; padding: 56px 0 36px; }
+    .hero h1 { margin: 10px 0 12px; font-weight: 300; font-size: clamp(32px, 5vw, 52px); letter-spacing: -0.03em; line-height: 1.1; }
+    .hero p { max-width: 38rem; margin: 0 auto; color: var(--muted); font-weight: 300; font-size: 17px; line-height: 1.6; }
+    .release { margin-top: 14px; color: var(--dim); font-size: 13px; font-variant-numeric: tabular-nums; }
+    .release a { color: var(--dim); }
+    .release a:hover { color: var(--text); }
+
+    .card {
+      margin-top: 22px;
+      padding: 28px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    .card h2 { margin: 8px 0 10px; font-weight: 300; font-size: 28px; letter-spacing: -0.02em; }
+    .card p, .card li { color: var(--muted); font-weight: 300; font-size: 15px; line-height: 1.7; }
+    .card p { margin: 0 0 12px; }
+    .card b { color: var(--text); font-weight: 400; }
+    .card ul { margin: 0 0 12px; padding-left: 20px; }
+    .card img { display: block; width: 100%; height: auto; margin: 18px 0 6px; border-radius: 10px; border: 1px solid var(--line); }
+    .note { color: var(--dim) !important; font-size: 13px !important; }
+
+    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 14px; }
+    .buttons .btn { flex-direction: column; align-items: flex-start; gap: 0; min-width: 180px; padding: 0.7em 1.3em; border-radius: 12px; text-decoration: none; color: #fff; }
+    .buttons .btn.ghost { color: var(--muted); }
+    .buttons .btn small { color: inherit; opacity: 0.7; font-size: 12px; }
+    .buttons .btn.mine { background: var(--accent); border-color: transparent; color: #fff; }
+    .buttons .btn.mine::after { content: "For this computer"; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; margin-top: 2px; }
+
+    .steps { counter-reset: step; list-style: none; padding: 0 !important; }
+    .steps li { counter-increment: step; position: relative; padding-left: 34px; margin-bottom: 6px; }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      color: var(--accent-2);
+      font-size: 12px;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .foot { margin-top: 40px; text-align: center; color: var(--dim); font-size: 11px; }
+    .foot a { color: var(--dim); text-decoration: none; }
+    .foot a:hover { color: var(--text); }
+
+    @media (max-width: 560px) {
+      .card { padding: 20px; }
+      .card h2 { font-size: 24px; }
+      .buttons .btn { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="head">
+      <a class="brand" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
+      <a class="btn small ghost open" href="./">Open the web app</a>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">WEB · DESKTOP · BLENDER</p>
+      <h1>Download Leviate</h1>
+      <p>Move 3D scans, your 3D program and the mouse with your hand, using any webcam or your
+      phone. Free and open source, nothing is recorded.</p>
+      <p class="release" id="release">Latest version on the
+        <a href="https://github.com/vladpereverzyev/leviate/releases/latest" target="_blank" rel="noopener">releases page</a></p>
+    </section>
+
+    <!-- Web app -->
+    <section class="card" id="web">
+      <p class="eyebrow">IN THE BROWSER</p>
+      <h2>Web app</h2>
+      <p>Nothing to install. Open Leviate, drop your STL, PLY, OBJ, GLB, 3MF or FBX files and move
+      them with your hand: <b>open hand</b> rotates, <b>fist</b> pans, <b>pinch</b> zooms. Works with
+      the webcam of the computer, or with your phone as the camera through a QR code. Your files
+      and the video never leave the device.</p>
+      <div class="buttons">
+        <a class="btn" href="./">Open Leviate<small>Chrome, Edge, Firefox, Safari</small></a>
+      </div>
+      <img src="docs/gestures.png" alt="Open hand rotates, fist pans, thumb and index zoom" width="2400" height="1238" loading="lazy">
+    </section>
+
+    <!-- Desktop -->
+    <section class="card" id="desktop">
+      <p class="eyebrow">WINDOWS · MACOS · LINUX</p>
+      <h2>Leviate desktop</h2>
+      <p>Your hand on any program of the computer, with the webcam or the phone. Choose a module:</p>
+      <ul>
+        <li><b>3D</b>: the gestures of the web app in your 3D program. Open hand turns, fist pans,
+          pinch zooms the view under the cursor. Choose how the program uses the mouse, or set the
+          buttons yourself.</li>
+        <li><b>Mouse</b>: the open hand moves the cursor, one finger held still is a left click, two
+          fingers a right click.</li>
+      </ul>
+      <p><b>Ctrl+Alt+M</b> turns the hand off and on from any program.</p>
+      <div class="buttons" data-kind="desktop">
+        <a class="btn ghost" data-os="windows" data-file="leviate-{v}-windows-x64.exe" href="https://github.com/vladpereverzyev/leviate/releases/latest">Windows<small>10 or 11, installer</small></a>
+        <a class="btn ghost" data-os="mac-arm" data-file="leviate-{v}-macos-arm64.dmg" href="https://github.com/vladpereverzyev/leviate/releases/latest">macOS<small>Apple silicon (M1 and later)</small></a>
+        <a class="btn ghost" data-os="mac-intel" data-file="leviate-{v}-macos-x64.dmg" href="https://github.com/vladpereverzyev/leviate/releases/latest">macOS<small>Intel</small></a>
+        <a class="btn ghost" data-os="linux" data-file="leviate-{v}-linux-x64.AppImage" href="https://github.com/vladpereverzyev/leviate/releases/latest">Linux<small>AppImage, x64</small></a>
+      </div>
+      <p class="note">The app is not signed yet. Windows may say "Windows protected your PC": choose
+      More info and Run anyway. On macOS open System Settings, Privacy &amp; Security and choose Open
+      Anyway, then allow Leviate in Accessibility. Linux needs an X11 (Xorg) session.
+      <a href="https://github.com/vladpereverzyev/leviate/tree/main/apps/desktop" target="_blank" rel="noopener">Full guide</a></p>
+      <img src="docs/mouse-gestures.png" alt="Mouse module: open hand moves the cursor, one finger held still clicks left, two fingers click right" width="2400" height="1238" loading="lazy">
+    </section>
+
+    <!-- Blender -->
+    <section class="card" id="blender">
+      <p class="eyebrow">ADD-ON</p>
+      <h2>Leviate for Blender</h2>
+      <p>The same hand control inside Blender 4.2 or later, Blender 5 included. The camera and the
+      hand tracking run in Blender itself: open hand rotates, fist pans, pinch zooms the 3D view or
+      the selected objects. With <b>Phone</b> a QR code appears in the 3D view, no app needed.</p>
+      <div class="buttons" data-kind="blender">
+        <a class="btn ghost" data-os="windows" data-file="leviate-blender-{v}-windows-x64.zip" href="https://github.com/vladpereverzyev/leviate/releases/latest">Windows<small>x64 zip</small></a>
+        <a class="btn ghost" data-os="mac-arm" data-file="leviate-blender-{v}-macos-arm64.zip" href="https://github.com/vladpereverzyev/leviate/releases/latest">macOS<small>Apple silicon zip</small></a>
+        <a class="btn ghost" data-os="linux" data-file="leviate-blender-{v}-linux-x64.zip" href="https://github.com/vladpereverzyev/leviate/releases/latest">Linux<small>x64 zip</small></a>
+      </div>
+      <ol class="steps">
+        <li>Download the zip for your system. Do not unzip it.</li>
+        <li>Drag it into the Blender window, or open Edit, Preferences, Get Extensions and install from disk.</li>
+        <li>In the 3D view press N, open the <b>Leviate</b> tab and press <b>Start camera</b>.</li>
+      </ol>
+      <p class="note"><a href="https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender" target="_blank" rel="noopener">Full guide</a></p>
+    </section>
+
+    <footer class="foot">
+      © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
+      <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
+      <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+      <a href="privacy.html">Privacy</a> ·
+      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
+    </footer>
+  </main>
+
+  <script type="module">
+    // The download buttons point to the files of the latest release. GitHub, which already
+    // hosts this page, says which release that is; without an answer the buttons keep the
+    // link to the releases page.
+    const REPO = 'vladpereverzyev/leviate';
+
+    async function latest() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
+          headers: { Accept: 'application/vnd.github+json' },
+        });
+        if (!res.ok) return;
+        const release = await res.json();
+        const version = release.tag_name.replace(/^v/, '');
+        const files = new Set(release.assets.map((a) => a.name));
+        for (const a of document.querySelectorAll('[data-file]')) {
+          const name = a.dataset.file.replace('{v}', version);
+          if (files.has(name)) a.href = `https://github.com/${REPO}/releases/download/${release.tag_name}/${name}`;
+        }
+        const date = new Date(release.published_at).toLocaleDateString('en-GB', { dateStyle: 'long' });
+        document.getElementById('release').innerHTML = `Version ${version}, ${date} · `
+          + `<a href="${release.html_url}" target="_blank" rel="noopener">Release notes</a> · `
+          + `<a href="https://github.com/${REPO}/releases" target="_blank" rel="noopener">All versions</a>`;
+      } catch {}
+    }
+
+    // The button for this computer stands out.
+    async function system() {
+      const ua = navigator.userAgent;
+      if (/Android|iPhone|iPad/.test(ua)) return null;
+      if (/Windows/.test(ua)) return 'windows';
+      if (/Linux/.test(ua)) return 'linux';
+      if (/Mac/.test(ua)) {
+        try {
+          const { architecture } = await navigator.userAgentData.getHighEntropyValues(['architecture']);
+          return architecture === 'x86' ? 'mac-intel' : 'mac-arm';
+        } catch {
+          return 'mac-arm';   // Safari does not tell; Macs sold since 2020 are Apple silicon
+        }
+      }
+      return null;
+    }
+
+    system().then((os) => {
+      if (!os) return;
+      for (const group of document.querySelectorAll('[data-kind]')) {
+        const mine = group.querySelector(`[data-os="${os}"]`);
+        if (mine) {
+          mine.classList.remove('ghost');
+          mine.classList.add('mine');
+          group.prepend(mine);
+        }
+      }
+    });
+    latest();
+  </script>
+</body>
+</html>
