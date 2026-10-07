@@ -32,17 +32,17 @@ async function github(url) {
   }
 }
 
-// Leviate for Desktop is the release marked latest (tag v<version>); Leviate for Blender
-// has releases of its own (tag blender-v<version>), so its newest one is looked up apart.
+// Leviate for Desktop is the release marked latest; Leviate for Blender has releases of its
+// own with its own version (never marked latest), found by its zips.
 async function latestReleases() {
   const desktop = await github('releases/latest');
   const all = await github('releases?per_page=50');
-  const blender = (all || []).find((r) => r.tag_name.startsWith('blender-v') && !r.draft) || null;
+  const blender = (all || []).find((r) => !r.draft && r.assets.some((x) => x.name.startsWith('leviate-blender-'))) || null;
   return { desktop, blender };
 }
 
 function linkDownloads(html, release, isBlender) {
-  const version = release.tag_name.replace(/^(blender-)?v/, '');
+  const version = release.tag_name.replace(/^v/, '');
   const assets = new Set(release.assets.map((a) => a.name));
   let linked = 0;
   html = html.replace(/data-file="([^"]+)" href="[^"]*"/g, (all, pattern) => {

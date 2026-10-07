@@ -2,10 +2,11 @@
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
 # Builds the Blender zips and the desktop app (Windows, macOS, Linux) on every push and
-# pull request. Releases are separate, so each one changes only when it has changed:
-#   v<version>          (shared/js/version.js)  Leviate for Desktop, marked as the latest
-#   blender-v<version>  (blender_manifest.toml) Leviate for Blender, never marked latest, so
-#                       the update check of the desktop app always finds the app
+# pull request. Releases are separate, so each one changes only when it has changed. Both
+# are tagged v<version>; the number tells which one it is:
+#   the version of shared/js/version.js            Leviate for Desktop, marked as the latest
+#   the version of the add-on (blender_manifest)   Leviate for Blender, never marked latest,
+#                                                   so the update check of the app finds the app
 # The web app itself is not in a release: it runs from https://vladpereverzyev.github.io/leviate/.
 
 name: Build & Release
@@ -13,7 +14,7 @@ name: Build & Release
 on:
   push:
     branches: [main]
-    tags: ["v*", "blender-v*"]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -21,8 +22,35 @@ permissions:
   contents: write # needed to create releases
 
 jobs:
+  # On a tag: is it the version of the desktop app or of the Blender add-on?
+  kind:
+    runs-on: ubuntu-latest
+    outputs:
+      desktop: ${{ steps.kind.outputs.desktop }}
+      blender: ${{ steps.kind.outputs.blender }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Which release
+        id: kind
+        run: |
+          APP="v$(grep -oP "VERSION = '\K[0-9.]+" shared/js/version.js)"
+          ADDON="v$(grep -oP '^version = "\K[0-9.]+' integrations/blender/leviate/blender_manifest.toml)"
+          DESKTOP=false; BLENDER=false
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then DESKTOP=true; BLENDER=true; fi
+          if [ "$GITHUB_REF_NAME" = "$APP" ]; then DESKTOP=true; fi
+          if [ "$GITHUB_REF_NAME" = "$ADDON" ]; then BLENDER=true; fi
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "$DESKTOP$BLENDER" = "falsefalse" ]; then
+            echo "Tag $GITHUB_REF_NAME matches neither the app ($APP) nor the add-on ($ADDON)"
+            exit 1
+          fi
+          echo "desktop=$DESKTOP" >> "$GITHUB_OUTPUT"
+          echo "blender=$BLENDER" >> "$GITHUB_OUTPUT"
+
   build:
-    if: "!startsWith(github.ref, 'refs/tags/v')"
+    needs: [kind]
+    if: needs.kind.outputs.blender == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,15 +64,6 @@ jobs:
       - name: Check the add-on code
         run: python -m py_compile integrations/blender/leviate/*.py
 
-      - name: Tag matches the add-on version
-        if: startsWith(github.ref, 'refs/tags/blender-v')
-        run: |
-          ADDON="blender-v$(grep -oP '^version = "\K[0-9.]+' integrations/blender/leviate/blender_manifest.toml)"
-          if [ "$ADDON" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match blender_manifest.toml ($ADDON)"
-            exit 1
-          fi
-
       - name: Build Leviate for Blender
         run: python scripts/build-blender.py
 
@@ -56,7 +75,8 @@ jobs:
           if-no-files-found: error
 
   desktop:
-    if: "!startsWith(github.ref, 'refs/tags/blender-v')"
+    needs: [kind]
+    if: needs.kind.outputs.desktop == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -65,16 +85,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Tag matches the app version
-        if: startsWith(github.ref, 'refs/tags/v')
-        shell: bash
-        run: |
-          APP="v$(grep -oE "VERSION = '[0-9.]+" shared/js/version.js | grep -oE '[0-9.]+$')"
-          if [ "$APP" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match shared/js/version.js ($APP)"
-            exit 1
-          fi
 
       - name: Set up Node
         uses: actions/setup-node@v5
@@ -101,8 +111,8 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [desktop]
-    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [kind, desktop]
+    if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write   # the release
@@ -123,7 +133,7 @@ jobs:
         run: |
           VER="${GITHUB_REF_NAME#v}"
           # The newest release of Leviate for Blender, linked straight from the notes.
-          BLENDER="$(gh release list --repo "$GITHUB_REPOSITORY" --limit 50 --json tagName -q '[.[] | select(.tagName | startswith("blender-v"))][0].tagName')"
+          BLENDER="$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=50" --jq '[.[] | select(any(.assets[]; .name | startswith("leviate-blender-")))][0].tag_name')"
           cat > notes.md <<EOF
           **Leviate runs in the browser, nothing to download:** <https://vladpereverzyev.github.io/leviate/>
 
@@ -138,7 +148,7 @@ jobs:
 
           ### Leviate for Blender
 
-          The add-on has releases of its own, made only when it changes. Newest:
+          The add-on has releases of its own, made only when it changes, with its own version. Newest:
           [${BLENDER}](https://github.com/vladpereverzyev/leviate/releases/tag/${BLENDER}).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
@@ -162,8 +172,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
   release-blender:
-    needs: [build]
-    if: startsWith(github.ref, 'refs/tags/blender-v')
+    needs: [kind, build]
+    if: github.ref_type == 'tag' && needs.kind.outputs.blender == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write   # the release
@@ -180,7 +190,7 @@ jobs:
 
       - name: Release notes
         run: |
-          VER="${GITHUB_REF_NAME#blender-v}"
+          VER="${GITHUB_REF_NAME#v}"
           cat > notes.md <<EOF
           ### Leviate for Blender ${VER}
 
