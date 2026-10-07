@@ -299,8 +299,9 @@ escaneos en el software aprobado para ese fin.
 ## Privacidad
 
 El vídeo y tus escaneos se procesan solo dentro de tu navegador. No se sube nada, no
-hay seguimiento ni cuenta. El único servicio externo es el broker PeerJS que usa
-**Use phone**, que ve los datos de conexión pero nunca el vídeo.
+hay seguimiento ni cuenta. Los únicos servicios externos son los de
+**Use phone** (el broker PeerJS y un servidor STUN de Google), que ven los datos de
+conexión pero nunca el vídeo. Todos los detalles en la [política de privacidad](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contribuir
 

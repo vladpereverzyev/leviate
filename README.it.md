@@ -295,8 +295,9 @@ le scansioni nel software approvato per quello scopo.
 ## Privacy
 
 Il flusso video e le tue scansioni vengono elaborati solo dentro il browser. Non viene
-caricato niente, nessun tracciamento e nessun account. L'unico servizio esterno è il
-broker PeerJS usato da **Use phone**, che vede i dati di connessione ma mai il video.
+caricato niente, nessun tracciamento e nessun account. Gli unici servizi esterni sono quelli di
+**Use phone** (il broker PeerJS e un server STUN di Google), che vedono i dati di
+connessione ma mai il video. Tutti i dettagli nella [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contribuire
 

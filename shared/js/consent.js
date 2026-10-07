@@ -14,7 +14,7 @@ document.body.insertAdjacentHTML('beforeend', `
   <div class="cc" data-cc hidden><div class="cc__bar" role="dialog" aria-modal="false" aria-labelledby="cc-title"><div class="cc__inner">
     <div class="cc__copy">
       <p class="cc__h" id="cc-title">Cookies and privacy</p>
-      <p class="cc__p">Leviate sets no cookies and has no analytics or advertising. The camera starts only if you allow it and its video is read on your device, never sent anywhere. <b>Use phone</b> also needs an outside service: the PeerJS server that connects the phone to the computer, which sees the IP addresses but never the video. Without your consent camera and phone stay off, and the choice is kept on your device for six months. <a href="privacy.html">Privacy and cookie policy</a></p>
+      <p class="cc__p">Leviate sets no cookies and has no analytics or advertising. The camera starts only if you allow it and its video is read on your device, never sent anywhere. <b>Use phone</b> also needs outside services: the PeerJS server and a STUN server of Google that connect the phone to the computer, which see the IP addresses but never the video. Without your consent camera and phone stay off and the choice is kept on your device for six months. <a href="privacy.html">Privacy and cookie policy</a></p>
     </div>
     <div class="cc__actions">
       <button class="btn ghost" type="button" data-cc-prefs>Preferences</button>
@@ -31,7 +31,7 @@ document.body.insertAdjacentHTML('beforeend', `
       <li class="ccp__item"><div class="ccp__copy"><p class="ccp__name">Necessary</p><p class="ccp__desc">Your settings, the position of the windows and the memory of this choice, kept in your browser storage.</p><p class="ccp__state">No cookies.</p></div><span class="ccp__always">Always active</span></li>
       <li class="ccp__item"><div class="ccp__copy"><p class="ccp__name">Camera</p><p class="ccp__desc">The webcam or phone camera for hand gestures. Hand tracking runs on your device and the video is never recorded or sent.</p><p class="ccp__state">MediaPipe, bundled with the app</p></div><label class="ccp__switch"><input type="checkbox" data-cc-cat="camera"><span class="ccp__track" aria-hidden="true"></span><span class="ccp__sr">Camera</span></label></li>
       <li class="ccp__item"><div class="ccp__copy"><p class="ccp__name">Statistics</p><p class="ccp__desc">Counting visits and how the app is used.</p><p class="ccp__state">Nothing in use today.</p></div><label class="ccp__switch"><input type="checkbox" data-cc-cat="statistics"><span class="ccp__track" aria-hidden="true"></span><span class="ccp__sr">Statistics</span></label></li>
-      <li class="ccp__item"><div class="ccp__copy"><p class="ccp__name">External services</p><p class="ccp__desc">Needed for <b>Use phone</b> and its QR code: the PeerJS server connects phone and computer, then the video goes straight between them, encrypted.</p><p class="ccp__state">PeerJS (0.peerjs.com)</p></div><label class="ccp__switch"><input type="checkbox" data-cc-cat="external"><span class="ccp__track" aria-hidden="true"></span><span class="ccp__sr">External services</span></label></li>
+      <li class="ccp__item"><div class="ccp__copy"><p class="ccp__name">External services</p><p class="ccp__desc">Needed for <b>Use phone</b> and its QR code: the PeerJS server and a STUN server of Google connect phone and computer, then the video goes straight between them, encrypted.</p><p class="ccp__state">PeerJS (0.peerjs.com), Google STUN (stun.l.google.com)</p></div><label class="ccp__switch"><input type="checkbox" data-cc-cat="external"><span class="ccp__track" aria-hidden="true"></span><span class="ccp__sr">External services</span></label></li>
     </ul>
     <div class="ccp__actions">
       <button class="btn ghost" type="button" data-cc-close>Close</button>
@@ -47,8 +47,8 @@ if (new URLSearchParams(location.search).has('pair')) {
   $('.cc__p').innerHTML = 'This page turns your phone into the webcam of your computer. '
     + 'Leviate sets no cookies and has no analytics or advertising. The camera starts only if you allow it '
     + 'and its video goes straight to your computer, encrypted, never recorded or kept. To connect the two '
-    + 'devices the PeerJS server sees their IP addresses but never the video. Without your consent Camera and '
-    + 'External services stay off, and the choice is kept on this phone for six months. '
+    + 'devices the PeerJS server and a STUN server of Google see their IP addresses but never the video. Without your consent Camera and '
+    + 'External services stay off and the choice is kept on this phone for six months. '
     + '<a href="privacy.html">Privacy and cookie policy</a>';
 }
 const banner = $('[data-cc]');

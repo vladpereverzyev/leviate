@@ -290,8 +290,9 @@ approved for that purpose.
 ## Privacy
 
 The video stream and your scans are processed only inside your browser. Nothing is
-uploaded, there is no tracking and no account. The only outside service is the PeerJS
-broker used by **Use phone**, which sees the connection details but never the video.
+uploaded, there is no tracking and no account. The only outside services are the ones of
+**Use phone** (the PeerJS broker and a STUN server of Google), which see the connection
+details but never the video. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contributing
 

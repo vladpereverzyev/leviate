@@ -304,8 +304,9 @@ Vérifiez toujours les scans dans le logiciel approuvé pour cet usage.
 ## Confidentialité
 
 Le flux vidéo et vos scans sont traités uniquement dans votre navigateur. Rien n'est
-envoyé, aucun suivi et aucun compte. Le seul service externe est le broker PeerJS
-utilisé par **Use phone**, qui voit les détails de connexion mais jamais la vidéo.
+envoyé, aucun suivi et aucun compte. Les seuls services externes sont ceux de
+**Use phone** (le broker PeerJS et un serveur STUN de Google), qui voient les détails de
+connexion mais jamais la vidéo. Tous les détails dans la [politique de confidentialité](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contribuer
 

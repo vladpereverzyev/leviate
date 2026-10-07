@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#011E2E">
   <title>Privacy and cookie policy - Leviate</title>
-  <meta name="description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS for Use phone, the desktop app, consent, storage and GDPR rights.">
+  <meta name="description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS and Google STUN for Use phone, the desktop app and the Blender add-on, consent, storage and GDPR rights.">
   <meta name="author" content="Vladyslav Pereverzyev">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://vladpereverzyev.github.io/leviate/privacy.html">
   <meta property="og:site_name" content="Leviate">
   <meta property="og:title" content="Privacy and cookie policy - Leviate">
-  <meta property="og:description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS for Use phone, the desktop app, consent, storage and GDPR rights.">
+  <meta property="og:description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS and Google STUN for Use phone, the desktop app and the Blender add-on, consent, storage and GDPR rights.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vladpereverzyev.github.io/leviate/privacy.html">
   <meta property="og:image" content="https://vladpereverzyev.github.io/leviate/img/social.png">
@@ -26,7 +26,7 @@
   <meta name="twitter:site" content="@vladpereverzyev">
   <meta name="twitter:creator" content="@vladpereverzyev">
   <meta name="twitter:title" content="Privacy and cookie policy - Leviate">
-  <meta name="twitter:description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS for Use phone, the desktop app, consent, storage and GDPR rights.">
+  <meta name="twitter:description" content="How Leviate handles your data: no cookies, no analytics, 3D files and camera video stay on your device. Controller, PeerJS and Google STUN for Use phone, the desktop app and the Blender add-on, consent, storage and GDPR rights.">
   <meta name="twitter:image" content="https://vladpereverzyev.github.io/leviate/img/social.png">
   <meta name="twitter:image:alt" content="Leviate">
   <link rel="icon" href="favicon.ico" sizes="48x48">
@@ -67,7 +67,8 @@
     <p class="updated">Last updated: 7 October 2026</p>
 
     <p>This policy explains what happens to your data when you use Leviate at
-    vladpereverzyev.github.io/leviate and Leviate for Desktop (section 6). It is provided under Articles 13 and 14 of
+    vladpereverzyev.github.io/leviate, Leviate for Desktop (section 6) and Leviate for Blender
+    (section 7). It is provided under Articles 13 and 14 of
     Regulation (EU) 2016/679 (GDPR) and Italian Legislative Decree 196/2003 as amended.</p>
 
     <h2>1. Data controller</h2>
@@ -94,11 +95,16 @@
     <h2>4. Use phone</h2>
     <p>To use a phone as a webcam the computer and the phone must find each other. This is
     done by the public PeerJS server (0.peerjs.com), which receives the IP addresses of both
-    devices and a random session code. The video then goes straight between the two devices
-    over WebRTC, encrypted. When a direct link is not possible it is relayed through a PeerJS
-    TURN server, still encrypted. PeerJS never sees the video. This service runs only if you
+    devices and a random session code. To find the way between the two devices each of them
+    also asks a STUN server of Google (stun.l.google.com) for its own public IP address. The
+    video then goes straight between the two devices over WebRTC, encrypted. When a direct
+    link is not possible it is relayed through a PeerJS TURN server (in the EU or in the USA),
+    still encrypted. Neither PeerJS nor Google ever sees the video. This service runs only if you
     allow the External services category. Legal basis: your consent (Art. 6(1)(a) GDPR),
-    which you can withdraw at any time.</p>
+    which you can withdraw at any time. PeerJS and Google may process the IP addresses
+    outside the European Union, in particular in the USA. Google is certified under the
+    EU-U.S. Data Privacy Framework; for PeerJS the transfer rests on your consent
+    (Art. 49(1)(a) GDPR).</p>
 
     <h2>5. Links to other sites and the Ko-fi note</h2>
     <p>The links to GitHub, Ko-fi and vladpereverzyev.com open those sites, which process
@@ -107,7 +113,7 @@
     for Desktop show a short note that asks for support on Ko-fi, only while the camera or
     the hand is off. With Remind me later it comes back after 2 more hours of use, with
     Support or Don't ask again never again. The minutes and your answer are counted and kept
-    on your device only (leviate.support in section 7, leviate.desktop in section 6) and are
+    on your device only (leviate.support in section 8, leviate.desktop in section 6) and are
     never sent anywhere. Ko-fi is contacted only if you press Support, which opens ko-fi.com
     in your browser.</p>
 
@@ -128,7 +134,7 @@
     Ctrl+Alt+M (Ctrl+Option+M on macOS), which turns the hand off and on. On macOS this needs the Accessibility permission,
     which you grant in the system settings.</p>
     <p><b>Phone.</b> Use phone connects through the PeerJS server exactly as described in
-    section 4: PeerJS receives the IP addresses of both devices and a random session code,
+    section 4: PeerJS and the STUN server of Google receive the IP addresses of both devices,
     never the video. Before the first pairing the program explains this and connects only if
     you choose Continue. Legal basis: your consent (Art. 6(1)(a) GDPR); you withdraw it by
     not using the phone.</p>
@@ -144,8 +150,8 @@
     old one and Leviate starts again. Remind me later hides the note until the next start.
     You can turn the check off with Check for new versions at start, in the Settings
     section. Legal basis: legitimate interest in a secure and up to date program
-    (Art. 6(1)(f) GDPR). Apart from Use phone and this check the program makes no connection
-    to the internet; links open in your browser.</p>
+    (Art. 6(1)(f) GDPR). Apart from Use phone, this check and the update you choose the
+    program makes no connection to the internet; links open in your browser.</p>
     <p><b>Settings</b> are kept on your computer, in the data folder of the program and never
     leave it: leviate.desktop (camera, mode and gesture settings, which windows are closed, whether to look for new
     versions, whether the
@@ -154,7 +160,26 @@
     code of the web app that no banner is needed). Uninstalling the program, or deleting its
     data folder, removes them.</p>
 
-    <h2 id="cookies">7. Cookies and browser storage</h2>
+    <h2 id="blender">7. Leviate for Blender</h2>
+    <p>Leviate for Blender is an add-on for Blender, downloaded from the releases of the
+    project on GitHub (see section 3) or from extensions.blender.org, which processes data
+    under the policy of the Blender Foundation. It has no accounts, no analytics and no
+    advertising.</p>
+    <p><b>The camera</b> starts when you press Start camera in the Leviate tab. The video is
+    read by the hand tracking on your computer, frame by frame and is never recorded or
+    sent anywhere. The add-on moves only the 3D view or the selected objects in Blender.</p>
+    <p><b>Hand model.</b> The zips on GitHub carry the hand tracking model. The copy from
+    extensions.blender.org does not: on the first Start camera it downloads the same file
+    once from Google (storage.googleapis.com) and checks it. Google receives the IP address
+    and the technical data of the request. Legal basis: legitimate interest in a working
+    add-on (Art. 6(1)(f) GDPR). The model is then kept on your computer.</p>
+    <p><b>Phone.</b> Phone in the Leviate tab connects through PeerJS and the STUN server of
+    Google exactly as described in section 4 and only when you choose it. Legal basis: your
+    consent (Art. 6(1)(a) GDPR); you withdraw it by not using the phone.</p>
+    <p>The settings of the add-on are kept by Blender in its own preferences on your
+    computer.</p>
+
+    <h2 id="cookies">8. Cookies and browser storage</h2>
     <p>Leviate sets <b>no cookies</b>. It keeps a few values in your browser storage, on your
     device only. They keep the app working and your choices remembered and never leave the
     device.</p>
@@ -169,7 +194,7 @@
     <b>Statistics</b> (nothing in use today) and <b>External services</b> (PeerJS for
     Use phone). You can <a href="#cookies" data-cc-open>change your choice</a> at any time.</p>
 
-    <h2>8. Your rights</h2>
+    <h2>9. Your rights</h2>
     <p>You have the right to access, rectify and erase your data, to restrict or object to
     its processing, to data portability and to withdraw consent at any time without
     affecting earlier processing (Articles 15 to 22 GDPR). Write to
@@ -177,7 +202,7 @@
     a complaint with the Italian supervisory authority, the
     <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
 
-    <h2>9. Changes</h2>
+    <h2>10. Changes</h2>
     <p>This policy may be updated when the app changes. The date at the top shows the last
     change.</p>
   </main>

@@ -297,8 +297,9 @@ der dafür zugelassenen Software.
 ## Datenschutz
 
 Der Videostream und deine Scans werden nur in deinem Browser verarbeitet. Nichts wird
-hochgeladen, kein Tracking und kein Konto. Der einzige externe Dienst ist der
-PeerJS-Broker für **Use phone**, der die Verbindungsdaten sieht, aber nie das Video.
+hochgeladen, kein Tracking und kein Konto. Die einzigen externen Dienste sind die von
+**Use phone** (der PeerJS-Broker und ein STUN-Server von Google), die die Verbindungsdaten
+sehen, aber nie das Video. Alle Details in der [Datenschutzerklärung](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Mitwirken
 
