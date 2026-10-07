@@ -131,9 +131,6 @@
     .faq-block .note { margin-top: 18px; color: var(--dim); font-size: 13px; }
     @media (max-width: 720px) { .faq { display: block; } }
     @media (prefers-reduced-motion: reduce) { .faq__item summary::after { transition: none; } }
-    .foot { margin-top: 40px; text-align: center; color: var(--dim); font-size: 11px; }
-    .foot a { color: var(--dim); text-decoration: none; }
-    .foot a:hover { color: var(--text); }
 
     @media (max-width: 560px) {
       .card { padding: 20px; }
@@ -260,9 +257,10 @@
       © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
       <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
       <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
-      <a href="#faq">FAQ</a> ·
+      <a href="download.html">Download</a> ·
       <a href="privacy.html">Privacy</a> ·
-      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
+      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
+      <span id="version"></span>
     </footer>
   </main>
 
@@ -361,6 +359,7 @@
       }
     }
   </script>
+  <script type="module" src="js/footer.js"></script>
   <script type="module" src="js/consent.js"></script>
 </body>
 </html>

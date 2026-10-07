@@ -53,6 +53,23 @@ function linkDownloads(release) {
   console.log(`Download buttons: ${linked} direct links to ${release.tag_name}`);
 }
 
+// Every page has the same footer as the web app, and so does Leviate for Desktop: same
+// links, same words, same order. Stop if one of them is different.
+function footerText(file) {
+  const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const foot = html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/);
+  if (!foot) return null;
+  return foot[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const FOOTERS = ['web/index.html', 'web/download.html', 'web/privacy.html', 'web/404.html', 'desktop/renderer/control.html'];
+const footer = footerText(FOOTERS[0]);
+for (const file of FOOTERS) {
+  if (footerText(file) !== footer) {
+    console.error(`The footer of ${file} is not the same as the one of ${FOOTERS[0]}`);
+    process.exit(1);
+  }
+}
+
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.cpSync(path.join(ROOT, 'web'), OUT, { recursive: true });
 // A file in both folders would hide one of them: stop instead.

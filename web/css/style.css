@@ -184,6 +184,11 @@ a.link { text-decoration: none; }
 .legal a { color: var(--dim); text-decoration: none; }
 .legal a:hover { color: var(--text); }
 
+/* The same footer at the bottom of the other pages (download, privacy, 404). */
+.foot { margin-top: 40px; text-align: center; color: var(--dim); font-size: 11px; line-height: 1.6; }
+footer.foot a { color: var(--dim); text-decoration: none; }
+footer.foot a:hover { color: var(--text); }
+
 /* -------------------------------------------------------------- windows */
 
 .win {
