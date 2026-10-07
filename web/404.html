@@ -22,7 +22,7 @@
   <style>
     html, body { height: auto; min-height: 100%; overflow: auto; }
     body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
-    .page { max-width: 64rem; min-height: 100vh; margin: 0 auto; padding: 32px 20px 24px; display: flex; flex-direction: column; }
+    .page { max-width: var(--maxw); min-height: 100vh; margin: 0 auto; padding: 32px var(--gutter) 24px; display: flex; flex-direction: column; }
     .brand { color: var(--text); text-decoration: none; }
     .lost { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; padding: 48px 0; }
     .lost h1 { margin: 0; font-weight: 300; font-size: clamp(32px, 5vw, 52px); letter-spacing: -0.03em; line-height: 1.1; }

@@ -7,6 +7,9 @@
 
 :root {
   --bg: #011E2E;
+  /* Page width and side margins of vladpereverzyev.com. */
+  --maxw: 1160px;
+  --gutter: clamp(18.4px, 4vw, 48px);
   /* Nearly solid on purpose: a blurred glass over the live 3D view costs a full
      re-blur every frame and made the view stutter. */
   --panel: rgba(4, 38, 58, 0.94);
@@ -84,6 +87,8 @@ button, select, input { font: inherit; color: inherit; }
   text-transform: uppercase;
 }
 .brand img { width: 28px; height: 28px; }
+/* Leviate leads home from every page. */
+a.brand { color: var(--text); text-decoration: none; pointer-events: auto; }
 .perf {
   color: var(--dim);
   font-size: 12px;
@@ -458,12 +463,14 @@ section.phone-mode {
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: max(32px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+  padding: max(32px, env(safe-area-inset-top)) var(--gutter) max(24px, env(safe-area-inset-bottom));
   background: radial-gradient(ellipse at 50% 30%, #06324c 0%, var(--bg) 70%);
   text-align: center;
 }
-/* The header sits where it is on the other pages, at the top left. */
-.pm-head { align-self: stretch; }
+/* The header sits where it is on the other pages, at the top left, with the name of the page
+   on the right like in Leviate for Desktop. */
+.pm-head { align-self: stretch; display: flex; align-items: center; justify-content: space-between; }
+.product { color: var(--dim); font-size: 11px; letter-spacing: 0.24em; }
 .pm-preview {
   width: 100%;
   max-width: 480px;
@@ -516,7 +523,7 @@ section.phone-mode {
 
 @media (max-width: 700px) {
   /* Header and footer in the same place and size as on the other pages. */
-  .top { top: max(32px, env(safe-area-inset-top)); left: 20px; right: 20px; }
+  .top { top: max(32px, env(safe-area-inset-top)); left: var(--gutter); right: var(--gutter); }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win { width: calc(100vw - 24px); max-width: none; }
@@ -538,7 +545,7 @@ section.phone-mode {
   .sep, #fullscreen { display: none; }
 
   .toast { bottom: calc(max(6px, env(safe-area-inset-bottom)) + 110px); }
-  .legal { left: 20px; right: 20px; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 11px; line-height: 1.6; }
+  .legal { left: var(--gutter); right: var(--gutter); bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 11px; line-height: 1.6; }
 }
 
 /* --------------------------------------------------------------- consent */
