@@ -39,15 +39,16 @@
   <style>
     html, body { height: auto; overflow: auto; }
     body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
-    .doc { max-width: 46rem; margin: 0 auto; padding: 40px 20px 120px; font-size: 15px; line-height: 1.7; font-weight: 300; }
+    .head { max-width: 64rem; margin: 0 auto; padding: 32px 20px 0; }
+    .brand { color: var(--text); text-decoration: none; }
+    body > .foot { max-width: 64rem; margin-left: auto; margin-right: auto; padding: 0 20px 24px; }
+    .doc { max-width: 64rem; margin: 0 auto; padding: 40px 20px 20px; font-size: 15px; line-height: 1.7; font-weight: 300; }
     .doc a { color: var(--accent-2); }
     .doc h1 { margin: 6px 0 4px; font-size: 34px; font-weight: 300; letter-spacing: -0.02em; }
     .doc h2 { margin: 36px 0 8px; font-size: 19px; font-weight: 400; }
     .doc p, .doc li { color: var(--muted); }
     .doc b { color: var(--text); font-weight: 500; }
     .doc .updated { color: var(--dim); font-size: 13px; margin: 0 0 28px; }
-    .doc .back { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 400; }
-    .doc .back img { width: 26px; height: 26px; }
     .doc table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
     .doc th, .doc td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--muted); }
     .doc th { color: var(--text); font-weight: 400; }
@@ -55,8 +56,10 @@
   </style>
 </head>
 <body>
+  <header class="head">
+    <a class="brand" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
+  </header>
   <main class="doc">
-    <a class="back" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
     <h1>Privacy and cookie policy</h1>
     <p class="updated">Last updated: 7 October 2026</p>
 
@@ -157,16 +160,16 @@
     <p>This policy may be updated when the app changes. The date at the top shows the last
     change.</p>
     <p class="updated"><a href="./">Open Leviate</a> · <a href="download.html">Download</a></p>
-    <footer class="foot">
-      © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
-      <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
-      <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
-      <a href="download.html">Download</a> ·
-      <a href="privacy.html">Privacy</a> ·
-      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
-      <span id="version"></span>
-    </footer>
   </main>
+  <footer class="foot">
+    © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+    <a href="download.html">Download</a> ·
+    <a href="privacy.html">Privacy</a> ·
+    <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
+    <span id="version"></span>
+  </footer>
   <script type="module" src="js/footer.js"></script>
   <script type="module" src="js/consent.js"></script>
 </body>

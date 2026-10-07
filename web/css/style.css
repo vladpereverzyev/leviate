@@ -185,7 +185,7 @@ a.link { text-decoration: none; }
 .legal a:hover { color: var(--text); }
 
 /* The same footer at the bottom of the other pages (download, privacy, 404). */
-.foot { margin-top: 40px; text-align: center; color: var(--dim); font-size: 11px; line-height: 1.6; }
+.foot { margin-top: 40px; margin-bottom: var(--cc-room, 0px); text-align: center; color: var(--dim); font-size: 11px; line-height: 1.6; }
 footer.foot a { color: var(--dim); text-decoration: none; }
 footer.foot a:hover { color: var(--text); }
 
@@ -636,7 +636,5 @@ section.phone-mode {
   .ccp__box { transform: none; }
 }
 
-/* Privacy links at the bottom of the phone camera page, styled like the app footer. */
-.pm-legal { margin: auto 0 0; font-size: 11px; line-height: 1.5; color: var(--dim); }
-.pm-legal a { color: var(--dim); text-decoration: none; }
-.pm-legal a:hover { color: var(--text); }
+/* The footer at the bottom of the phone camera page. */
+.pm-foot { margin: auto 0 var(--cc-room, 0px); }

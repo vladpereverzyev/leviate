@@ -27,7 +27,7 @@ import { ensure } from './consent.js';
 
 const $ = (id) => document.getElementById(id);
 
-$('version').textContent = 'v' + VERSION;
+$('version').textContent = $('pm-version').textContent = 'v' + VERSION;
 
 // Opened from the QR code: this device becomes the camera of a computer.
 const pairId = new URLSearchParams(location.search).get('pair');

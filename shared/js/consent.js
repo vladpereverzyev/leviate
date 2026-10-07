@@ -146,6 +146,12 @@ choices = stored?.choices || null;
 showRecord(stored);
 if (!stored) banner.hidden = false;
 
+// While the banner is open the pages keep room for it under the footer, so the footer is not
+// hidden behind it.
+new ResizeObserver(() => {
+  document.documentElement.style.setProperty('--cc-room', banner.hidden ? '0px' : `${banner.offsetHeight}px`);
+}).observe(banner);
+
 banner.querySelector('[data-cc-accept]').addEventListener('click', () => save(all(true)));
 banner.querySelector('[data-cc-reject]').addEventListener('click', () => save(all(false)));
 banner.querySelector('[data-cc-prefs]').addEventListener('click', open);
