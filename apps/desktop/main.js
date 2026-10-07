@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Leviate. Copyright (C) 2026 Vladyslav Pereverzyev
 
-// Leviate desktop app: the hand drives the program the user works in.
+// Leviate for Desktop: the hand drives the program the user works in.
 //
 //   3D     the gestures of the web app (open hand turns, fist pans, pinch zooms) become
 //          mouse drags and wheel steps in the 3D program under the cursor, with the
@@ -19,8 +19,8 @@ const path = require('node:path');
 const mouse = require('./mouse');
 
 // Packed app: the web app files are copied into web/ by scripts/build-desktop.mjs.
-// Development: the repository itself.
-const WEB = app.isPackaged ? path.join(__dirname, 'web') : path.resolve(__dirname, '..', '..');
+// Development: the web/ folder of the repository.
+const WEB = app.isPackaged ? path.join(__dirname, 'web') : path.resolve(__dirname, '..', '..', 'web');
 const RENDERER = path.join(__dirname, 'renderer');
 const ORIGIN = 'app://leviate';
 // Turns the hand off and back on from any program. Control, not Cmd, on macOS too:

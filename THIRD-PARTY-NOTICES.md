@@ -5,24 +5,24 @@ components. Each one keeps its own license.
 
 | Component | Version | License | Files in this repository |
 | --- | --- | --- | --- |
-| [three.js](https://github.com/mrdoob/three.js) | r186 (npm `three@0.186.1`) | MIT | `vendor/three/` |
-| [MediaPipe Tasks Vision](https://github.com/google-ai-edge/mediapipe) | npm `@mediapipe/tasks-vision@1.0.1` | Apache-2.0 | `vendor/mediapipe/` |
-| [MediaPipe Hand Landmarker model](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker) | float16, latest | Apache-2.0 | `models/hand_landmarker.task` |
-| [fflate](https://github.com/101arrowz/fflate) | 0.8.2 (bundled with three.js) | MIT | `vendor/three/addons/libs/fflate.module.js` |
-| [meshoptimizer decoder](https://github.com/zeux/meshoptimizer) | bundled with three.js | MIT | `vendor/three/addons/libs/meshopt_decoder.module.js` |
-| [Draco decoder](https://github.com/google/draco) | bundled with three.js | Apache-2.0 | `vendor/three/addons/libs/draco/` |
-| [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `vendor/peerjs/` |
-| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `vendor/qrcode/` |
-| [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `vendor/jsqr/` |
-| [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `vendor/fonts/` |
-| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `js/gestures.js` and `integrations/blender/leviate/gestures.py` |
+| [three.js](https://github.com/mrdoob/three.js) | r186 (npm `three@0.186.1`) | MIT | `web/vendor/three/` |
+| [MediaPipe Tasks Vision](https://github.com/google-ai-edge/mediapipe) | npm `@mediapipe/tasks-vision@1.0.1` | Apache-2.0 | `web/vendor/mediapipe/` |
+| [MediaPipe Hand Landmarker model](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker) | float16, latest | Apache-2.0 | `web/models/hand_landmarker.task` |
+| [fflate](https://github.com/101arrowz/fflate) | 0.8.2 (bundled with three.js) | MIT | `web/vendor/three/addons/libs/fflate.module.js` |
+| [meshoptimizer decoder](https://github.com/zeux/meshoptimizer) | bundled with three.js | MIT | `web/vendor/three/addons/libs/meshopt_decoder.module.js` |
+| [Draco decoder](https://github.com/google/draco) | bundled with three.js | Apache-2.0 | `web/vendor/three/addons/libs/draco/` |
+| [PeerJS](https://github.com/peers/peerjs) | 1.5.5 | MIT | `web/vendor/peerjs/` |
+| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `web/vendor/qrcode/` |
+| [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `web/vendor/jsqr/` |
+| [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `web/vendor/fonts/` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `web/js/gestures.js` and `integrations/blender/leviate/gestures.py` |
 
 The Leviate for Blender zips in the releases also carry the Python wheels of MediaPipe,
 OpenCV (headless), absl-py and FlatBuffers (all Apache-2.0), downloaded unmodified from
 PyPI when the zips are built. They are not stored in this repository. See
 [integrations/blender/leviate/THIRD-PARTY.md](integrations/blender/leviate/THIRD-PARTY.md).
 
-The Leviate desktop downloads in the releases are built with
+The Leviate for Desktop downloads in the releases are built with
 [Electron](https://www.electronjs.org) (MIT, with Chromium under BSD-3-Clause and the
 licenses listed in its `LICENSES.chromium.html`) and electron-builder (MIT), and carry
 [koffi](https://koffi.dev) (MIT) to reach the mouse of the system. Their license files are
@@ -30,11 +30,11 @@ inside the app. Versions in [apps/desktop/package.json](apps/desktop/package.jso
 
 ## three.js
 
-Files: `vendor/three/three.module.js`, `vendor/three/three.core.js`,
-`vendor/three/addons/controls/OrbitControls.js`, `vendor/three/addons/loaders/`
+Files: `web/vendor/three/three.module.js`, `web/vendor/three/three.core.js`,
+`web/vendor/three/addons/controls/OrbitControls.js`, `web/vendor/three/addons/loaders/`
 (STL, PLY, OBJ, MTL, GLTF, Draco, 3MF, FBX, Collada, 3DS, AMF, VTK, PCD, XYZ and TGA loaders),
-`vendor/three/addons/utils/` and `vendor/three/addons/curves/`.
-Copied unmodified from the npm package. Full license text in `vendor/three/LICENSE`.
+`web/vendor/three/addons/utils/` and `web/vendor/three/addons/curves/`.
+Copied unmodified from the npm package. Full license text in `web/vendor/three/LICENSE`.
 
 ```
 The MIT License
@@ -44,11 +44,11 @@ Copyright © 2010-2026 three.js authors
 
 ## MediaPipe Tasks Vision
 
-Files: `vendor/mediapipe/vision_bundle.mjs` and `vendor/mediapipe/wasm/`
+Files: `web/vendor/mediapipe/vision_bundle.mjs` and `web/vendor/mediapipe/wasm/`
 (SIMD and non-SIMD WebAssembly builds).
 Copied from the npm package. The only change is the removal of the
 `sourceMappingURL` comment at the end of `vision_bundle.mjs`, because the source
-map is not shipped. Full license text in `vendor/mediapipe/LICENSE`.
+map is not shipped. Full license text in `web/vendor/mediapipe/LICENSE`.
 
 ```
 Copyright Google LLC
@@ -60,13 +60,13 @@ NOTICE text to carry over.
 
 ## MediaPipe Hand Landmarker model
 
-File: `models/hand_landmarker.task`, downloaded unmodified from
+File: `web/models/hand_landmarker.task`, downloaded unmodified from
 `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task`.
-Released by Google under the Apache License 2.0 (same text as `vendor/mediapipe/LICENSE`).
+Released by Google under the Apache License 2.0 (same text as `web/vendor/mediapipe/LICENSE`).
 
 ## fflate
 
-File: `vendor/three/addons/libs/fflate.module.js`, shipped unmodified inside the
+File: `web/vendor/three/addons/libs/fflate.module.js`, shipped unmodified inside the
 three.js package. Used by the 3MF, FBX, AMF and VTK loaders to unzip data.
 
 ```
@@ -77,7 +77,7 @@ Licensed under MIT
 
 ## meshoptimizer decoder
 
-File: `vendor/three/addons/libs/meshopt_decoder.module.js`, shipped unmodified inside
+File: `web/vendor/three/addons/libs/meshopt_decoder.module.js`, shipped unmodified inside
 the three.js package. Used to read glTF files compressed with meshoptimizer.
 
 ```
@@ -87,9 +87,9 @@ Distributed under the terms of the MIT License
 
 ## Draco decoder
 
-Files: `vendor/three/addons/libs/draco/gltf/` (JavaScript wrapper and WebAssembly
+Files: `web/vendor/three/addons/libs/draco/gltf/` (JavaScript wrapper and WebAssembly
 decoder), shipped unmodified inside the three.js package. Used to read glTF files
-compressed with Draco. Full license text in `vendor/three/addons/libs/draco/LICENSE`.
+compressed with Draco. Full license text in `web/vendor/three/addons/libs/draco/LICENSE`.
 
 ```
 Copyright The Draco Authors (Google LLC)
@@ -98,8 +98,8 @@ Licensed under the Apache License, Version 2.0
 
 ## PeerJS
 
-File: `vendor/peerjs/peerjs.min.js`, copied from the npm package without the source map
-comment. Full license text in `vendor/peerjs/LICENSE`. The phone pairing uses the free
+File: `web/vendor/peerjs/peerjs.min.js`, copied from the npm package without the source map
+comment. Full license text in `web/vendor/peerjs/LICENSE`. The phone pairing uses the free
 public PeerJS server (`0.peerjs.com`) to exchange connection details.
 
 ```
@@ -109,7 +109,7 @@ The MIT License
 
 ## qrcode-generator
 
-File: `vendor/qrcode/qrcode.mjs`, copied unmodified from the npm package. The license
+File: `web/vendor/qrcode/qrcode.mjs`, copied unmodified from the npm package. The license
 is in the header of the file.
 
 ```
@@ -119,9 +119,9 @@ Licensed under the MIT license
 
 ## jsQR
 
-File: `vendor/jsqr/jsQR.js`, copied unmodified from the npm package (`dist/jsQR.js`).
+File: `web/vendor/jsqr/jsQR.js`, copied unmodified from the npm package (`dist/jsQR.js`).
 It reads the QR code on phones whose browser has no built in QR reader (Safari on
-iPhone). The full license is in `vendor/jsqr/LICENSE`.
+iPhone). The full license is in `web/vendor/jsqr/LICENSE`.
 
 ```
 jsQR by Cosmo Wolfe and contributors
@@ -130,8 +130,8 @@ Licensed under the Apache License, Version 2.0
 
 ## Jost font
 
-Files: `vendor/fonts/jost-300.woff2`, `jost-400.woff2` and `jost-500.woff2`.
-Licensed under the SIL Open Font License 1.1. Full text in `vendor/fonts/OFL.txt`.
+Files: `web/vendor/fonts/jost-300.woff2`, `jost-400.woff2` and `jost-500.woff2`.
+Licensed under the SIL Open Font License 1.1. Full text in `web/vendor/fonts/OFL.txt`.
 
 ```
 Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type)
@@ -139,7 +139,7 @@ Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type)
 
 ## kelyonn/vertex
 
-The finger extension test in `js/gestures.js` (fingertip direction compared with
+The finger extension test in `web/js/gestures.js` (fingertip direction compared with
 the palm direction, thumb compared with the pinky base) is adapted from
 `src/gesture_engine.py` of kelyonn/vertex. No code is copied verbatim; the idea was
 rewritten in JavaScript.

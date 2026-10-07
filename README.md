@@ -20,7 +20,7 @@ your hand in front of the camera and rotate, pan or zoom it without touching any
 Everything runs in the browser on the CPU. No install, no server, no GPU required
 and your files never leave your device.
 
-![Leviate on a desktop browser](docs/screenshot.png)
+![Leviate on a desktop browser](web/docs/screenshot.png)
 
 ## Features
 
@@ -49,7 +49,7 @@ and your files never leave your device.
 
 ## Gestures
 
-![The three hand poses: open hand rotates, fist pans, thumb and index zoom](docs/gestures.png)
+![The three hand poses: open hand rotates, fist pans, thumb and index zoom](web/docs/gestures.png)
 
 The drawings show the 21 hand points that the app tracks and draws over the
 webcam preview, in the same colors it uses for each gesture.
@@ -79,7 +79,7 @@ browser.
 
 <table>
 <tr>
-<td width="220"><img src="docs/screenshot-phone.png" alt="Leviate on a phone" width="200"></td>
+<td width="220"><img src="web/docs/screenshot-phone.png" alt="Leviate on a phone" width="200"></td>
 <td valign="middle">
 
 Open the same link on the phone and everything works there too:
@@ -101,11 +101,11 @@ To use the phone only as a camera for a computer, see
 ### Run your own copy
 
 Leviate is a static site, so any web server can host it. Browsers do not load
-JavaScript modules or WebAssembly from `file://`, so serve the folder over HTTP:
+JavaScript modules or WebAssembly from `file://`, so serve the `web` folder over HTTP:
 
 ```sh
 git clone https://github.com/vladpereverzyev/leviate.git
-cd leviate
+cd leviate/web
 python -m http.server 8000
 ```
 
@@ -120,7 +120,7 @@ Nothing to install on either device.
 
 <table>
 <tr>
-<td width="260"><img src="docs/phone-qr.png" alt="Webcam window showing the pairing QR code" width="240"></td>
+<td width="260"><img src="web/docs/phone-qr.png" alt="Webcam window showing the pairing QR code" width="240"></td>
 <td valign="middle">
 
 1. On the computer open the **Webcam** window and press **Use phone**.
@@ -168,9 +168,9 @@ video is never recorded: the webcam stays in Blender, the phone sends its video 
 to Blender. Full guide in
 [integrations/blender](integrations/blender/).
 
-## Leviate desktop
+## Leviate for Desktop
 
-**Leviate desktop** puts the hand on any program of the computer, with the webcam or the
+**Leviate for Desktop** puts the hand on any program of the computer, with the webcam or the
 phone (QR code, like the web app). It has two modules:
 
 - **3D**: the gestures of the web app in your 3D program. Open hand turns, fist pans, pinch
@@ -180,7 +180,7 @@ phone (QR code, like the web app). It has two modules:
 - **Mouse**: open hand moves the cursor, one finger held still is a left click, two
   fingers held still a right click.
 
-![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](docs/mouse-gestures.png)
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left, two fingers click right](web/docs/mouse-gestures.png)
 
 Download it from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) or `-linux-x64.AppImage`.
@@ -209,10 +209,10 @@ file is missing the app tells you which one.
    resolution and frame rate.
 2. **Hand tracking**: [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
    runs as WebAssembly with the CPU delegate (XNNPACK) and returns 21 landmarks of
-   the hand for every new video frame. It runs in a Web Worker (`js/hand-worker.js`),
+   the hand for every new video frame. It runs in a Web Worker (`web/js/hand-worker.js`),
    so the 3D view never waits for it; browsers without module workers fall back to
    the main thread.
-3. **Pose**: `js/gestures.js` checks which fingers are extended by comparing the
+3. **Pose**: `web/js/gestures.js` checks which fingers are extended by comparing the
    direction of each fingertip with the direction of the palm and turns that into
    one of three poses. A pose must be stable for a few frames before it becomes
    active, which removes flicker.
@@ -227,30 +227,31 @@ file is missing the app tells you which one.
 
 | Path | Purpose |
 | --- | --- |
-| `index.html` | Layout: stage, objects, webcam, gestures and view panels |
-| `css/style.css` | Desktop and mobile styles |
-| `js/app.js` | Scene, file loading, camera, tracking loop and UI |
-| `js/gestures.js` | Hand pose classification and motion (no DOM, easy to test) |
-| `js/version.js` | Current version, shown in the app |
+| `web/` | The web app, published on GitHub Pages by `.github/workflows/pages.yml` |
+| `web/index.html` | Layout: stage, objects, webcam, gestures and view panels |
+| `web/css/style.css` | Desktop and mobile styles |
+| `web/js/app.js` | Scene, file loading, camera, tracking loop and UI |
+| `web/js/gestures.js` | Hand pose classification and motion (no DOM, easy to test) |
+| `web/js/version.js` | Current version, shown in the app |
 | `scripts/bump.mjs` | Raises the version (patch, minor or major) |
-| `js/hand-worker.js` | Hand tracking in a Web Worker, off the main thread |
-| `js/phone.js` | Phone as webcam: QR pairing on the computer, camera page on the phone |
-| `js/windows.js` | Floating windows: drag, collapse, phone layout |
+| `web/js/hand-worker.js` | Hand tracking in a Web Worker, off the main thread |
+| `web/js/phone.js` | Phone as webcam: QR pairing on the computer, camera page on the phone |
+| `web/js/windows.js` | Floating windows: drag, collapse, phone layout |
 | `integrations/` | Add-ons that bring the hand control inside other programs (Blender) |
 | `scripts/build-blender.py` | Packs the Blender add-on into a zip |
-| `apps/desktop/` | Leviate desktop (Electron): the hand on any program, 3D and Mouse modules |
+| `apps/desktop/` | Leviate for Desktop (Electron): the hand on any program, 3D and Mouse modules |
 | `scripts/build-desktop.mjs` | Builds the desktop app for Windows, macOS or Linux |
-| `vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
-| `vendor/peerjs/`, `vendor/qrcode/` | WebRTC pairing and QR code generator (MIT) |
-| `vendor/fonts/` | Jost font (SIL OFL 1.1) |
-| `docs/` | Screenshots, QR window and gesture drawings used in this README |
-| `icons/`, `site.webmanifest` | App icons for browsers, iOS and Android |
-| `vendor/mediapipe/` | MediaPipe Tasks Vision and its WebAssembly runtime (Apache-2.0) |
-| `models/hand_landmarker.task` | MediaPipe hand model (Apache-2.0) |
+| `web/vendor/three/` | three.js, its loaders and decoders (MIT, Draco Apache-2.0) |
+| `web/vendor/peerjs/`, `web/vendor/qrcode/` | WebRTC pairing and QR code generator (MIT) |
+| `web/vendor/fonts/` | Jost font (SIL OFL 1.1) |
+| `web/docs/` | Screenshots, QR window and gesture drawings used in this README |
+| `web/icons/`, `web/site.webmanifest` | App icons for browsers, iOS and Android |
+| `web/vendor/mediapipe/` | MediaPipe Tasks Vision and its WebAssembly runtime (Apache-2.0) |
+| `web/models/hand_landmarker.task` | MediaPipe hand model (Apache-2.0) |
 
 ## Versions
 
-The version is shown next to the name in the app and lives in `js/version.js`.
+The version is shown next to the name in the app and lives in `web/js/version.js`.
 It follows [semantic versioning](https://semver.org) and grows with every commit:
 the pre-commit hook in `.githooks/` raises the patch number automatically.
 Enable it once after cloning:

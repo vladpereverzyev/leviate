@@ -1,4 +1,4 @@
-# Leviate desktop
+# Leviate for Desktop
 
 The hand on any program of the computer, with the webcam or the phone. Choose a module in
 **Hand controls**:
@@ -110,9 +110,9 @@ once, before the first pairing. Details in the
 ## Build
 
 The app is [Electron](https://www.electronjs.org). It uses the files of the web app as they
-are, served through the `app://` scheme: `js/hand-worker.js` (MediaPipe hand tracking),
-`js/gestures.js` (the 3D gestures), `js/phone.js` (phone pairing), `vendor/` and
-`models/`. Nothing of the web app or of Leviate for Blender is changed.
+are, served through the `app://` scheme: `web/js/hand-worker.js` (MediaPipe hand tracking),
+`web/js/gestures.js` (the 3D gestures), `web/js/phone.js` (phone pairing), `web/vendor/` and
+`web/models/`. Nothing of the web app or of Leviate for Blender is changed.
 
 ```sh
 cd apps/desktop
@@ -123,7 +123,7 @@ node scripts/build-desktop.mjs         # installer for this system in dist/deskt
 ```
 
 The Build & Release workflow builds Windows, macOS and Linux on every version tag. The
-version comes from `js/version.js`, like the other downloads.
+version comes from `web/js/version.js`, like the other downloads.
 
 | File | What it does |
 | --- | --- |

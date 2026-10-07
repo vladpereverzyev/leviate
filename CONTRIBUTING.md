@@ -6,7 +6,7 @@ Thanks for helping. Bug reports, ideas and pull requests are welcome.
 
 - Keep it a static app: plain HTML, CSS and JavaScript modules, no build step.
 - Everything must run in the browser on the CPU. No server, no GPU-only code.
-- New dependencies go in `vendor/` with their license file and a line in
+- New dependencies go in `web/vendor/` with their license file and a line in
   `THIRD-PARTY-NOTICES.md`. Only permissive licenses (MIT, BSD, Apache-2.0 or similar).
 - Texts in the repo are in English, without long dashes and without a comma before "and".
 - Run `git config core.hooksPath .githooks` once, so every commit raises the version.
@@ -24,7 +24,7 @@ is the example to follow. The policy for integrations:
 2. **Same gestures everywhere**: reuse the hand tracking of Leviate for Blender
    (`gestures.py`, `tracker.py` and the MediaPipe model), as described in
    [integrations/README.md](integrations/README.md). Gesture changes go first in
-   `js/gestures.js` and then in every port, so the hand behaves the same everywhere.
+   `web/js/gestures.js` and then in every port, so the hand behaves the same everywhere.
 3. **Local only**: the camera is read on the computer, nothing is recorded or sent,
    no telemetry.
 4. **Light**: use the program's own scripting and add-on system, avoid extra installs.

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Vladyslav Pereverzyev
+#
+# Publishes the web app (the web/ folder) to https://vladpereverzyev.github.io/leviate/
+# on every push to main that changes it.
+
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One publication at a time; a newer push waits for the running one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: web
+
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

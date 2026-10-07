@@ -18,33 +18,33 @@ This product includes third-party software distributed under its own license:
 
   three.js r186
   Copyright (c) 2010-2026 three.js authors
-  MIT License, see vendor/three/LICENSE
+  MIT License, see web/vendor/three/LICENSE
 
   MediaPipe Tasks Vision 1.0.1 (vision_bundle.mjs and WebAssembly runtime)
   Copyright Google LLC
-  Apache License 2.0, see vendor/mediapipe/LICENSE
+  Apache License 2.0, see web/vendor/mediapipe/LICENSE
 
-  MediaPipe Hand Landmarker model (models/hand_landmarker.task)
+  MediaPipe Hand Landmarker model (web/models/hand_landmarker.task)
   Copyright Google LLC
-  Apache License 2.0, see vendor/mediapipe/LICENSE
+  Apache License 2.0, see web/vendor/mediapipe/LICENSE
 
   fflate 0.8.2, Copyright (c) 2023 Arjun Barrett
-  MIT License (header in vendor/three/addons/libs/fflate.module.js)
+  MIT License (header in web/vendor/three/addons/libs/fflate.module.js)
 
   meshoptimizer decoder, Copyright (c) Arseny Kapoulkine
-  MIT License (header in vendor/three/addons/libs/meshopt_decoder.module.js)
+  MIT License (header in web/vendor/three/addons/libs/meshopt_decoder.module.js)
 
   Draco decoder, Copyright The Draco Authors (Google LLC)
-  Apache License 2.0, see vendor/three/addons/libs/draco/LICENSE
+  Apache License 2.0, see web/vendor/three/addons/libs/draco/LICENSE
 
   PeerJS 1.5.5, Copyright (c) 2015 Michelle Bu and Eric Zhang
-  MIT License, see vendor/peerjs/LICENSE
+  MIT License, see web/vendor/peerjs/LICENSE
 
   qrcode-generator 2.0.4, Copyright (c) 2009 Kazuhiko Arase
-  MIT License (header in vendor/qrcode/qrcode.mjs)
+  MIT License (header in web/vendor/qrcode/qrcode.mjs)
 
   Jost font, Copyright 2020 The Jost Project Authors
-  SIL Open Font License 1.1, see vendor/fonts/OFL.txt
+  SIL Open Font License 1.1, see web/vendor/fonts/OFL.txt
 
   Finger extension test adapted from kelyonn/vertex
   Copyright (c) 2026 Kalyan

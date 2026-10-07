@@ -36,9 +36,9 @@ jobs:
       - name: Tag matches the app version
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          APP="v$(grep -oP "VERSION = '\K[0-9.]+" js/version.js)"
+          APP="v$(grep -oP "VERSION = '\K[0-9.]+" web/js/version.js)"
           if [ "$APP" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match js/version.js ($APP)"
+            echo "Tag $GITHUB_REF_NAME does not match web/js/version.js ($APP)"
             exit 1
           fi
 
@@ -73,7 +73,7 @@ jobs:
         working-directory: apps/desktop
         run: npm ci
 
-      - name: Build Leviate desktop
+      - name: Build Leviate for Desktop
         run: node scripts/build-desktop.mjs
 
       - name: Upload artifact
@@ -114,7 +114,7 @@ jobs:
           **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
           the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
 
-          ### Leviate desktop
+          ### Leviate for Desktop
 
           Your hand on any program, with the webcam or the phone. **3D**: open hand turns, fist
           pans, pinch zooms the 3D program under the cursor. **Mouse**: open hand moves the
