@@ -74,7 +74,7 @@
     <h2>2. What Leviate does with your data</h2>
     <p>Leviate is a static web app. It has no accounts, no server of its own, no analytics
     and no advertising. <b>Your 3D files</b> are opened in your browser and never uploaded.
-    <b>The camera video</b> is read by the hand tracking on your device, frame by frame,
+    <b>The camera video</b> is read by the hand tracking on your device, frame by frame
     and is never recorded or sent anywhere. The camera starts only after you allow the
     Camera category in the consent banner and then the permission asked by your browser.</p>
 
@@ -97,24 +97,32 @@
     allow the External services category. Legal basis: your consent (Art. 6(1)(a) GDPR),
     which you can withdraw at any time.</p>
 
-    <h2>5. Links to other sites</h2>
+    <h2>5. Links to other sites and the Ko-fi note</h2>
     <p>The links to GitHub, Ko-fi and vladpereverzyev.com open those sites, which process
     data under their own policies. Nothing from them is loaded until you click.</p>
+    <p><b>Ko-fi note.</b> After about 15 minutes with the camera on, the web app and Leviate
+    for Desktop show a short note that asks for support on Ko-fi, only while the camera or
+    the hand is off. With Remind me later it comes back after 2 more hours of use, with
+    Support or Don't ask again never again. The minutes and your answer are counted and kept
+    on your device only (leviate.support in section 7, leviate.desktop in section 6) and are
+    never sent anywhere. Ko-fi is contacted only if you press Support, which opens ko-fi.com
+    in your browser.</p>
 
     <h2 id="desktop">6. Leviate for Desktop</h2>
     <p>Leviate for Desktop is a program for Windows, macOS and Linux, downloaded from the
     <a href="https://github.com/vladpereverzyev/leviate/releases" target="_blank" rel="noopener">releases of the project on GitHub</a>
     (see section 3 for the data GitHub records when you download it). It has no accounts,
-    no analytics and no advertising, and it shows no cookie banner,
+    no analytics and no advertising. It shows no cookie banner
     because it sets no cookies and keeps only its own settings on your computer.</p>
     <p><b>The camera</b> starts when you press Start, after the permission asked by your
     operating system. The video is read by the hand tracking on your computer, frame by
-    frame, and is never recorded or sent anywhere. The hand tracking model is part of the
+    frame and is never recorded or sent anywhere. The hand tracking model is part of the
     program.</p>
     <p><b>Hand controls.</b> In the 3D and Mouse modules the program moves the mouse pointer,
-    presses mouse buttons and the Shift, Ctrl or Alt keys, and turns the mouse wheel, on your
+    presses mouse buttons and the Shift, Ctrl or Alt keys and turns the mouse wheel, on your
     computer only, as your hand tells it. It does not read or record what you type, what is on
-    the screen or what other programs do. On macOS this needs the Accessibility permission,
+    the screen or what other programs do: the only keys it listens for are its own shortcut,
+    Ctrl+Alt+M (Ctrl+Option+M on macOS), which turns the hand off and on. On macOS this needs the Accessibility permission,
     which you grant in the system settings.</p>
     <p><b>Phone.</b> Use phone connects through the PeerJS server exactly as described in
     section 4: PeerJS receives the IP addresses of both devices and a random session code,
@@ -124,11 +132,18 @@
     <p><b>New versions.</b> When it opens, the program asks GitHub (api.github.com) which
     release is the latest, to tell you when a new version is out; GitHub receives the same
     technical data as in section 3. Nothing is downloaded or installed until you choose Update.
+    Update downloads the file of the new version from the releases on GitHub, with a bar that
+    shows the progress; GitHub again receives the same technical data. On Windows the
+    installer is saved in the temporary folder and runs without its windows: it replaces
+    Leviate and starts it again. Windows asks for permission when Leviate is installed for
+    all users. On macOS the dmg is saved in the Downloads folder and opened in Finder, then you
+    drag Leviate to Applications yourself. On Linux the new AppImage takes the place of the
+    old one and Leviate starts again. Remind me later hides the note until the next start.
     You can turn the check off with Check for new versions at start, in the Settings
     section. Legal basis: legitimate interest in a secure and up to date program
     (Art. 6(1)(f) GDPR). Apart from Use phone and this check the program makes no connection
     to the internet; links open in your browser.</p>
-    <p><b>Settings</b> are kept on your computer, in the data folder of the program, and never
+    <p><b>Settings</b> are kept on your computer, in the data folder of the program and never
     leave it: leviate.desktop (camera, mode and gesture settings, which windows are closed, whether to look for new
     versions, whether the
     phone notice was shown, the minutes the camera has been on, used only to show the Ko-fi
@@ -138,7 +153,8 @@
 
     <h2 id="cookies">7. Cookies and browser storage</h2>
     <p>Leviate sets <b>no cookies</b>. It keeps a few values in your browser storage, on your
-    device only. They are needed for the app to work and never leave the device.</p>
+    device only. They keep the app working and your choices remembered and never leave the
+    device.</p>
     <table>
       <tr><th>Name</th><th>Purpose</th><th>Duration</th></tr>
       <tr><td>leviate.settings</td><td>Camera and gesture settings</td><td>Until you clear it</td></tr>
