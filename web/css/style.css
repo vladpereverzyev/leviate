@@ -7,9 +7,9 @@
 
 :root {
   --bg: #011E2E;
-  /* Page width and side margins of vladpereverzyev.com. */
-  --maxw: 1160px;
-  --gutter: clamp(18.4px, 4vw, 48px);
+  /* Width and side margins of the pages. */
+  --maxw: 64rem;
+  --gutter: 20px;
   /* Nearly solid on purpose: a blurred glass over the live 3D view costs a full
      re-blur every frame and made the view stutter. */
   --panel: rgba(4, 38, 58, 0.94);
