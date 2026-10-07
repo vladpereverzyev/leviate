@@ -655,7 +655,6 @@ let stream = null;
 let landmarker = null;
 let landmarkerLoading = null;
 let lastVideoTime = -1;
-let detectMs = 0;
 let phone = null;        // pairing session while waiting for or using a phone
 
 // Hand tracking runs in a worker when the browser allows it, so the 3D view keeps
@@ -675,7 +674,6 @@ function startWorker() {
         worker.onmessage = ({ data: msg }) => {
           if (msg.type !== 'result') return;
           tracker.busy = false;
-          detectMs = detectMs * 0.9 + msg.ms * 0.1;
           if (stream) handleHand(msg.lm);
         };
         resolve(tracker);
@@ -729,7 +727,6 @@ function setCamUi(running) {
   $('badge').hidden = !running;
   if (!running) {
     $('cam-info').textContent = '';
-    $('perf').textContent = '';
     clearOverlay();
   }
 }
@@ -1045,9 +1042,7 @@ function track() {
   }
 
   lastVideoTime = video.currentTime;
-  const t0 = performance.now();
-  const result = landmarker.task.detectForVideo(video, t0);
-  detectMs = detectMs * 0.9 + (performance.now() - t0) * 0.1;
+  const result = landmarker.task.detectForVideo(video, performance.now());
   handleHand(result.landmarks?.[0] || null);
 }
 
@@ -1063,8 +1058,6 @@ function handleHand(lm) {
 
 // ----------------------------------------------------------------- loop
 
-let frames = 0;
-let lastPerf = performance.now();
 const clock = new THREE.Clock();
 const spinQ = new THREE.Quaternion();
 
@@ -1075,14 +1068,6 @@ renderer.setAnimationLoop(() => {
   updateFocus(performance.now());
   controls.update();
   renderer.render(scene, camera);
-
-  frames++;
-  const now = performance.now();
-  if (now - lastPerf > 1000) {
-    if (stream) $('perf').textContent = `${Math.round(frames * 1000 / (now - lastPerf))} fps · hand ${detectMs.toFixed(0)} ms`;
-    frames = 0;
-    lastPerf = now;
-  }
 });
 
 renderList();

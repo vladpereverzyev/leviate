@@ -93,11 +93,6 @@ button, select, input { font: inherit; color: inherit; }
 a.brand { color: var(--text); text-decoration: none; pointer-events: auto; }
 /* On the right of the header the name of the app, like in Leviate for Desktop. */
 .top-end { display: flex; align-items: center; gap: 14px; }
-.perf {
-  color: var(--dim);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
 
 .empty {
   position: absolute;
