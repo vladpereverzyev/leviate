@@ -2,7 +2,9 @@
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
 # Publishes the website to https://vladpereverzyev.github.io/leviate/ on every push to main
-# that changes it: scripts/build-web.mjs puts web/ and shared/ together in dist/web.
+# that changes it, and again after every release (the release job starts it), so the
+# download buttons point to the newest files. scripts/build-web.mjs puts web/ and
+# shared/ together in dist/web.
 
 name: Website
 
@@ -39,6 +41,8 @@ jobs:
 
       - name: Put the website together
         run: node scripts/build-web.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Pages
         uses: actions/configure-pages@v5
