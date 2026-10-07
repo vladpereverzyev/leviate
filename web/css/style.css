@@ -145,6 +145,7 @@ button, select, input { font: inherit; color: inherit; }
   font-size: 12px;
 }
 .link:hover { color: var(--text); }
+a.link { text-decoration: none; }
 
 .drop {
   position: absolute;

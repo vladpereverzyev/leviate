@@ -32,6 +32,9 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Leviate","url":"https://vladpereverzyev.github.io/leviate/download.html","applicationCategory":"MultimediaApplication","operatingSystem":"Windows, macOS, Linux, any modern browser","downloadUrl":"https://github.com/vladpereverzyev/leviate/releases/latest","installUrl":"https://vladpereverzyev.github.io/leviate/download.html","description":"Move 3D scans, any 3D program and the mouse with your hand, using a webcam or your phone.","image":"https://vladpereverzyev.github.io/leviate/img/screenshot.png","license":"https://www.gnu.org/licenses/agpl-3.0.html","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Vladyslav Pereverzyev","url":"https://www.vladpereverzyev.com"}}
   </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need to install anything to try Leviate?","acceptedAnswer":{"@type":"Answer","text":"No. The Web App runs in Chrome, Edge, Firefox or Safari, on a computer or a phone. Install Leviate for Desktop only to move your own 3D program or the mouse with your hand, and the add-on to use it inside Blender."}},{"@type":"Question","name":"The camera does not start. What can I do?","acceptedAnswer":{"@type":"Answer","text":"Allow the camera when the browser or the system asks for it. Close other programs that use the camera, such as video calls or another Leviate window, then press Start again. With several cameras, choose another one in the Camera section."}},{"@type":"Question","name":"Windows says \"Windows protected your PC\" or blocks the installer.","acceptedAnswer":{"@type":"Answer","text":"Leviate for Desktop is not signed yet. When SmartScreen shows the warning, choose More info and then Run anyway. Smart App Control, on some Windows 11 computers, can block unsigned programs without that choice: there use the Web App until a signed version is out."}},{"@type":"Question","name":"macOS says the app cannot be opened.","acceptedAnswer":{"@type":"Answer","text":"Open System Settings, then Privacy & Security, and choose Open Anyway next to Leviate. For the 3D and Mouse modules allow Leviate in Accessibility too, and allow the camera when macOS asks."}},{"@type":"Question","name":"On Linux the hand does not move the mouse.","acceptedAnswer":{"@type":"Answer","text":"Wayland does not let programs move the mouse. Choose the Xorg (X11) session on the login screen. Make the AppImage executable before you start it."}},{"@type":"Question","name":"Which Program mouse should I choose for my 3D program?","acceptedAnswer":{"@type":"Answer","text":"Look at which buttons your program uses with the real mouse to turn and to move the view, and choose the same scheme under Program. The default, Right turns and Left+right pans, fits dental CAD programs; Blender uses Middle turns and Shift+middle pans. Custom takes any button with Shift, Ctrl or Alt. Put the cursor on the 3D view first."}},{"@type":"Question","name":"How do I stop the hand?","acceptedAnswer":{"@type":"Answer","text":"Press Ctrl+Alt+M, or Ctrl+Option+M on macOS, from any program: the hand turns off, and the same keys bring it back. You can also choose Off in Leviate, or simply lower the hand."}},{"@type":"Question","name":"Is the video recorded or sent anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. The hand is tracked on your device and the video is never recorded or uploaded. With a phone as the camera, the free PeerJS server only introduces the two devices and sees their IP addresses; the video goes straight between them, encrypted."}},{"@type":"Question","name":"Can I use my phone as the camera?","acceptedAnswer":{"@type":"Answer","text":"Yes, in the Web App, in Leviate for Desktop and in Blender. Choose Use phone, scan the QR code with the phone and tap Start camera on it. No app to install on the phone."}},{"@type":"Question","name":"Which Blender versions are supported?","acceptedAnswer":{"@type":"Answer","text":"Blender 4.2 or later, Blender 5 included, on Windows (x64), macOS (Apple silicon) and Linux (x64). Drag the zip into Blender as it is, without unzipping it."}}]}
+  </script>
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
@@ -99,6 +102,22 @@
       line-height: 21px;
     }
 
+    .faq { border-top: 1px solid var(--line); }
+    .faq summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 28px 14px 0;
+      position: relative;
+      color: var(--text);
+      font-weight: 400;
+      font-size: 16px;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; position: absolute; right: 4px; top: 12px; color: var(--accent-2); font-size: 20px; font-weight: 300; }
+    .faq[open] summary::after { content: "2"; }
+    .faq summary:hover { color: var(--accent-2); }
+    .faq p { margin: 0 0 16px; }
+    .faq:last-of-type { border-bottom: 1px solid var(--line); margin-bottom: 14px; }
     .foot { margin-top: 40px; text-align: center; color: var(--dim); font-size: 11px; }
     .foot a { color: var(--dim); text-decoration: none; }
     .foot a:hover { color: var(--text); }
@@ -186,10 +205,59 @@
       <p class="note"><a href="https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender" target="_blank" rel="noopener">Full guide</a></p>
     </section>
 
+    <!-- Questions -->
+    <section class="card" id="faq">
+      <p class="eyebrow">HELP</p>
+      <h2>Questions</h2>
+      <details class="faq">
+        <summary>Do I need to install anything to try Leviate?</summary>
+        <p>No. The Web App runs in Chrome, Edge, Firefox or Safari, on a computer or a phone. Install Leviate for Desktop only to move your own 3D program or the mouse with your hand, and the add-on to use it inside Blender.</p>
+      </details>
+      <details class="faq">
+        <summary>The camera does not start. What can I do?</summary>
+        <p>Allow the camera when the browser or the system asks for it. Close other programs that use the camera, such as video calls or another Leviate window, then press Start again. With several cameras, choose another one in the Camera section.</p>
+      </details>
+      <details class="faq">
+        <summary>Windows says "Windows protected your PC" or blocks the installer.</summary>
+        <p>Leviate for Desktop is not signed yet. When SmartScreen shows the warning, choose More info and then Run anyway. Smart App Control, on some Windows 11 computers, can block unsigned programs without that choice: there use the Web App until a signed version is out.</p>
+      </details>
+      <details class="faq">
+        <summary>macOS says the app cannot be opened.</summary>
+        <p>Open System Settings, then Privacy &amp; Security, and choose Open Anyway next to Leviate. For the 3D and Mouse modules allow Leviate in Accessibility too, and allow the camera when macOS asks.</p>
+      </details>
+      <details class="faq">
+        <summary>On Linux the hand does not move the mouse.</summary>
+        <p>Wayland does not let programs move the mouse. Choose the Xorg (X11) session on the login screen. Make the AppImage executable before you start it.</p>
+      </details>
+      <details class="faq">
+        <summary>Which Program mouse should I choose for my 3D program?</summary>
+        <p>Look at which buttons your program uses with the real mouse to turn and to move the view, and choose the same scheme under Program. The default, Right turns and Left+right pans, fits dental CAD programs; Blender uses Middle turns and Shift+middle pans. Custom takes any button with Shift, Ctrl or Alt. Put the cursor on the 3D view first.</p>
+      </details>
+      <details class="faq">
+        <summary>How do I stop the hand?</summary>
+        <p>Press Ctrl+Alt+M, or Ctrl+Option+M on macOS, from any program: the hand turns off, and the same keys bring it back. You can also choose Off in Leviate, or simply lower the hand.</p>
+      </details>
+      <details class="faq">
+        <summary>Is the video recorded or sent anywhere?</summary>
+        <p>No. The hand is tracked on your device and the video is never recorded or uploaded. With a phone as the camera, the free PeerJS server only introduces the two devices and sees their IP addresses; the video goes straight between them, encrypted.</p>
+      </details>
+      <details class="faq">
+        <summary>Can I use my phone as the camera?</summary>
+        <p>Yes, in the Web App, in Leviate for Desktop and in Blender. Choose Use phone, scan the QR code with the phone and tap Start camera on it. No app to install on the phone.</p>
+      </details>
+      <details class="faq">
+        <summary>Which Blender versions are supported?</summary>
+        <p>Blender 4.2 or later, Blender 5 included, on Windows (x64), macOS (Apple silicon) and Linux (x64). Drag the zip into Blender as it is, without unzipping it.</p>
+      </details>
+      <p class="note">Something else? Write on <a href="https://github.com/vladpereverzyev/leviate/issues" target="_blank" rel="noopener">GitHub</a> or read the
+      <a href="privacy.html">privacy policy</a>.</p>
+    </section>
+
     <footer class="foot">
       © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
       <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
       <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+      <a href="#faq">FAQ</a> ·
       <a href="privacy.html">Privacy</a> ·
       <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
     </footer>
@@ -251,5 +319,6 @@
     });
     latest();
   </script>
+  <script type="module" src="js/consent.js"></script>
 </body>
 </html>

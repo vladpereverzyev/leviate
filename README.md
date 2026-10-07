@@ -13,6 +13,8 @@
 
 **Try it now: <https://vladpereverzyev.github.io/leviate/>**
 
+**Download for Windows, macOS, Linux and Blender: <https://vladpereverzyev.github.io/leviate/download.html>**
+
 Move 3D scans with your bare hands. Leviate is a web app that turns any webcam,
 on a computer or a phone, into a hand controller for 3D models. Open a scan, raise
 your hand in front of the camera and rotate, pan or zoom it without touching anything.

@@ -16,7 +16,8 @@ again brings back the module you were using.
 
 ## Install
 
-Download from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
+Download from the [download page](https://vladpereverzyev.github.io/leviate/download.html) or the
+[latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
 
 | System | File |
 | --- | --- |

@@ -13,6 +13,8 @@
 
 **Pruébalo ahora: <https://vladpereverzyev.github.io/leviate/>**
 
+**Descarga para Windows, macOS, Linux y Blender: <https://vladpereverzyev.github.io/leviate/download.html>**
+
 Mueve escaneos 3D con las manos desnudas. Leviate es una app web que convierte cualquier
 webcam, en un ordenador o en un teléfono, en un mando de mano para modelos 3D. Abre un
 escaneo, levanta la mano delante de la cámara y gíralo, desplázalo o amplíalo sin tocar

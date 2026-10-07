@@ -13,6 +13,8 @@
 
 **Jetzt ausprobieren: <https://vladpereverzyev.github.io/leviate/>**
 
+**Download für Windows, macOS, Linux und Blender: <https://vladpereverzyev.github.io/leviate/download.html>**
+
 Bewege 3D-Scans mit bloßen Händen. Leviate ist eine Web-App, die jede Webcam, am
 Computer oder am Handy, in einen Handcontroller für 3D-Modelle verwandelt. Öffne einen
 Scan, heb die Hand vor die Kamera und dreh, verschieb oder zoome ihn, ohne etwas zu

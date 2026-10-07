@@ -1,0 +1,63 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- GitHub Pages shows this page for any missing address, at any depth: every link
+       and file below is taken from the root of the site. -->
+  <base href="/leviate/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#011E2E">
+  <title>Page not found - Leviate</title>
+  <meta name="description" content="This page does not exist. Open Leviate in the browser or download it for Windows, macOS, Linux and Blender.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="icons/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body { height: auto; min-height: 100%; overflow: auto; }
+    body { background: radial-gradient(ellipse at 50% 0%, #06324c 0%, var(--bg) 60%) fixed, var(--bg); }
+    .page { max-width: 64rem; min-height: 100vh; margin: 0 auto; padding: 32px 20px 24px; display: flex; flex-direction: column; }
+    .brand { color: var(--text); text-decoration: none; }
+    .lost { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; padding: 48px 0; }
+    .lost h1 { margin: 0; font-weight: 300; font-size: clamp(32px, 5vw, 52px); letter-spacing: -0.03em; line-height: 1.1; }
+    .lost p { max-width: 30rem; margin: 0; color: var(--muted); font-weight: 300; font-size: 17px; line-height: 1.6; }
+    .lost .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
+    .lost .btn { text-decoration: none; color: #fff; }
+    .lost .btn.ghost { color: var(--muted); }
+    .foot { text-align: center; color: var(--dim); font-size: 11px; }
+    .foot a { color: var(--dim); text-decoration: none; }
+    .foot a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="brand" href="./"><img src="icons/icon.svg" alt="">Leviate</a>
+
+    <section class="lost">
+      <p class="eyebrow">404</p>
+      <h1>Page not found</h1>
+      <p>This address does not exist, or it has moved. Leviate is one click away.</p>
+      <div class="buttons">
+        <a class="btn" href="./">Open Leviate</a>
+        <a class="btn ghost" href="download.html">Download</a>
+      </div>
+    </section>
+
+    <footer class="foot">
+      © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
+      <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
+      <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+      <a href="download.html">Download</a> ·
+      <a href="privacy.html">Privacy</a> ·
+      <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a>
+    </footer>
+  </main>
+  <script type="module" src="js/consent.js"></script>
+</body>
+</html>
