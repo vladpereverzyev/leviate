@@ -188,9 +188,9 @@ suo video direttamente a Blender. Guida completa in
 telefono (codice QR, come nell'app web). Ha due moduli:
 
 - **3D**: i gesti dell'app web nel tuo programma 3D. La mano aperta ruota, il pugno sposta,
-  il pizzico fa zoom sulla vista sotto il cursore. Scegli come quel programma usa il mouse
-  (*Right turns · Left+right pans* di serie, quello dei CAD dentali, oppure per esempio
-  *Middle turns · Shift+middle pans* per Blender) o imposta tu i tasti.
+  il pizzico fa zoom sulla vista sotto il cursore. Scegli il tuo programma in Program
+  (CAD dentale di serie, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino e altri) o imposta tu
+  i tasti.
 - **Mouse**: la mano aperta sposta il cursore, un dito fermo per un momento fa clic
   sinistro, due dita ferme fanno clic destro.
 

@@ -47,19 +47,19 @@ The app is not signed yet:
 ## 3D
 
 1. Open your 3D program and put the cursor on its 3D view.
-2. In Leviate choose **3D** and, under **Program mouse**, how that program uses the mouse.
+2. In Leviate choose **3D** and your program under **Program**.
 3. Open hand turns, fist pans, pinch zooms.
 
-| Program mouse | For example |
-| --- | --- |
-| Right turns · Left+right pans | Dental CAD programs, the default |
-| Middle turns · Shift+middle pans | Blender, SketchUp |
-| Middle turns · Ctrl+middle pans | SOLIDWORKS |
-| Shift+middle turns · Middle pans | Fusion |
-| Right turns · Middle pans | Many CAD programs |
-| Right turns · Shift+right pans | Rhino |
-| Left turns · Right pans | Leviate on the web, many viewers |
-| Custom | Any button with Shift, Ctrl or Alt, for turning and for panning |
+| Program | Turn | Pan |
+| --- | --- | --- |
+| Dental CAD, the default | Right button | Left and right buttons together |
+| Blender, SketchUp | Middle button | Shift and middle button |
+| SOLIDWORKS | Middle button | Ctrl and middle button |
+| Fusion | Shift and middle button | Middle button |
+| Other CAD programs | Right button | Middle button |
+| Rhino | Right button | Shift and right button |
+| Web, like Leviate on the web | Left button | Right button |
+| Custom | Any button with Shift, Ctrl or Alt | Any button with Shift, Ctrl or Alt |
 
 The gestures become mouse drags with those buttons, and the pinch becomes wheel steps.
 Left+right holds both buttons together: the right one goes down first and up last, so the

@@ -196,9 +196,9 @@ sa vidéo directement à Blender. Guide complet dans
 ou le téléphone (code QR, comme l'app web). Elle a deux modules :
 
 - **3D** : les gestes de l'app web dans votre logiciel 3D. La main ouverte tourne, le poing
-  déplace, le pincement zoome la vue sous le curseur. Choisissez comment ce logiciel utilise
-  la souris (*Right turns · Left+right pans* par défaut, celui des logiciels de CAO dentaire,
-  ou par exemple *Middle turns · Shift+middle pans* pour Blender) ou réglez les boutons.
+  déplace, le pincement zoome la vue sous le curseur. Choisissez votre logiciel dans Program
+  (CAO dentaire par défaut, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino et d'autres) ou
+  réglez les boutons.
 - **Mouse** : la main ouverte déplace le curseur, un doigt immobile un instant fait un clic
   gauche, deux doigts immobiles un clic droit.
 
