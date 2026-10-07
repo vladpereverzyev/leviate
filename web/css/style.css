@@ -356,6 +356,7 @@ footer.foot a:hover { color: var(--text); }
 /* webcam */
 .preview {
   position: relative;
+  container-type: size;
   aspect-ratio: 4 / 3;
   border-radius: 8px;
   overflow: hidden;
@@ -494,7 +495,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   z-index: 2;
 }
 .qr-code {
-  width: 62%;
+  /* As large as the preview allows in both directions, with room for the text under it. */
+  width: min(62cqw, calc(100cqh - 46px));
   aspect-ratio: 1;
   padding: 6px;
   border-radius: 8px;
@@ -581,6 +583,8 @@ section.phone-mode {
   .win-head { padding: 8px 8px 8px 12px; }
   .obj-list { max-height: 30vh; }
   .preview { aspect-ratio: 16 / 10; }
+  /* The QR code needs a taller preview to be read whole. */
+  .preview:has(.qr:not([hidden])) { aspect-ratio: 1; }
 
   .tools {
     left: 12px;
