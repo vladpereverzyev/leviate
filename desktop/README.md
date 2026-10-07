@@ -56,7 +56,6 @@ The app is not signed yet:
 | Blender, SketchUp | Middle button | Shift and middle button |
 | SOLIDWORKS | Middle button | Ctrl and middle button |
 | Fusion | Shift and middle button | Middle button |
-| Other CAD programs | Right button | Middle button |
 | Rhino | Right button | Shift and right button |
 | Web, like Leviate on the web | Left button | Right button |
 | Custom | Any button with Shift, Ctrl or Alt | Any button with Shift, Ctrl or Alt |

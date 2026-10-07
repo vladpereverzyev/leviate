@@ -343,8 +343,6 @@ function showSettings() {
   $('panel-mouse').hidden = settings.mode !== 'mouse';
   $('mirror').checked = settings.mirror;
   $('profile').value = settings.profile;
-  const profile = PROFILES.find((p) => p.id === settings.profile);
-  $('profile-hint').textContent = profile?.hint || '';
   $('custom').hidden = settings.profile !== 'custom';
   $('c-rotate-button').value = settings.customRotate.button;
   $('c-rotate-keys').value = settings.customRotate.keys[0] || '';

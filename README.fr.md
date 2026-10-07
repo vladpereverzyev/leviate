@@ -356,6 +356,10 @@ Leviate est sous double licence.
 Le nom "Leviate" et son logo ne sont pas couverts par l'AGPL-3.0 et ne peuvent pas être
 utilisés pour des versions modifiées sans autorisation.
 
+Les autres noms de produits et marques appartiennent à leurs propriétaires. Ils sont
+utilisés uniquement pour indiquer avec quels logiciels Leviate fonctionne. Leviate n'est
+ni affilié à aucun d'eux ni approuvé par eux.
+
 Les intégrations dans `integrations/` ont leur propre fichier de licence. Leviate for
 Blender est sous GPL-3.0-or-later, comme Blender le demande pour ses add-ons.
 

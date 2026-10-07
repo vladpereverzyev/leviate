@@ -9,29 +9,26 @@
 
 import { Mode } from '../js/gestures.js';
 
-// Mouse schemes of common 3D programs. Named by their buttons, so any program that uses
-// the same buttons works; Custom covers the others. 'left+right' holds both buttons.
+// Mouse schemes of common 3D programs, named after them; a program that uses the same
+// buttons works with the same entry and Custom covers the others. The first one is the
+// default. 'left+right' holds both buttons.
 // speed scales DRAG and STEPS for programs that turn, pan or zoom much faster or slower
 // than most, so the hand feels the same as in Blender.
 export const PROFILES = [
-  // Named after the programs; the hint tells the buttons, for a program not in the list.
   { id: 'right-chord', name: 'exocad',
-    hint: 'Right button turns, left and right buttons together pan. exocad is a trademark of exocad GmbH: Leviate is not affiliated with it.',
     rotate: { button: 'right', keys: [] }, pan: { button: 'left+right', keys: [] },
     speed: { rotate: 2.4, pan: 1.2, zoom: 1.12 } },
-  { id: 'middle-shift', name: 'Blender, SketchUp', hint: 'Middle button turns, Shift and middle button pan.',
+  { id: 'middle-shift', name: 'Blender, SketchUp',
     rotate: { button: 'middle', keys: [] }, pan: { button: 'middle', keys: ['shift'] } },
-  { id: 'middle-ctrl', name: 'SOLIDWORKS', hint: 'Middle button turns, Ctrl and middle button pan.',
+  { id: 'middle-ctrl', name: 'SOLIDWORKS',
     rotate: { button: 'middle', keys: [] }, pan: { button: 'middle', keys: ['ctrl'] } },
-  { id: 'shift-middle', name: 'Fusion', hint: 'Shift and middle button turn, middle button pans.',
+  { id: 'shift-middle', name: 'Fusion',
     rotate: { button: 'middle', keys: ['shift'] }, pan: { button: 'middle', keys: [] } },
-  { id: 'right-middle', name: 'Other CAD programs', hint: 'Right button turns, middle button pans.',
-    rotate: { button: 'right', keys: [] }, pan: { button: 'middle', keys: [] } },
-  { id: 'right-shift', name: 'Rhino', hint: 'Right button turns, Shift and right button pan.',
+  { id: 'right-shift', name: 'Rhino',
     rotate: { button: 'right', keys: [] }, pan: { button: 'right', keys: ['shift'] } },
-  { id: 'left-right', name: 'Web', hint: 'Left button turns, right button pans, like Leviate on the web.',
+  { id: 'left-right', name: 'Web',
     rotate: { button: 'left', keys: [] }, pan: { button: 'right', keys: [] } },
-  { id: 'custom', name: 'Custom', hint: 'Choose the buttons below.' },
+  { id: 'custom', name: 'Custom' },
 ];
 
 // Pixels of drag for a move of the hand across the whole camera picture.
