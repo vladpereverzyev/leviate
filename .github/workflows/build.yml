@@ -148,8 +148,8 @@ jobs:
 
           ### Leviate for Blender
 
-          The add-on has releases of its own, made only when it changes, with its own version. Newest:
-          [${BLENDER}](https://github.com/vladpereverzyev/leviate/releases/tag/${BLENDER}).
+          Leviate for Blender is at version **${BLENDER#v}**, in a release of its own: [${BLENDER}](https://github.com/vladpereverzyev/leviate/releases/tag/${BLENDER}).
+          The add-on keeps its own version and gets a new release only when it changes.
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
