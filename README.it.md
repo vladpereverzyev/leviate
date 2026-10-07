@@ -163,7 +163,7 @@ camera solo lì. Una copia che gira sul tuo computer si collega attraverso
 **Leviate for Blender** porta il controllo con la mano dentro Blender: la webcam e il
 tracciamento della mano girano in Blender stesso, senza browser.
 
-1. Scarica lo zip per il tuo sistema dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest):
+1. Scarica lo zip per il tuo sistema dalla [pagina download](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<versione>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
    Trascinalo in Blender 4.2 o successivo.
 2. Nella vista 3D premi **N** e apri la scheda **Leviate**. Scegli **This computer** per

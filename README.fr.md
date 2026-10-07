@@ -170,7 +170,7 @@ s'appaire via <https://vladpereverzyev.github.io/leviate/>.
 **Leviate for Blender** amène le contrôle à la main dans Blender : la webcam et le suivi de
 la main tournent dans Blender lui-même, sans navigateur.
 
-1. Téléchargez le zip pour votre système depuis la [dernière release](https://github.com/vladpereverzyev/leviate/releases/latest) :
+1. Téléchargez le zip pour votre système depuis la [page de téléchargement](https://vladpereverzyev.github.io/leviate/download.html#blender) :
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` ou `-linux-x64.zip`.
    Glissez-le dans Blender 4.2 ou plus récent.
 2. Dans la vue 3D appuyez sur **N** et ouvrez l'onglet **Leviate**. Choisissez

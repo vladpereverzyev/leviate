@@ -6,7 +6,7 @@ the same gesture rules as the Leviate web app, so the hand behaves the same ever
 
 | Program | Folder | Status |
 | --- | --- | --- |
-| Blender 4.2 or later | [`blender/`](blender/) | Available, zips in the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| Blender 4.2 or later | [`blender/`](blender/) | Available, zips on the [download page](https://vladpereverzyev.github.io/leviate/download.html#blender) |
 
 Your program is not in the list? Build its integration. The pieces below are all it
 needs and the rules make sure every integration works the same way.

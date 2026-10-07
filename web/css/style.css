@@ -457,10 +457,12 @@ footer.foot a:hover { color: var(--text); }
 .field.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
 select {
   width: 100%;
-  padding: 6px 10px;
+  padding: 6px 32px 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: var(--panel-2);
+  /* One simple arrow drawn by us, the same on every browser, phone and computer. */
+  appearance: none;
+  background: var(--panel-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 12px center / 12px 8px no-repeat;
   font-size: 13px;
 }
 /* The open list of every select in the style of the app: dark, rounded, blue for the
@@ -470,17 +472,8 @@ select option { background: var(--panel-solid); color: var(--text); }
 @supports (appearance: base-select) {
   select, select::picker(select) { appearance: base-select; }
   select { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-  select::picker-icon {
-    content: "";
-    width: 7px;
-    height: 7px;
-    margin: -4px 4px 0 auto;
-    border-right: 1.5px solid var(--muted);
-    border-bottom: 1.5px solid var(--muted);
-    rotate: 45deg;
-    transition: rotate 0.2s, margin 0.2s;
-  }
-  select:open::picker-icon { rotate: 225deg; margin-top: 4px; }
+  select::picker-icon { display: none; }
+  select:open { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 6.5l5-5 5 5' fill='none' stroke='%23D0D0D0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
   select::picker(select) {
     /* Always open downwards, under the select; a long list scrolls. */
     position-try-order: normal;

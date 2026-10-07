@@ -166,7 +166,7 @@ copia que funciona en tu propio ordenador se empareja a través de
 **Leviate for Blender** lleva el control con la mano dentro de Blender: la webcam y el
 seguimiento de la mano funcionan en Blender mismo, sin navegador.
 
-1. Descarga el zip para tu sistema de la [última release](https://github.com/vladpereverzyev/leviate/releases/latest):
+1. Descarga el zip para tu sistema de la [página de descarga](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<versión>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
    Arrástralo a Blender 4.2 o posterior.
 2. En la vista 3D pulsa **N** y abre la pestaña **Leviate**. Elige **This computer** para

@@ -1,17 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
-# Builds the integration zips and the desktop app (Windows, macOS, Linux) on every push
-# and pull request. On a version tag (v*) it publishes them in a new GitHub Release. Older releases stay, so their download
-# counts are kept. The web app itself is not in the release: it runs from
-# https://vladpereverzyev.github.io/leviate/.
+# Builds the Blender zips and the desktop app (Windows, macOS, Linux) on every push and
+# pull request. Releases are separate, so each one changes only when it has changed:
+#   v<version>          (shared/js/version.js)  Leviate for Desktop, marked as the latest
+#   blender-v<version>  (blender_manifest.toml) Leviate for Blender, never marked latest, so
+#                       the update check of the desktop app always finds the app
+# The web app itself is not in a release: it runs from https://vladpereverzyev.github.io/leviate/.
 
 name: Build & Release
 
 on:
   push:
     branches: [main]
-    tags: ["v*"]
+    tags: ["v*", "blender-v*"]
   pull_request:
   workflow_dispatch:
 
@@ -20,6 +22,7 @@ permissions:
 
 jobs:
   build:
+    if: "!startsWith(github.ref, 'refs/tags/v')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,12 +36,12 @@ jobs:
       - name: Check the add-on code
         run: python -m py_compile integrations/blender/leviate/*.py
 
-      - name: Tag matches the app version
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Tag matches the add-on version
+        if: startsWith(github.ref, 'refs/tags/blender-v')
         run: |
-          APP="v$(grep -oP "VERSION = '\K[0-9.]+" shared/js/version.js)"
-          if [ "$APP" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match shared/js/version.js ($APP)"
+          ADDON="blender-v$(grep -oP '^version = "\K[0-9.]+' integrations/blender/leviate/blender_manifest.toml)"
+          if [ "$ADDON" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match blender_manifest.toml ($ADDON)"
             exit 1
           fi
 
@@ -53,6 +56,7 @@ jobs:
           if-no-files-found: error
 
   desktop:
+    if: "!startsWith(github.ref, 'refs/tags/blender-v')"
     strategy:
       fail-fast: false
       matrix:
@@ -61,6 +65,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          APP="v$(grep -oE "VERSION = '[0-9.]+" shared/js/version.js | grep -oE '[0-9.]+$')"
+          if [ "$APP" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match shared/js/version.js ($APP)"
+            exit 1
+          fi
 
       - name: Set up Node
         uses: actions/setup-node@v5
@@ -87,7 +101,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [build, desktop]
+    needs: [desktop]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
@@ -109,14 +123,6 @@ jobs:
           cat > notes.md <<EOF
           **Leviate runs in the browser, nothing to download:** <https://vladpereverzyev.github.io/leviate/>
 
-          ### Leviate for Blender
-
-          Download the zip for your system below and drag it into Blender 4.2 or later:
-          \`leviate-blender-${VER}-windows-x64.zip\`, \`-macos-arm64.zip\` or \`-linux-x64.zip\`.
-          Then open the **Leviate** tab in the 3D view (N), choose the webcam or **Phone** and press
-          **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
-          the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
-
           ### Leviate for Desktop
 
           Your hand on any program, with the webcam or the phone. **3D**: open hand turns, fist
@@ -125,6 +131,9 @@ jobs:
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
+
+          Leviate for Blender has releases of its own (tags blender-v...), on the
+          [download page](https://vladpereverzyev.github.io/leviate/download.html#blender).
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
@@ -141,6 +150,53 @@ jobs:
 
       # The download page links straight to the files of the latest release: publish it
       # again now that there is a new one.
+      - name: Update the download page
+        run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  release-blender:
+    needs: [build]
+    if: startsWith(github.ref, 'refs/tags/blender-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # the release
+      actions: write    # starts the Website workflow afterwards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download the zips
+        uses: actions/download-artifact@v5
+        with:
+          name: integrations
+          path: dist
+
+      - name: Release notes
+        run: |
+          VER="${GITHUB_REF_NAME#blender-v}"
+          cat > notes.md <<EOF
+          ### Leviate for Blender ${VER}
+
+          Download the zip for your system below and drag it into Blender 4.2 or later:
+          \`leviate-blender-${VER}-windows-x64.zip\`, \`-macos-arm64.zip\` or \`-linux-x64.zip\`.
+          Then open the **Leviate** tab in the 3D view (N), choose the webcam or **Phone** and press
+          **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
+          the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
+
+          The web app runs in the browser: <https://vladpereverzyev.github.io/leviate/>.
+          The "Source code" archives below are added by GitHub.
+          EOF
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: dist/*.zip
+          body_path: notes.md
+          fail_on_unmatched_files: true
+          make_latest: false
+
       - name: Update the download page
         run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
         env:

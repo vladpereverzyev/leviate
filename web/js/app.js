@@ -649,7 +649,7 @@ setupWindows();
 // --------------------------------------------------------------- webcam
 
 const video = $('video');
-if (!pairId) setupSupport(() => !!video.srcObject);
+if (!pairId) setupSupport();
 const engine = new GestureEngine();
 let stream = null;
 let landmarker = null;

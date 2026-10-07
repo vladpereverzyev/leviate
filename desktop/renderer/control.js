@@ -38,7 +38,7 @@ const settings = {
   rotate: 1, pan: 1, zoom: 1, invertZoom: false,
   dwell: 1, reach: 0.6, smoothing: 0.5, allScreens: true, ring: true, phoneNotice: false,
   checkUpdates: true,
-  useSeconds: 0, supportAt: 15 * 60, supportDone: false,
+  supportDone: false,
 };
 try { Object.assign(settings, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch {}
 // The hand starts off on every launch: it takes over the mouse only when asked to.
@@ -326,7 +326,6 @@ function setMode(mode) {
   $('error').hidden = true;
   if (mode !== 'off') desktop.enable();
   showSettings();
-  askSupport();
 }
 
 function modeInfo() {
@@ -363,14 +362,13 @@ const FORMAT = {
 
 // --------------------------------------------------------------- updates
 
-// A word for Ko-fi after 15 minutes with the camera on, and again after 2 more hours of use
-// with Later; never again after Ko-fi or Don't ask again. Only while the hand is off, so it
-// never comes up in the middle of work, and never together with an update.
-const SUPPORT_AGAIN = 2 * 60 * 60;
+// A word for Ko-fi 2 minutes after Leviate opens, every time it opens, also while the hand
+// is at work; never together with an update. Remind me later hides it until the next start,
+// Support or Don't ask again for good.
+const SUPPORT_AFTER = 2 * 60 * 1000;
 
 function askSupport() {
-  if (settings.supportDone || settings.mode !== 'off' || settings.useSeconds < settings.supportAt) return;
-  if (!$('update').hidden) return;
+  if (settings.supportDone || !$('update').hidden) return;
   $('support').hidden = false;
 }
 
@@ -382,18 +380,8 @@ function setupSupport() {
   };
   $('support-kofi').addEventListener('click', never);
   $('support-never').onclick = never;
-  $('support-later').onclick = () => {
-    settings.supportAt = settings.useSeconds + SUPPORT_AGAIN;
-    $('support').hidden = true;
-    save();
-  };
-  setInterval(() => {
-    if (!video.srcObject) return;
-    settings.useSeconds += 60;
-    save();
-    askSupport();
-  }, 60 * 1000);
-  askSupport();
+  $('support-later').onclick = () => { $('support').hidden = true; };
+  setTimeout(askSupport, SUPPORT_AFTER);
 }
 
 // What happens after Update, told before and while it happens.

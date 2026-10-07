@@ -6,8 +6,9 @@
 Each zip holds the add-on, the MediaPipe hand model and the Python wheels the
 hand tracking needs (MediaPipe, OpenCV, absl-py, flatbuffers) plus the ones the
 phone camera needs (aiortc for WebRTC with its dependencies, websockets, qrcode).
-Blender installs the wheels itself; numpy comes with Blender. The version comes from
-shared/js/version.js.
+Blender installs the wheels itself; numpy comes with Blender. The version is the one of
+the add-on, in integrations/blender/leviate/blender_manifest.toml: it changes only when the
+add-on changes, not with every release of the apps.
 
 With --extensions the zips go to dist/extensions/ for extensions.blender.org, which takes
 only CC0 assets: they leave the hand model out and the add-on downloads the same file
@@ -79,7 +80,6 @@ def build(platform, version, extensions=False):
             name = path.relative_to(SOURCE).as_posix()
             if name == "blender_manifest.toml":
                 text = path.read_text(encoding="utf-8")
-                text = re.sub(r'^version = ".*"$', f'version = "{version}"', text, count=1, flags=re.M)
                 listed = ",\n  ".join(f'"./wheels/{w.name}"' for w in wheels)
                 text = text.replace("# platforms = []\n# wheels = []\n",
                                     f'platforms = ["{platform}"]\nwheels = [\n  {listed},\n]\n')
@@ -95,7 +95,8 @@ def build(platform, version, extensions=False):
 
 
 def main():
-    version = re.search(r"VERSION = '([\d.]+)'", (ROOT / "shared" / "js" / "version.js").read_text()).group(1)
+    manifest = (SOURCE / "blender_manifest.toml").read_text(encoding="utf-8")
+    version = re.search(r'^version = "([\d.]+)"$', manifest, flags=re.M).group(1)
     args = sys.argv[1:]
     extensions = "--extensions" in args
     platforms = [a for a in args if a != "--extensions"] or list(PLATFORMS)

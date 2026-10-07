@@ -21,36 +21,48 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'dist', 'web');
 const REPO = 'vladpereverzyev/leviate';
 
-async function latestRelease() {
+async function github(url) {
   const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'leviate-build' };
   if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers });
+    const res = await fetch(`https://api.github.com/repos/${REPO}/${url}`, { headers });
     return res.ok ? await res.json() : null;
   } catch {
     return null;
   }
 }
 
-function linkDownloads(release) {
-  const file = path.join(OUT, 'download.html');
-  let html = fs.readFileSync(file, 'utf8');
-  const version = release.tag_name.replace(/^v/, '');
+// Leviate for Desktop is the release marked latest (tag v<version>); Leviate for Blender
+// has releases of its own (tag blender-v<version>), so its newest one is looked up apart.
+async function latestReleases() {
+  const desktop = await github('releases/latest');
+  const all = await github('releases?per_page=50');
+  const blender = (all || []).find((r) => r.tag_name.startsWith('blender-v') && !r.draft) || null;
+  return { desktop, blender };
+}
+
+function linkDownloads(html, release, isBlender) {
+  const version = release.tag_name.replace(/^(blender-)?v/, '');
   const assets = new Set(release.assets.map((a) => a.name));
   let linked = 0;
   html = html.replace(/data-file="([^"]+)" href="[^"]*"/g, (all, pattern) => {
+    if (pattern.startsWith('leviate-blender-') !== isBlender) return all;
     const name = pattern.replace('{v}', version);
     if (!assets.has(name)) return all;
     linked++;
     return `data-file="${pattern}" href="https://github.com/${REPO}/releases/download/${release.tag_name}/${name}"`;
   });
+  console.log(`Download buttons: ${linked} direct links to ${release.tag_name}`);
+  return html;
+}
+
+function releaseLine(html, release) {
+  const version = release.tag_name.replace(/^v/, '');
   const date = new Date(release.published_at).toLocaleDateString('en-GB', { dateStyle: 'long', timeZone: 'UTC' });
-  html = html.replace(/<p class="release" id="release">[\s\S]*?<\/p>/,
+  return html.replace(/<p class="release" id="release">[\s\S]*?<\/p>/,
     `<p class="release" id="release">Version ${version}, ${date} · `
     + `<a href="${release.html_url}" target="_blank" rel="noopener">Release notes</a> · `
     + `<a href="https://github.com/${REPO}/releases" target="_blank" rel="noopener">All versions</a></p>`);
-  fs.writeFileSync(file, html);
-  console.log(`Download buttons: ${linked} direct links to ${release.tag_name}`);
 }
 
 // Every page has the same footer as the web app, and so does Leviate for Desktop: same
@@ -75,7 +87,11 @@ fs.cpSync(path.join(ROOT, 'web'), OUT, { recursive: true });
 // A file in both folders would hide one of them: stop instead.
 fs.cpSync(path.join(ROOT, 'shared'), OUT, { recursive: true, force: false, errorOnExist: true });
 
-const release = await latestRelease();
-if (release) linkDownloads(release);
-else console.log('Download buttons: no answer from GitHub, they link to the releases page');
+const { desktop, blender } = await latestReleases();
+const page = path.join(OUT, 'download.html');
+let html = fs.readFileSync(page, 'utf8');
+if (desktop) html = releaseLine(linkDownloads(html, desktop, false), desktop);
+if (blender) html = linkDownloads(html, blender, true);
+if (!desktop || !blender) console.log('Download buttons: no answer from GitHub for some, they link to the releases page');
+fs.writeFileSync(page, html);
 console.log(`Website in ${path.relative(ROOT, OUT)}`);

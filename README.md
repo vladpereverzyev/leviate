@@ -157,7 +157,7 @@ running on your own computer pairs through <https://vladpereverzyev.github.io/le
 **Leviate for Blender** brings the hand control inside Blender: the webcam and the hand
 tracking run in Blender itself, no browser needed.
 
-1. Download the zip for your system from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
+1. Download the zip for your system from the [download page](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` or `-linux-x64.zip`.
    Drag it into Blender 4.2 or later.
 2. In the 3D view press **N** and open the **Leviate** tab. Choose **This computer** for

@@ -164,7 +164,7 @@ deinem eigenen Computer koppelt über <https://vladpereverzyev.github.io/leviate
 **Leviate for Blender** bringt die Handsteuerung in Blender: Webcam und Handerkennung
 laufen in Blender selbst, ohne Browser.
 
-1. Lade das Zip für dein System aus dem [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest):
+1. Lade das Zip für dein System von der [Download-Seite](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` oder `-linux-x64.zip`.
    Zieh es in Blender 4.2 oder neuer.
 2. Drück in der 3D-Ansicht **N** und öffne den Tab **Leviate**. Wähl **This computer**

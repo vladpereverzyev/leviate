@@ -11,7 +11,7 @@ Silicon) and Linux (x64).
 ## Install
 
 1. Download the zip for your system from the
-   [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
+   [download page](https://vladpereverzyev.github.io/leviate/download.html#blender):
    - Windows: `leviate-blender-<version>-windows-x64.zip`
    - macOS: `leviate-blender-<version>-macos-arm64.zip`
    - Linux: `leviate-blender-<version>-linux-x64.zip`
