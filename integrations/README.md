@@ -43,8 +43,9 @@ so a Python based program can take these files as they are:
 
 | File | What it does |
 | --- | --- |
-| `blender/leviate/gestures.py` | Open hand, fist and pinch from the 21 hand points. A line by line port of `shared/js/gestures.js`, tested to give the same results |
-| `blender/leviate/tracker.py` | Reads the camera with OpenCV, runs MediaPipe Hand Landmarker on the CPU in a thread and queues the moves |
+| `blender/leviate/engine/gestures.py` | Open hand, fist and pinch from the 21 hand points. A line by line port of `shared/js/gestures.js`, tested to give the same results |
+| `blender/leviate/engine/tracker.py` | Runs MediaPipe Hand Landmarker on the CPU on one camera frame and returns the move |
+| `blender/leviate/engine/main.py` | The engine process: reads the camera or the phone and sends the moves over a local socket |
 | `shared/models/hand_landmarker.task` | The MediaPipe hand model (Apache-2.0) |
 
 The Python wheels are MediaPipe, OpenCV (headless), absl-py and flatbuffers; numpy is
@@ -52,14 +53,15 @@ usually already there. See `scripts/build-blender.py` for the exact versions.
 
 ### Moves
 
-`tracker.py` queues one move per camera frame: `(mode, dx, dy, zoom, aspect)`.
+The engine sends one move per camera frame: `mode`, `dx`, `dy` and `zoom`, with the
+size `w` and `h` of the camera image.
 
 | Field | Meaning |
 | --- | --- |
 | `mode` | `rotate`, `pan`, `zoom` or `none`. `none` after a gesture is a good moment to close an undo step |
 | `dx`, `dy` | Move of the palm since the last frame, in image widths and heights, x to the right and y down on screen, mirror already applied |
 | `zoom` | Scale factor for this frame: above 1 the model gets bigger |
-| `aspect` | Width over height of the camera image |
+| `w`, `h` | Width and height of the camera image |
 
 Leviate for Blender turns them into model motion like the web app does: rotation of
 `dy * rotate` around the view x axis and `dx * rotate` around the view y axis (radians,

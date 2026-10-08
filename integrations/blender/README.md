@@ -1,8 +1,8 @@
 # Leviate for Blender
 
 Move the Blender 3D view, or the selected objects, with your bare hands. The webcam (or
-your phone through a QR code) and the hand tracking run inside Blender: no browser on the
-computer, no app on the phone, nothing to set up besides the add-on. It uses the same
+your phone through a QR code) and the hand tracking run next to Blender on your computer:
+no browser on the computer, no app on the phone, nothing to set up besides the add-on. It uses the same
 MediaPipe hand model and the same gestures as the [Leviate web app](https://vladpereverzyev.github.io/leviate/).
 
 Works with Blender 4.2 or later, Blender 5 included, on Windows (x64), macOS (Apple
@@ -21,11 +21,8 @@ Silicon) and Linux (x64).
    webcam only while it is on and never records it, the network and the clipboard serve
    only the phone. On macOS the system also asks once to let Blender use the camera.
 
-The zips of the GitHub releases carry the MediaPipe hand model. The copy on Blender
-Extensions leaves it out, because that platform takes only CC0 assets: on the first
-**Start camera** it downloads the same file once from Google (8 MB, checked with its
-SHA-256 fingerprint) and works offline from then on. That first start needs **Allow
-Online Access**. To build those zips run `python scripts/build-blender.py --extensions`.
+The zips carry the MediaPipe hand model, so the webcam works offline from the first
+start. Only the phone needs **Allow Online Access**.
 
 ## Use
 
@@ -87,15 +84,18 @@ calls, the Leviate web app) and press **Start camera** again, or try another num
 
 ## How it works
 
-`tracker.py` reads the webcam with OpenCV and runs MediaPipe Hand Landmarker on the CPU
-in a background thread, so Blender never waits for it. `gestures.py` turns the 21 hand
-points into open hand, fist or pinch with the same rules as the web app. A Blender
-timer applies the moves 60 times a second and draws the preview. The video never leaves
-Blender and nothing is recorded.
+**Start camera** runs `engine/main.py` with the Python of Blender, in a process of its
+own: Blender itself runs no thread, no camera and no network code. The engine reads the
+webcam with OpenCV and runs MediaPipe Hand Landmarker on the CPU (`engine/tracker.py`).
+`engine/gestures.py` turns the 21 hand points into open hand, fist or pinch with the same
+rules as the web app. The engine sends the moves and a small preview to Blender over a
+socket on 127.0.0.1 (`process.py`), where a timer applies the moves 60 times a second and
+draws the preview. **Stop camera** ends the engine. The video never leaves the computer
+and nothing is recorded.
 
-`phone.py` joins the PeerJS server with a random id, answers the call of the phone page
-with [aiortc](https://github.com/aiortc/aiortc) (WebRTC in Python) and hands the decoded
-frames to the tracker, scaled to 640 pixels on the longer side.
+`engine/phone.py` joins the PeerJS server with a random id, answers the call of the phone
+page with [aiortc](https://github.com/aiortc/aiortc) (WebRTC in Python) and hands the
+decoded frames to the tracker, scaled to 640 pixels on the longer side.
 
 The zips carry the Python wheels of MediaPipe, OpenCV, absl-py and flatbuffers for the
 hand tracking, aiortc with its dependencies, websockets and qrcode for the phone. They also

@@ -22,7 +22,7 @@ is the example to follow. The policy for integrations:
 1. **One folder per program**: `integrations/<program>/` with the source, a README
    (install, use, tested versions) and its LICENSE.
 2. **Same gestures everywhere**: reuse the hand tracking of Leviate for Blender
-   (`gestures.py`, `tracker.py` and the MediaPipe model), as described in
+   (`engine/gestures.py`, `engine/tracker.py` and the MediaPipe model), as described in
    [integrations/README.md](integrations/README.md). Gesture changes go first in
    `shared/js/gestures.js` and then in every port, so the hand behaves the same everywhere.
 3. **Local only**: the camera is read on the computer, nothing is recorded or sent,

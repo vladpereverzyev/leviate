@@ -10,11 +10,9 @@ Blender installs the wheels itself; numpy comes with Blender. The version is the
 the add-on, in integrations/blender/leviate/blender_manifest.toml: it changes only when the
 add-on changes, not with every release of the apps.
 
-With --extensions the zips go to dist/extensions/ for extensions.blender.org, which takes
-only CC0 assets: they leave the hand model out and the add-on downloads the same file
-from Google on the first start.
+The same zips go to the GitHub releases and to extensions.blender.org.
 
-Usage: python scripts/build-blender.py [--extensions] [platform ...]
+Usage: python scripts/build-blender.py [platform ...]
 Platforms: windows-x64, macos-arm64, linux-x64 (all by default).
 """
 
@@ -68,14 +66,12 @@ def wheels_for(platform):
     return [wheels[name] for name in sorted(wheels)]
 
 
-def build(platform, version, extensions=False):
+def build(platform, version):
     wheels = wheels_for(platform)
-    folder = DIST / "extensions" if extensions else DIST
-    folder.mkdir(parents=True, exist_ok=True)
-    out = folder / f"leviate-blender-{version}-{platform}.zip"
+    out = DIST / f"leviate-blender-{version}-{platform}.zip"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(SOURCE.rglob("*")):
-            if path.is_dir() or "__pycache__" in path.parts or path.suffix == ".pyc":
+            if path.is_dir() or "__pycache__" in path.parts or path.suffix in (".pyc", ".log"):
                 continue
             name = path.relative_to(SOURCE).as_posix()
             if name == "blender_manifest.toml":
@@ -86,8 +82,7 @@ def build(platform, version, extensions=False):
                 zf.writestr(name, text)
             else:
                 zf.write(path, name)
-        if not extensions:
-            zf.write(MODEL, "models/hand_landmarker.task")
+        zf.write(MODEL, "models/hand_landmarker.task")
         for w in wheels:
             zf.write(w, f"wheels/{w.name}")
         zf.write(SOURCE.parent / "LICENSE", "LICENSE")
@@ -97,12 +92,10 @@ def build(platform, version, extensions=False):
 def main():
     manifest = (SOURCE / "blender_manifest.toml").read_text(encoding="utf-8")
     version = re.search(r'^version = "([\d.]+)"$', manifest, flags=re.M).group(1)
-    args = sys.argv[1:]
-    extensions = "--extensions" in args
-    platforms = [a for a in args if a != "--extensions"] or list(PLATFORMS)
+    platforms = sys.argv[1:] or list(PLATFORMS)
     DIST.mkdir(exist_ok=True)
     for platform in platforms:
-        build(platform, version, extensions)
+        build(platform, version)
 
 
 if __name__ == "__main__":

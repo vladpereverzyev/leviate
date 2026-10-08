@@ -15,7 +15,7 @@ components. Each one keeps its own license.
 | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 2.0.4 | MIT | `shared/vendor/qrcode/` |
 | [jsQR](https://github.com/cozmo/jsQR) | 1.4.0 | Apache-2.0 | `shared/vendor/jsqr/` |
 | [Jost font](https://github.com/indestructible-type/Jost) | 3.x | SIL OFL 1.1 | `shared/vendor/fonts/` |
-| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `shared/js/gestures.js` and `integrations/blender/leviate/gestures.py` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `shared/js/gestures.js` and `integrations/blender/leviate/engine/gestures.py` |
 
 The Leviate for Blender zips in the releases also carry the Python wheels of MediaPipe,
 OpenCV (headless), absl-py and FlatBuffers (all Apache-2.0), downloaded unmodified from

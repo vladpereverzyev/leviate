@@ -6,16 +6,13 @@
 Blender waits for a phone with a PeerJS id and shows a QR code with the pairing
 link of the Leviate web app. The phone opens the link and sends its camera over
 WebRTC, exactly as it does with the web app. The PeerJS server only brokers the
-connection; the video goes straight from the phone to Blender, where aiortc
-decodes it for the hand tracking. Nothing is recorded.
+connection; the video goes straight from the phone to the engine process, where
+aiortc decodes it for the hand tracking. Nothing is recorded.
 """
 
 import asyncio
 import json
-import secrets
 import ssl
-import threading
-import time
 
 PAIR_URL = "https://vladpereverzyev.github.io/leviate/?pair="
 SERVER = "wss://0.peerjs.com:443/peerjs?key=peerjs&id=%s&token=%s&version=1.5.5"
@@ -26,11 +23,6 @@ ICE_SERVERS = (
 )
 HEARTBEAT = 5.0
 MAX_SIDE = 640
-
-
-def random_id():
-    alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
-    return "leviate-" + "".join(secrets.choice(alphabet) for _ in range(14))
 
 
 def qr_matrix(text):
@@ -51,71 +43,38 @@ def _ssl_context():
 
 
 class PhoneLink:
-    """Waits for a phone and hands over its frames as RGB arrays.
+    """Waits for a phone and keeps its newest frame as an RGB array.
 
-    read() blocks until a frame arrives or the timeout ends. status, error,
-    facing and connected are read by the tracker and the panel.
+    run() is a coroutine for the event loop of the engine. status, error, facing,
+    connected and the newest frame are read by the engine between two frames.
     """
 
-    def __init__(self, identity=None):
-        # identity: (id, token) of an earlier link, so the QR code stays the same and a
-        # phone that was paired before only needs to tap Start camera again.
-        self.id, self.token = identity or (random_id(), secrets.token_hex(8))
+    def __init__(self, identity):
+        # identity: (id, token) kept by Blender for its whole session, so the QR code stays
+        # the same and a phone that was paired before only needs to tap Start camera again.
+        self.id, self.token = identity
         self.url = PAIR_URL + self.id
         self.status = "Connecting to the pairing server…"
         self.error = ""
         self.facing = "user"
         self.connected = False
-        self._frame = None
-        self._serial = 0
-        self._cond = threading.Condition()
-        self._loop = None
+        self.frame = None
+        self.serial = 0
         self._stop = None
-        self._thread = None
-
-    # ------------------------------------------------------- tracker side
-
-    def start(self):
-        self._thread = threading.Thread(target=self._main, name="leviate-phone", daemon=True)
-        self._thread.start()
 
     def stop(self):
-        if self._loop is not None and self._stop is not None:
-            try:
-                self._loop.call_soon_threadsafe(self._stop.set)
-            except RuntimeError:
-                pass   # the loop has already ended
-        if self._thread is not None:
-            self._thread.join(timeout=5)
-            self._thread = None
-        with self._cond:
-            self._cond.notify_all()
-
-    @property
-    def alive(self):
-        return self._thread is not None and self._thread.is_alive()
-
-    def read(self, last_serial, timeout=0.2):
-        """(serial, frame) of a frame newer than last_serial, or (last_serial, None)."""
-        with self._cond:
-            if self._serial == last_serial:
-                self._cond.wait(timeout)
-            if self._serial == last_serial or self._frame is None:
-                return last_serial, None
-            return self._serial, self._frame
+        if self._stop is not None:
+            self._stop.set()
 
     def _put(self, frame):
-        with self._cond:
-            self._frame = frame
-            self._serial += 1
-            self._cond.notify_all()
+        self.frame = frame
+        self.serial += 1
 
-    # --------------------------------------------------------- network side
-
-    def _main(self):
+    async def run(self):
+        self._stop = asyncio.Event()
         try:
-            asyncio.run(self._run())
-        except Exception as err:  # keep Blender alive whatever the network does
+            await self._run()
+        except Exception as err:  # the engine reports it, Blender keeps going
             self.error = str(err) or err.__class__.__name__
         finally:
             self.connected = False
@@ -129,8 +88,6 @@ class PhoneLink:
             self.error = "Phone libraries missing: %s" % err
             return
 
-        self._loop = asyncio.get_running_loop()
-        self._stop = asyncio.Event()
         config = RTCConfiguration([RTCIceServer(urls=u, username=n, credential=c) for u, n, c in ICE_SERVERS])
         calls = {}   # connectionId -> (peer id, RTCPeerConnection, "media" or "data")
         tasks = set()

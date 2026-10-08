@@ -6,7 +6,7 @@
 // gloves. While no hand is in view, every other frame goes to the model through a
 // filter that paints the gloves in a skin tone. The filter that finds the hand stays
 // on until the hand is gone. Bare hands never see a filter once they are found.
-// integrations/blender/leviate/gloves.py does the same in Blender.
+// integrations/blender/leviate/engine/gloves.py does the same for Blender.
 
 // Plain frames take turns with the filters, so bare hands are still found right away.
 const CYCLE = [null, 'color', null, 'tone', null, 'dark'];

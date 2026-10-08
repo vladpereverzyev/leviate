@@ -4,24 +4,28 @@
 """Leviate for Blender: move the 3D view or the selected objects with your bare hands.
 
 Press Start camera in the Leviate tab of the 3D view sidebar. The webcam, or a phone
-paired with a QR code, and the hand tracking run inside Blender on the CPU (MediaPipe
-Hand Landmarker, the same model and gesture rules as the Leviate web app). Nothing is
-recorded.
+paired with a QR code, and the hand tracking run on the CPU in a process of their own
+next to Blender (MediaPipe Hand Landmarker, the same model and gesture rules as the
+Leviate web app). Nothing is recorded.
 """
 
 import os
-import queue
+import secrets
+import sys
+import tempfile
 
 import bpy
 import gpu
+import numpy as np
 from gpu_extras.batch import batch_for_shader
 from mathutils import Matrix, Quaternion, Vector
 
-from .gestures import NONE, PAN, ROTATE, ZOOM
-from .phone import PhoneLink, qr_matrix
-from .tracker import Tracker, model_path
+from .process import Engine
 
-_tracker = None
+# Gestures, as engine/gestures.py names them.
+NONE, ROTATE, PAN, ZOOM = "none", "rotate", "pan", "zoom"
+
+_engine = None
 _draw_handle = None
 _texture = {"serial": -1, "tex": None, "size": (0, 0)}
 _state = {"moving": False}
@@ -49,19 +53,19 @@ MODE_LABEL = {NONE: "Hand seen", ROTATE: "Rotate", PAN: "Pan", ZOOM: "Zoom"}
 # ---------------------------------------------------------------- settings
 
 def _restart(self, context):
-    if _tracker is not None and _tracker.running:
+    if _engine is not None and _engine.running:
         stop_camera()
         start_camera(context)
 
 
 def _mirror(self, context):
-    if _tracker is not None:
-        _tracker.mirror = self.mirror
+    if _engine is not None:
+        _engine.send(mirror=self.mirror)
 
 
 def _smooth(self, context):
-    if _tracker is not None:
-        _tracker.engine.smoothing = 1 - self.smooth
+    if _engine is not None:
+        _engine.send(smoothing=1 - self.smooth)
 
 
 class LeviateSettings(bpy.types.PropertyGroup):
@@ -177,8 +181,9 @@ def undo_push():
 
 
 def poll():
-    if _tracker is None:
+    if _engine is None:
         return None
+    running = _engine.update()
     settings = bpy.context.window_manager.leviate
     views = view3d_regions()
     rot = Vector()
@@ -190,11 +195,7 @@ def poll():
         aspect = big.width / max(big.height, 1)
     else:
         aspect = 1.0
-    while True:
-        try:
-            mode, dx, dy, z, _ = _tracker.moves.get_nowait()
-        except queue.Empty:
-            break
+    for mode, dx, dy, z in _engine.take_moves():
         moving = mode != NONE
         if mode == ROTATE:
             rot += Vector((dy, dx, 0.0)) * settings.rotate
@@ -210,8 +211,8 @@ def poll():
     _state["moving"] = moving
     for area, _, _ in views:
         area.tag_redraw()
-    if not _tracker.running:
-        # The thread ended by itself (camera error): keep the message, stop the timer.
+    if not running:
+        # The engine ended by itself (camera error): keep the message, stop the timer.
         stop_drawing()
         return None
     return 1 / 60
@@ -228,24 +229,23 @@ def _shader(*names):
     return None
 
 
-def qr_cells(url):
-    """Dark modules of the QR code of url as (row, column), cached."""
-    if _qr["url"] != url:
-        matrix = qr_matrix(url)
-        _qr.update(url=url, size=len(matrix),
-                   cells=[(r, c) for r, row in enumerate(matrix) for c, dark in enumerate(row) if dark])
+def qr_cells(engine):
+    """Dark modules of the pairing QR code as (row, column), cached."""
+    if _qr["url"] != engine.phone_url:
+        rows = engine.qr_rows
+        _qr.update(url=engine.phone_url, size=len(rows),
+                   cells=[(r, c) for r, row in enumerate(rows) for c, dark in enumerate(row) if dark == "1"])
     return _qr["size"], _qr["cells"]
 
 
-def draw_qr(phone):
+def draw_qr(engine):
     """The pairing QR code in the lower left corner of the 3D view."""
     region = bpy.context.region
     flat = _shader("UNIFORM_COLOR")
     if flat is None:
         return
-    try:
-        size, cells = qr_cells(phone.url)
-    except ImportError:
+    size, cells = qr_cells(engine)
+    if not size:
         return
     scale = bpy.context.preferences.system.ui_scale
     side = min(220 * scale, region.width * 0.45, region.height * 0.55)
@@ -271,26 +271,25 @@ def draw_qr(phone):
     blf.size(font, 13 * scale)
     blf.color(font, 0.92, 0.94, 0.96, 1.0)
     blf.position(font, x0, top + 10 * scale, 0)
-    blf.draw(font, phone.status)
+    blf.draw(font, engine.status)
 
 
 def draw_preview():
-    if _tracker is None:
+    if _engine is None:
         return
-    phone = _tracker.phone
-    if phone is not None and not phone.connected and _tracker.running:
-        draw_qr(phone)
+    if _engine.phone and not _engine.connected and _engine.running:
+        draw_qr(_engine)
         return
-    if not bpy.context.window_manager.leviate.preview:
+    if not bpy.context.window_manager.leviate.preview or _engine.preview is None:
         return
     region = bpy.context.region
-    serial, w, h, pixels, hand, mode = _tracker.preview()
-    if not w:
-        return
-    if _texture["serial"] != serial and pixels is not None:
-        buf = gpu.types.Buffer("FLOAT", len(pixels), pixels)
+    w, h, pixels = _engine.preview
+    hand, mode = _engine.hand, _engine.mode
+    if _texture["serial"] != _engine.serial:
+        rgba = np.frombuffer(pixels, dtype=np.uint8).astype(np.float32) / 255.0
+        buf = gpu.types.Buffer("FLOAT", rgba.size, rgba)
         _texture["tex"] = gpu.types.GPUTexture((w, h), format="RGBA16F", data=buf)
-        _texture["serial"] = serial
+        _texture["serial"] = _engine.serial
         _texture["size"] = (w, h)
     tex = _texture["tex"]
     if tex is None:
@@ -360,35 +359,43 @@ def stop_drawing():
 
 # ---------------------------------------------------------------- camera
 
-def hand_model():
-    """Path of the hand model: inside the add-on, or in its user folder once downloaded."""
+def log_path():
+    """Where the engine writes its messages, read back when it stops by itself."""
     try:
-        user_dir = bpy.utils.extension_path_user(__package__, path="models", create=True)
+        folder = bpy.utils.extension_path_user(__package__, create=True)
     except ValueError:   # loaded as a legacy add-on, not as an extension
-        user_dir = os.path.join(os.path.dirname(__file__), "models")
-    return model_path(user_dir)
+        folder = tempfile.gettempdir()
+    return os.path.join(folder, "engine.log")
+
+
+def wheels_folder():
+    """Where Blender installs the wheels of extensions for its own Python version."""
+    return os.path.join(bpy.utils.user_resource("EXTENSIONS"), ".local", "lib",
+                        "python%d.%d" % sys.version_info[:2], "site-packages")
 
 
 def online_reason(settings):
     """What this start needs Allow Online Access for, or an empty string."""
-    if settings.source == "PHONE":
-        return "for the phone"
-    if not os.path.isfile(hand_model()):
-        return "to download the hand model once"
-    return ""
+    return "for the phone" if settings.source == "PHONE" else ""
+
+
+def phone_identity():
+    """Pairing id and token of this Blender session."""
+    global _phone_identity
+    if _phone_identity is None:
+        alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
+        _phone_identity = ("leviate-" + "".join(secrets.choice(alphabet) for _ in range(14)),
+                           secrets.token_hex(8))
+    return _phone_identity
 
 
 def start_camera(context):
-    global _tracker, _phone_identity
+    global _engine
     settings = context.window_manager.leviate
     height = int(settings.resolution)
-    phone = None
-    if settings.source == "PHONE":
-        phone = PhoneLink(_phone_identity)
-        _phone_identity = (phone.id, phone.token)
-    _tracker = Tracker(hand_model(), camera=settings.camera - 1, width=height * 4 // 3, height=height,
-                       mirror=settings.mirror, smoothing=1 - settings.smooth, phone=phone)
-    _tracker.start()
+    phone = phone_identity() if settings.source == "PHONE" else None
+    _engine = Engine(wheels_folder(), log_path(), camera=settings.camera - 1, width=height * 4 // 3, height=height,
+                     mirror=settings.mirror, smoothing=1 - settings.smooth, phone=phone)
     _state["moving"] = False
     start_drawing()
     if not bpy.app.timers.is_registered(poll):
@@ -396,10 +403,10 @@ def start_camera(context):
 
 
 def stop_camera():
-    global _tracker
-    if _tracker is not None:
-        _tracker.stop()
-    _tracker = None
+    global _engine
+    if _engine is not None:
+        _engine.stop()
+    _engine = None
     stop_drawing()
     if bpy.app.timers.is_registered(poll):
         bpy.app.timers.unregister(poll)
@@ -435,8 +442,8 @@ class LEVIATE_OT_copy_link(bpy.types.Operator):
     bl_description = "Copy the pairing link, to open it on the phone without the QR code"
 
     def execute(self, context):
-        if _tracker is not None and _tracker.phone is not None:
-            context.window_manager.clipboard = _tracker.phone.url
+        if _engine is not None and _engine.phone_url:
+            context.window_manager.clipboard = _engine.phone_url
             self.report({"INFO"}, "Pairing link copied")
         return {"FINISHED"}
 
@@ -450,26 +457,26 @@ class LEVIATE_PT_panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         settings = context.window_manager.leviate
-        on = _tracker is not None and _tracker.running
+        on = _engine is not None and _engine.running
         phone = settings.source == "PHONE"
 
         layout.prop(settings, "source", expand=True)
         if on:
             layout.operator("leviate.stop", icon="CANCEL")
-            fw, fh = _tracker.frame_size
+            fw, fh = _engine.frame_size
             if fw:
-                layout.label(text="%s  %dx%d  %.0f fps" % (_tracker.status, fw, fh, _tracker.fps), icon="OUTLINER_OB_CAMERA")
+                layout.label(text="%s  %dx%d  %.0f fps" % (_engine.status, fw, fh, _engine.fps), icon="OUTLINER_OB_CAMERA")
             else:
-                layout.label(text=_tracker.status, icon="TIME")
-            if _tracker.phone is not None and not _tracker.phone.connected:
+                layout.label(text=_engine.status, icon="TIME")
+            if _engine.phone and not _engine.connected:
                 col = layout.column(align=True)
                 col.label(text="Scan the QR code in the 3D view")
                 col.label(text="and tap Start camera on the phone")
                 col.operator("leviate.copy_link", icon="COPYDOWN")
         else:
             layout.operator("leviate.start", icon="OUTLINER_OB_CAMERA")
-            if _tracker is not None and _tracker.error:
-                layout.label(text=_tracker.error, icon="ERROR")
+            if _engine is not None and _engine.error:
+                layout.label(text=_engine.error, icon="ERROR")
             reason = online_reason(settings)
             if reason and not bpy.app.online_access:
                 col = layout.column(align=True)

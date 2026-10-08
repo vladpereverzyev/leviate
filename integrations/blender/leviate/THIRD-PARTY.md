@@ -26,7 +26,7 @@ are inside each wheel, in the `*.dist-info` folder.
 | [typing_extensions](https://github.com/python/typing_extensions) | 4.16.0 | PSF-2.0 | `wheels/typing_extensions-*.whl` |
 | [websockets](https://github.com/python-websockets/websockets) | 17.2 | BSD-3-Clause | `wheels/websockets-*.whl` |
 | [qrcode](https://github.com/lincolnloop/python-qrcode) | 8.2 | BSD-3-Clause | `wheels/qrcode-*.whl` |
-| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `gestures.py` |
+| [kelyonn/vertex](https://github.com/kelyonn/vertex) | 2026-06 | MIT | idea adapted in `engine/gestures.py` |
 
 The wheels are the unmodified files published on PyPI. The OpenCV and PyAV wheels
 bundle FFmpeg and other libraries under their own licenses (FFmpeg under the
