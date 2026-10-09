@@ -261,11 +261,13 @@ file is missing the app tells you which one.
 | `shared/vendor/mediapipe/` | MediaPipe Tasks Vision and its WebAssembly runtime (Apache-2.0) |
 | `shared/models/hand_landmarker.task` | MediaPipe hand model (Apache-2.0) |
 | `desktop/` | Leviate for Desktop (Electron): the hand on any program, 3D and Mouse modules |
-| `integrations/` | Add-ons that bring the hand control inside other programs (Blender) |
+| `integrations/` | Add-ons that bring the hand control inside other programs (Blender, Chrome, Dentra Viewer) |
 | `docs/` | Screenshots, QR window and gesture drawings used in this README |
 | `scripts/build-web.mjs` | Puts `web/` and `shared/` together in `dist/web/`, published on GitHub Pages by `.github/workflows/pages.yml` |
 | `scripts/bump.mjs` | Raises the version (patch, minor or major) |
 | `scripts/build-blender.py` | Packs the Blender add-on into a zip |
+| `scripts/build-chrome.mjs` | Packs the Chrome extension into a zip |
+| `scripts/build-dentra.mjs` | Packs the Dentra Viewer plugin into a zip |
 | `scripts/build-desktop.mjs` | Builds the desktop app for Windows, macOS or Linux |
 
 ## Versions

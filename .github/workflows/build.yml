@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Vladyslav Pereverzyev
 #
-# Builds the Blender zips and the desktop app (Windows, macOS, Linux) on every push and
-# pull request. Releases are separate, so each one changes only when it has changed. Both
+# Builds the Blender zips, the desktop app (Windows, macOS, Linux) and the Chrome extension
+# on every push and pull request. Releases are separate, so each one changes only when it has changed. Both
 # are tagged v<version>; the number tells which one it is:
 #   the version of shared/js/version.js            Leviate for Desktop, marked as the latest
 #   the version of the add-on (blender_manifest)   Leviate for Blender, never marked latest,
@@ -110,8 +110,35 @@ jobs:
             dist/desktop/leviate-*.AppImage
           if-no-files-found: error
 
+  # Leviate for Chrome goes in the release of the app, with its version. The Dentra plugin
+  # is built too, to catch mistakes: its zip is uploaded on Dentra, not released here.
+  chrome:
+    needs: [kind]
+    if: needs.kind.outputs.desktop == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Build Leviate for Chrome and for Dentra Viewer
+        run: |
+          node scripts/build-chrome.mjs
+          node scripts/build-dentra.mjs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome
+          path: dist/leviate-chrome-*.zip
+          if-no-files-found: error
+
   release:
-    needs: [kind, desktop]
+    needs: [kind, desktop, chrome]
     if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -145,6 +172,12 @@ jobs:
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
+
+          ### Leviate for Chrome
+
+          The same 3D and Mouse modes in the pages of Chrome, from its side panel.
+          Unzip \`leviate-chrome-${VER}.zip\`, open \`chrome://extensions\`, turn on Developer mode
+          and press Load unpacked. Guide: [chrome-extension](https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension).
 
           ### Leviate for Blender
 

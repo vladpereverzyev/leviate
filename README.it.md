@@ -267,11 +267,13 @@ texture o un file collegato l'app ti dice quale.
 | `shared/vendor/mediapipe/` | MediaPipe Tasks Vision e il suo runtime WebAssembly (Apache-2.0) |
 | `shared/models/hand_landmarker.task` | Modello della mano di MediaPipe (Apache-2.0) |
 | `desktop/` | Leviate for Desktop (Electron): la mano su qualsiasi programma, moduli 3D e Mouse |
-| `integrations/` | Add-on che portano il controllo con la mano dentro altri programmi (Blender) |
+| `integrations/` | Add-on che portano il controllo con la mano dentro altri programmi (Blender, Chrome, Dentra Viewer) |
 | `docs/` | Screenshot, finestra QR e disegni dei gesti usati in questo README |
 | `scripts/build-web.mjs` | Unisce `web/` e `shared/` in `dist/web/`, pubblicata su GitHub Pages da `.github/workflows/pages.yml` |
 | `scripts/bump.mjs` | Alza la versione (patch, minor o major) |
 | `scripts/build-blender.py` | Crea lo zip dell'add-on per Blender |
+| `scripts/build-chrome.mjs` | Crea lo zip dell'estensione per Chrome |
+| `scripts/build-dentra.mjs` | Crea lo zip del plugin per Dentra Viewer |
 | `scripts/build-desktop.mjs` | Crea l'app desktop per Windows, macOS o Linux |
 
 ## Versioni

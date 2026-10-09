@@ -64,11 +64,11 @@
   </header>
   <main class="doc">
     <h1>Privacy and cookie policy</h1>
-    <p class="updated">Last updated: 7 October 2026</p>
+    <p class="updated">Last updated: 9 October 2026</p>
 
     <p>This policy explains what happens to your data when you use Leviate at
-    vladpereverzyev.github.io/leviate, Leviate for Desktop (section 6) and Leviate for Blender
-    (section 7). It is provided under Articles 13 and 14 of
+    vladpereverzyev.github.io/leviate, Leviate for Desktop (section 6), Leviate for Blender
+    (section 7), Leviate for Chrome (section 8) and Leviate for Dentra Viewer (section 9). It is provided under Articles 13 and 14 of
     Regulation (EU) 2016/679 (GDPR) and Italian Legislative Decree 196/2003 as amended.</p>
 
     <h2>1. Data controller</h2>
@@ -113,7 +113,7 @@
     note asks for support on Ko-fi, on every visit and every start. Remind me later hides it
     until the next one; Support or Don't ask again hide it for good. Nothing is counted or
     measured for this. Only that last answer is kept, on your device, so the note is not shown
-    again to someone who said no (leviate.support in section 8, leviate.desktop in section 6);
+    again to someone who said no (leviate.support in section 10, leviate.desktop in section 6);
     it is never sent anywhere. Ko-fi is contacted only if you press Support, which opens
     ko-fi.com in your browser.</p>
 
@@ -175,7 +175,34 @@
     <p>The settings of the add-on are kept by Blender in its own preferences on your
     computer.</p>
 
-    <h2 id="cookies">8. Cookies and browser storage</h2>
+    <h2 id="chrome">8. Leviate for Chrome</h2>
+    <p>Leviate for Chrome is an extension for Chrome and the browsers built on it, downloaded
+    from the releases of the project on GitHub (see section 3). It has no accounts, no
+    analytics and no advertising and it collects no data.</p>
+    <p><b>The camera</b> starts when you press Start in the side panel of Leviate. The video
+    is read by the hand tracking inside the extension, frame by frame and is never recorded
+    or sent anywhere. The hand model comes inside the extension.</p>
+    <p><b>The page.</b> While the hand is on, the extension moves the pointer, presses the
+    mouse buttons and turns the wheel in the active tab, through the debugger permission of
+    Chrome, and draws its cursor on top of the page. It does not read, store or send the
+    content of the pages you visit.</p>
+    <p><b>Phone.</b> Use phone connects through PeerJS and the STUN server of Google exactly as
+    described in section 4 and only after you choose Continue in the notice that explains
+    it. Legal basis: your consent (Art. 6(1)(a) GDPR); you withdraw it by not using the
+    phone.</p>
+    <p>The settings of the extension (camera, mode, gestures) are kept in the storage of the
+    extension on your computer and never leave it. Removing the extension removes them.</p>
+
+    <h2 id="dentra">9. Leviate for Dentra Viewer</h2>
+    <p>Leviate for Dentra Viewer is a plugin that runs inside Dentra Viewer, which processes
+    data under the policy of Dentra. The plugin asks only for the view and the camera. Dentra
+    Viewer opens the camera and passes its pictures to the plugin, which finds the hand on
+    your computer and sends back to the Viewer only the moves of the view. The video is never
+    recorded or sent anywhere and the plugin has no access to the internet, to the models or
+    to any data of Dentra. Its only setting, the mirror of the preview, is kept by the
+    Viewer on your device.</p>
+
+    <h2 id="cookies">10. Cookies and browser storage</h2>
     <p>Leviate sets <b>no cookies</b>. It keeps a few values in your browser storage, on your
     device only. They keep the app working and your choices remembered and never leave the
     device.</p>
@@ -190,7 +217,7 @@
     <b>Statistics</b> (nothing in use today) and <b>External services</b> (PeerJS for
     Use phone). You can <a href="#cookies" data-cc-open>change your choice</a> at any time.</p>
 
-    <h2>9. Your rights</h2>
+    <h2>11. Your rights</h2>
     <p>You have the right to access, rectify and erase your data, to restrict or object to
     its processing, to data portability and to withdraw consent at any time without
     affecting earlier processing (Articles 15 to 22 GDPR). Write to
@@ -198,7 +225,7 @@
     a complaint with the Italian supervisory authority, the
     <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
 
-    <h2>10. Changes</h2>
+    <h2>12. Changes</h2>
     <p>This policy may be updated when the app changes. The date at the top shows the last
     change.</p>
   </main>

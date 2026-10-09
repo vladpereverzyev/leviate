@@ -276,11 +276,13 @@ texture ou un fichier associé l'application vous dit lequel.
 | `shared/vendor/mediapipe/` | MediaPipe Tasks Vision et son runtime WebAssembly (Apache-2.0) |
 | `shared/models/hand_landmarker.task` | Modèle de la main MediaPipe (Apache-2.0) |
 | `desktop/` | Leviate for Desktop (Electron) : la main sur tout logiciel, modules 3D et Mouse |
-| `integrations/` | Add-ons qui amènent le contrôle à la main dans d'autres logiciels (Blender) |
+| `integrations/` | Add-ons qui amènent le contrôle à la main dans d'autres logiciels (Blender, Chrome, Dentra Viewer) |
 | `docs/` | Captures, fenêtre QR et dessins des gestes utilisés dans ce README |
 | `scripts/build-web.mjs` | Réunit `web/` et `shared/` dans `dist/web/`, publié sur GitHub Pages par `.github/workflows/pages.yml` |
 | `scripts/bump.mjs` | Monte la version (patch, minor ou major) |
 | `scripts/build-blender.py` | Crée le zip de l'add-on Blender |
+| `scripts/build-chrome.mjs` | Crée le zip de l'extension Chrome |
+| `scripts/build-dentra.mjs` | Crée le zip du plugin Dentra Viewer |
 | `scripts/build-desktop.mjs` | Crée l'app de bureau pour Windows, macOS ou Linux |
 
 ## Versions

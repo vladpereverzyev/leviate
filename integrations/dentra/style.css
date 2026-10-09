@@ -1,0 +1,67 @@
+/* SPDX-License-Identifier: AGPL-3.0-only
+   Leviate. Copyright (C) 2026 Vladyslav Pereverzyev
+   The look of Leviate, small enough for the plugin panel of Dentra Viewer. */
+
+@font-face { font-family: 'Jost'; font-weight: 400; src: url('fonts/jost-400.woff2') format('woff2'); }
+
+:root {
+  --bg: #011E2E;
+  --panel-2: #063049;
+  --line: rgba(255, 255, 255, 0.09);
+  --text: #F1F4F6;
+  --muted: #D0D0D0;
+  --dim: #7d90a0;
+  --accent: #2791CB;
+  --rotate: #10B279;
+  --pan: #E0B85A;
+  --zoom: #57abd8;
+  --alert: #C25B5B;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 13px/1.45 'Jost', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+.preview { position: relative; flex: 0 0 auto; height: calc(100vh - 20px); max-height: 240px; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; background: #000d15; }
+.preview canvas { width: 100%; height: 100%; display: block; }
+.badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(1, 30, 46, 0.8);
+  font-size: 12px;
+  color: var(--dim);
+}
+.side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.btn {
+  align-self: flex-start;
+  padding: 7px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.btn.on { background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--accent); }
+.status { margin: 0; color: var(--muted); }
+.status.error { color: var(--alert); }
+.hint { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); }
+.dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; }
+.dot.rotate { background: var(--rotate); }
+.dot.pan { background: var(--pan); }
+.dot.zoom { background: var(--zoom); }
+.check { display: flex; align-items: center; gap: 8px; color: var(--muted); cursor: pointer; }
+.check input { margin: 0; accent-color: var(--accent); }
+.legal { margin: auto 0 0; font-size: 11px; color: var(--dim); }
+.legal a { color: var(--dim); }

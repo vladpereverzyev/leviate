@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Leviate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="preview">
+    <canvas id="view" width="320" height="240"></canvas>
+    <span id="badge" class="badge" hidden></span>
+  </div>
+  <div class="side">
+    <button id="start" class="btn">Start</button>
+    <p id="status" class="status"></p>
+    <p class="hint">
+      <span><i class="dot rotate"></i><span data-t="rotate">Open hand turns</span></span>
+      <span><i class="dot pan"></i><span data-t="pan">Fist pans</span></span>
+      <span><i class="dot zoom"></i><span data-t="zoom">Pinch zooms</span></span>
+    </p>
+    <label class="check"><input id="mirror" type="checkbox" checked> <span data-t="mirror">Mirror</span></label>
+    <p class="legal"><a href="https://vladpereverzyev.github.io/leviate/" target="_blank" rel="noopener">Leviate</a> · AGPL-3.0 · v<span id="version"></span></p>
+  </div>
+  <script type="module" src="plugin.js"></script>
+</body>
+</html>

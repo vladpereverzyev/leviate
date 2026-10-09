@@ -6,8 +6,10 @@
 // the 21 hand points.
 
 // MediaPipe loads its WebAssembly glue with importScripts, which module workers
-// do not allow. A synchronous request plus a global eval does the same job.
-self.importScripts = (...urls) => {
+// do not allow. A synchronous request plus a global eval does the same job. The Chrome
+// extension starts this file from a classic worker, where the real one works and eval
+// is not allowed.
+if (!self.LEVIATE_CLASSIC_WORKER) self.importScripts = (...urls) => {
   for (const url of urls) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, false);

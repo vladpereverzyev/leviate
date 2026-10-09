@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Leviate. Copyright (C) 2026 Vladyslav Pereverzyev -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Leviate</title>
+  <link rel="stylesheet" href="renderer/control.css">
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <header class="top">
+    <span class="brand"><img src="icons/icon.svg" alt="">Leviate</span>
+    <span class="product">Chrome</span>
+  </header>
+
+  <main>
+    <!-- Same webcam window as the web app and Leviate for Desktop -->
+    <section class="win" id="win-cam">
+      <header class="win-head">
+        <span>Webcam</span>
+        <button class="win-fold" aria-label="Collapse"></button>
+      </header>
+      <div class="win-body">
+        <div class="preview" id="preview">
+          <video id="video" playsinline muted></video>
+          <canvas id="hand"></canvas>
+          <button id="start" class="cam-toggle">Start</button>
+          <span id="badge" class="badge" hidden></span>
+          <div id="qr" class="qr" hidden>
+            <div id="qr-code" class="qr-code" title="Click to copy the link"></div>
+            <p id="qr-text">Scan with your phone</p>
+          </div>
+        </div>
+        <div class="row">
+          <button id="phone-link" class="btn small ghost">Use phone</button>
+        </div>
+        <!-- Told once before the first pairing, like the notice of Leviate for Desktop. -->
+        <div id="phone-notice" class="notice" hidden>
+          <p>Your phone becomes the camera of Leviate. Connect the phone and this computer to the same Wi&#8209;Fi network.</p>
+          <p class="sub">To find each other, the phone and this computer go through the free PeerJS server (0.peerjs.com) and a STUN server of Google, which see the IP addresses of both devices but never the video. The video goes straight from the phone to this computer, encrypted and never recorded.</p>
+          <div class="row"><button id="phone-go" class="btn small">Continue</button><button id="phone-cancel" class="btn small ghost">Cancel</button></div>
+        </div>
+        <p id="status" class="info"></p>
+
+        <details class="more">
+          <summary>Camera</summary>
+          <div class="field two">
+            <select id="camera" aria-label="Device"><option value="">Default camera</option></select>
+            <label class="check"><input id="mirror" type="checkbox"> Mirror</label>
+          </div>
+          <p id="cam-info" class="info"></p>
+        </details>
+      </div>
+    </section>
+
+    <section class="win" id="win-hand">
+      <header class="win-head">
+        <span>Hand controls</span>
+        <button class="win-fold" aria-label="Collapse"></button>
+      </header>
+      <div class="win-body">
+        <div class="seg" id="mode">
+          <button data-value="off">Off</button>
+          <button data-value="3d">3D</button>
+          <button data-value="mouse">Mouse</button>
+        </div>
+        <p id="mode-info" class="info"></p>
+        <p id="error" class="info error" hidden></p>
+
+        <div id="panel-3d" hidden>
+          <p class="hint"><i class="dot rotate"></i>Open hand <i class="dot pan"></i>Fist <i class="dot zoom"></i>Pinch</p>
+          <p class="info">Put the mouse on the 3D view of the page: the gestures press the mouse buttons it uses.</p>
+          <details class="more">
+            <summary>Viewer</summary>
+            <div class="field"><select id="profile" aria-label="Viewer mouse"></select></div>
+            <div id="custom" hidden>
+              <p class="label">Turn with</p>
+              <div class="field two"><select id="c-rotate-keys" aria-label="Key"></select><select id="c-rotate-button" aria-label="Button"></select></div>
+              <p class="label">Pan with</p>
+              <div class="field two"><select id="c-pan-keys" aria-label="Key"></select><select id="c-pan-button" aria-label="Button"></select></div>
+            </div>
+          </details>
+          <details class="more">
+            <summary>Gestures</summary>
+            <div class="field slider"><label for="rotate">Turn</label><input id="rotate" type="range" min="0.25" max="3" step="0.05"><output></output></div>
+            <div class="field slider"><label for="pan">Pan</label><input id="pan" type="range" min="0.25" max="3" step="0.05"><output></output></div>
+            <div class="field slider"><label for="zoom">Zoom</label><input id="zoom" type="range" min="0.25" max="3" step="0.05"><output></output></div>
+            <label class="check"><input id="invertZoom" type="checkbox"> Invert zoom</label>
+          </details>
+        </div>
+
+        <div id="panel-mouse" hidden>
+          <p class="hint"><i class="dot move"></i>Open hand <i class="dot left"></i>One finger <i class="dot right"></i>Two fingers</p>
+          <p class="info">Open hand moves the blue cursor on the page. Hold one finger still for a left click and keep holding for a double click, two fingers for a right click.</p>
+          <p class="info">Any other pose, a fist for example, leaves the cursor where it is.</p>
+          <details class="more">
+            <summary>Gestures</summary>
+            <div class="field slider"><label for="dwell">Hold</label><input id="dwell" type="range" min="0.4" max="3" step="0.1"><output></output></div>
+            <div class="field slider"><label for="reach">Reach</label><input id="reach" type="range" min="0.3" max="0.9" step="0.05"><output></output></div>
+            <div class="field slider"><label for="smoothing">Smooth</label><input id="smoothing" type="range" min="0" max="1" step="0.05"><output></output></div>
+            <label class="check"><input id="ring" type="checkbox"> Ring around the cursor</label>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Same footer as the web app and Leviate for Desktop. -->
+  <footer class="legal">
+    © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+    <a href="https://vladpereverzyev.github.io/leviate/download.html" target="_blank" rel="noopener">Download</a> ·
+    <a href="https://vladpereverzyev.github.io/leviate/privacy.html#chrome" target="_blank" rel="noopener">Privacy</a> ·
+    <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
+    <span id="footer-version"></span>
+  </footer>
+
+  <script type="module" src="panel.js"></script>
+</body>
+</html>

@@ -270,11 +270,13 @@ eine Begleitdatei, sagt dir die App, welche.
 | `shared/vendor/mediapipe/` | MediaPipe Tasks Vision und seine WebAssembly-Laufzeit (Apache-2.0) |
 | `shared/models/hand_landmarker.task` | MediaPipe-Handmodell (Apache-2.0) |
 | `desktop/` | Leviate for Desktop (Electron): die Hand in jedem Programm, Module 3D und Mouse |
-| `integrations/` | Add-ons, die die Handsteuerung in andere Programme bringen (Blender) |
+| `integrations/` | Add-ons, die die Handsteuerung in andere Programme bringen (Blender, Chrome, Dentra Viewer) |
 | `docs/` | Screenshots, QR-Fenster und Gestenzeichnungen für dieses README |
 | `scripts/build-web.mjs` | Fügt `web/` und `shared/` in `dist/web/` zusammen, auf GitHub Pages veröffentlicht von `.github/workflows/pages.yml` |
 | `scripts/bump.mjs` | Erhöht die Version (patch, minor oder major) |
 | `scripts/build-blender.py` | Packt das Blender-Add-on als Zip |
+| `scripts/build-chrome.mjs` | Packt die Chrome-Erweiterung als Zip |
+| `scripts/build-dentra.mjs` | Packt das Dentra-Viewer-Plugin als Zip |
 | `scripts/build-desktop.mjs` | Baut die Desktop-App für Windows, macOS oder Linux |
 
 ## Versionen

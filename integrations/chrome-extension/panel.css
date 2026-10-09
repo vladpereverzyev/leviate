@@ -1,0 +1,18 @@
+/* SPDX-License-Identifier: AGPL-3.0-only
+   Leviate. Copyright (C) 2026 Vladyslav Pereverzyev
+   What the side panel adds to the look of Leviate for Desktop (renderer/control.css). */
+
+.notice {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: linear-gradient(rgba(39, 145, 203, 0.12), rgba(39, 145, 203, 0.12)), var(--panel-solid);
+}
+.notice p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text); }
+.notice .sub { margin-top: 6px; font-size: 12px; color: var(--muted); }
+.notice .row { margin-top: 10px; gap: 8px; }
+
+body.ask main { padding: 40px 20px; max-width: 520px; }
+body.ask h1 { margin: 0 0 8px; font-weight: 300; font-size: 28px; }
+body.ask p { margin: 0; color: var(--muted); }
