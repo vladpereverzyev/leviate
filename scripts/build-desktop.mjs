@@ -43,6 +43,9 @@ const builder = path.join(APP, 'node_modules', 'electron-builder', 'cli.js');
 // --mas: the sandboxed Mac App Store package (macOS only), signed with the certificates of
 // the keychain and the identity given as -c.mas.identity=... by the Mac App Store workflow.
 const mas = process.argv.includes('--mas');
+// The Store wants a 1024 px icon (512 pt @2x) in the app's .icns: the build icon becomes
+// the 1024 px one of mas/, which also the universal app picks up.
+if (mas) fs.copyFileSync(path.join(APP, 'mas', 'icon.png'), path.join(BUILD, 'icon.png'));
 const args = [builder, ...(mas ? ['--mac', 'mas:universal'] : [platform]), `-c.extraMetadata.version=${version}`, '--publish', 'never'];
 if (process.argv.includes('--dir')) args.push('--dir');
 args.push(...process.argv.slice(2).filter((a) => a.startsWith('-c.')));
