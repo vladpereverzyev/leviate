@@ -10,8 +10,28 @@
 const KEY = 'leviate.support';
 const AFTER = 2 * 60 * 1000;
 
+// Another note on screen (the Wi-Fi one of Use phone) comes first: the Ko-fi note waits for
+// it and comes back once it is closed.
+let held = false;
+let due = false;
+let show = () => {};
+
+export function holdSupport(on) {
+  held = on;
+  const box = document.getElementById('support');
+  if (on) {
+    if (!box.hidden) { box.hidden = true; due = true; }
+  } else if (due) {
+    show();
+  }
+}
+
 export function setupSupport() {
   const box = document.getElementById('support');
+  show = () => {
+    due = held;
+    box.hidden = held;
+  };
   let done = false;
   try { done = !!JSON.parse(localStorage.getItem(KEY))?.supportDone; } catch {}
   const never = () => {
@@ -28,5 +48,5 @@ export function setupSupport() {
   });
   document.getElementById('support-never').onclick = never;
   document.getElementById('support-later').onclick = () => { box.hidden = true; };
-  if (!done) setTimeout(() => { box.hidden = false; }, AFTER);
+  if (!done) setTimeout(() => show(), AFTER);
 }

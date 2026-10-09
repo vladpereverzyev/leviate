@@ -25,7 +25,7 @@ import { setupWindows } from './windows.js';
 import { VERSION } from './version.js';
 import { hostPhone, qrSvg, runPhoneCamera } from './phone.js';
 import { ensure } from './consent.js';
-import { setupSupport } from './support.js';
+import { holdSupport, setupSupport } from './support.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -821,6 +821,17 @@ function closePhone() {
   applyMirror();
 }
 
+// Same Wi-Fi network: a note like the Ko-fi one, before it and never together with it.
+function showWifi() {
+  holdSupport(true);
+  $('wifi').hidden = false;
+}
+
+$('wifi-ok').addEventListener('click', () => {
+  $('wifi').hidden = true;
+  holdSupport(false);
+});
+
 async function usePhone() {
   if (phone) {
     const wasStreaming = !!stream;
@@ -834,7 +845,7 @@ async function usePhone() {
     return;
   }
   stopCamera();
-  toast('Connect the phone and this computer to the same Wi‑Fi network.', 5000);
+  showWifi();
   $('qr-code').replaceChildren();
   $('qr-text').textContent = 'Connecting…';
   $('qr').hidden = false;
