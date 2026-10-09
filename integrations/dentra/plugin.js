@@ -86,7 +86,7 @@ let t = TEXT.en;
 
 const settings = {
   mirror: true, quality: 640, fps: 30,
-  rotate: 5, pan: 1, zoom: 1, smooth: 0.5, invertZoom: false, phoneNotice: false,
+  rotate: 5, pan: 1, zoom: 1, smooth: 0.5, invertZoom: false,
 };
 const engine = new GestureEngine();
 const gloves = new Gloves();
@@ -221,6 +221,9 @@ function draw(image, lm, mode) {
   if (canvas.width !== image.width || canvas.height !== image.height) {
     canvas.width = image.width;
     canvas.height = image.height;
+    // The preview takes the shape of the camera: wide for a webcam, tall for a phone.
+    $('preview').style.aspectRatio = `${image.width} / ${image.height}`;
+    fitPanel();
   }
   ctx.save();
   if (mirrored()) { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
@@ -400,18 +403,13 @@ async function setup() {
   document.fonts?.ready.then(fitPanel);
 
   $('start').onclick = () => (source === 'camera' ? stopAll() : startCamera());
+  // The notice with the Wi-Fi network comes every time, as in the other apps.
   $('phone').onclick = () => {
     if (phone) return stopAll();
-    if (!settings.phoneNotice) {
-      $('phone-notice').hidden = false;
-      fitPanel();
-      return;
-    }
-    startPhone();
+    $('phone-notice').hidden = false;
+    fitPanel();
   };
   $('phone-go').onclick = () => {
-    settings.phoneNotice = true;
-    save();
     $('phone-notice').hidden = true;
     startPhone();
   };
