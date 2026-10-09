@@ -1,0 +1,119 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Vladyslav Pereverzyev
+#
+# Builds Leviate for Desktop as the sandboxed Mac App Store package and, when asked,
+# uploads it to App Store Connect. Submitting it for review stays a manual step there.
+#
+# Everything personal lives in the repository secrets, never in the repository:
+#   MAS_CERTS                     base64 .p12 with the Apple Distribution certificate
+#   MAS_CERTS_PASSWORD            its password
+#   MAS_INSTALLER_CERTS           base64 .p12 with the Mac Installer Distribution certificate
+#   MAS_INSTALLER_CERTS_PASSWORD  its password
+#   MAS_PROVISION_PROFILE         base64 Mac App Store provisioning profile of Leviate
+#   APPLE_API_KEY                 App Store Connect API key (.p8 contents)
+#   APPLE_API_KEY_ID              its key ID
+#   APPLE_API_ISSUER              its issuer ID
+#   APPLE_TEAM_ID                 the team, for the signing identity (and masked in the logs)
+
+name: Mac App Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: "Upload the package to App Store Connect"
+        type: boolean
+        default: false
+      build_version:
+        description: "Build number (CFBundleVersion), when the same version is uploaded again"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  mas:
+    runs-on: macos-latest
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install
+        working-directory: desktop
+        run: npm ci
+
+      - name: Provisioning profile and API key
+        env:
+          MAS_PROVISION_PROFILE: ${{ secrets.MAS_PROVISION_PROFILE }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY }}
+        run: |
+          printf '%s' "$MAS_PROVISION_PROFILE" | base64 --decode > desktop/mas/embedded.provisionprofile
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s' "$APPLE_API_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8
+
+      # Both certificates in one throwaway keychain: electron-builder cannot unlock a
+      # keychain it creates twice for CSC_LINK and CSC_INSTALLER_LINK.
+      - name: Signing keychain
+        env:
+          MAS_CERTS: ${{ secrets.MAS_CERTS }}
+          MAS_CERTS_PASSWORD: ${{ secrets.MAS_CERTS_PASSWORD }}
+          MAS_INSTALLER_CERTS: ${{ secrets.MAS_INSTALLER_CERTS }}
+          MAS_INSTALLER_CERTS_PASSWORD: ${{ secrets.MAS_INSTALLER_CERTS_PASSWORD }}
+        run: |
+          KC="$RUNNER_TEMP/mas.keychain"
+          KC_PASS="$(openssl rand -hex 24)"
+          security create-keychain -p "$KC_PASS" "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p "$KC_PASS" "$KC"
+          printf '%s' "$MAS_CERTS" | base64 --decode > "$RUNNER_TEMP/app.p12"
+          printf '%s' "$MAS_INSTALLER_CERTS" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+          security import "$RUNNER_TEMP/app.p12" -k "$KC" -P "$MAS_CERTS_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
+          security import "$RUNNER_TEMP/installer.p12" -k "$KC" -P "$MAS_INSTALLER_CERTS_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
+          rm -f "$RUNNER_TEMP/app.p12" "$RUNNER_TEMP/installer.p12"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KC_PASS" "$KC" > /dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          security find-identity -v "$KC" | grep -c "valid identities" || true
+
+      # The identity is the team's, read from the keychain: the name of its Apple
+      # Distribution certificate, without the prefix.
+      - name: Build the Mac App Store package
+        env:
+          BUILD_VERSION: ${{ inputs.build_version }}
+          CSC_KEYCHAIN: ${{ runner.temp }}/mas.keychain
+        run: |
+          ID=$(security find-identity -v -p codesigning "$CSC_KEYCHAIN" | sed -n 's/.*"Apple Distribution: \(.*\)".*/\1/p' | head -1)
+          [ -n "$ID" ] || { echo "No Apple Distribution identity in the keychain"; exit 1; }
+          EXTRA=()
+          if [ -n "$BUILD_VERSION" ]; then
+            case "$BUILD_VERSION" in *[!0-9.]*) echo "build_version must be digits and dots"; exit 1;; esac
+            EXTRA+=("-c.buildVersion=$BUILD_VERSION")
+          fi
+          node scripts/build-desktop.mjs --mas "-c.mas.identity=$ID" "${EXTRA[@]}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: leviate-mac-app-store
+          path: dist/desktop/mas-*/*.pkg
+          if-no-files-found: error
+
+      - name: Upload to App Store Connect
+        if: inputs.upload
+        run: |
+          xcrun altool --upload-app --type macos \
+            --file "$(ls dist/desktop/mas-*/*.pkg | head -1)" \
+            --apiKey "${{ secrets.APPLE_API_KEY_ID }}" \
+            --apiIssuer "${{ secrets.APPLE_API_ISSUER }}"
+
+      - name: Remove the secrets from the runner
+        if: always()
+        run: |
+          rm -f desktop/mas/embedded.provisionprofile ~/.appstoreconnect/private_keys/*.p8
+          security delete-keychain "$RUNNER_TEMP/mas.keychain" || true

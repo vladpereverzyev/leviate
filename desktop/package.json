@@ -74,7 +74,8 @@
       "hardenedRuntime": false,
       "artifactName": "leviate-${version}-macos-${arch}.${ext}",
       "extendInfo": {
-        "NSCameraUsageDescription": "Leviate reads the camera to follow your hand. Nothing is recorded."
+        "NSCameraUsageDescription": "Leviate reads the camera to follow your hand. Nothing is recorded.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "dmg": {
@@ -92,6 +93,15 @@
       "icon": "build/icon.png",
       "category": "Graphics",
       "artifactName": "leviate-${version}-linux-x64.${ext}"
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false,
+      "entitlements": "mas/entitlements.mas.plist",
+      "entitlementsInherit": "mas/entitlements.mas.inherit.plist",
+      "provisioningProfile": "mas/embedded.provisionprofile",
+      "artifactName": "leviate-${version}-mac-app-store.${ext}",
+      "icon": "mas/icon.png"
     }
   },
   "allowScripts": {

@@ -2,3 +2,4 @@ node_modules/
 # Filled by scripts/build-desktop.mjs
 shared/
 build/
+mas/embedded.provisionprofile
