@@ -101,7 +101,8 @@
       "entitlementsInherit": "mas/entitlements.mas.inherit.plist",
       "provisioningProfile": "mas/embedded.provisionprofile",
       "artifactName": "leviate-${version}-mac-app-store.${ext}",
-      "icon": "mas/icon.png"
+      "icon": "mas/icon.png",
+      "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/@koromix/koffi-*/**"
     }
   },
   "allowScripts": {
