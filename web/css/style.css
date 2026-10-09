@@ -595,8 +595,9 @@ section.phone-mode {
 .pm-preview video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pm-preview video.mirror { transform: scaleX(-1); }
 .pm-status { margin: 0; color: var(--muted); max-width: 420px; min-height: 3em; }
-/* The Wi-Fi notice on the phone page: the box of the Ko-fi note, fixed under the header. */
-.kofi.pm-wifi {
+/* The notes of the phone page (Wi-Fi, Ko-fi): the box of the Ko-fi note, fixed under the header
+   and as wide as the preview. */
+.kofi.pm-note {
   position: fixed;
   left: var(--gutter);
   right: var(--gutter);

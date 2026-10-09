@@ -650,7 +650,13 @@ setupWindows();
 // --------------------------------------------------------------- webcam
 
 const video = $('video');
-if (!pairId) setupSupport();
+// The Ko-fi note on the phone page too, in the place of its notes and after the Wi-Fi one.
+if (pairId) {
+  $('phone-mode').insertBefore($('support'), $('pm-wifi'));
+  $('support').classList.add('pm-note');
+  document.addEventListener('leviate:note', (e) => holdSupport(e.detail));
+}
+setupSupport();
 const engine = new GestureEngine();
 let stream = null;
 let landmarker = null;

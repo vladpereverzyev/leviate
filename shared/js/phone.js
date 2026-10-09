@@ -340,13 +340,16 @@ export async function runPhoneCamera(pairId) {
   // page says so in a box that needs an OK, then the camera starts.
   const wifi = $('pm-wifi');
   let wifiTold = !wifi;
+  // The page hears when the note opens and closes, so the Ko-fi note waits for it.
+  const note = (open) => document.dispatchEvent(new CustomEvent('leviate:note', { detail: open }));
   $('pm-wifi-ok')?.addEventListener('click', () => {
     wifi.hidden = true;
     wifiTold = true;
+    note(false);
     start();
   });
   ui.start.addEventListener('click', () => {
-    if (!stream && !wifiTold) { wifi.hidden = false; $('pm-wifi-ok').focus(); return; }
+    if (!stream && !wifiTold) { wifi.hidden = false; note(true); $('pm-wifi-ok').focus(); return; }
     if (!stream) return start();
     stop();
     status('Stopped.' + AGAIN);
