@@ -66,8 +66,8 @@ body {
 .btn.on { background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--accent); }
 .link { align-self: flex-start; padding: 0; border: 0; background: none; font: inherit; color: var(--zoom); cursor: pointer; }
 .notice { padding: 10px 12px; border: 1px solid var(--accent); border-radius: 10px; background: linear-gradient(rgba(39, 145, 203, 0.12), rgba(39, 145, 203, 0.12)), var(--panel-solid); }
-.notice p { margin: 0; }
-.notice .sub { margin: 4px 0 8px; font-size: 12px; color: var(--muted); }
+.notice p { margin: 0; font-size: 15px; }
+.notice .sub { margin: 4px 0 10px; font-size: 13px; color: var(--muted); }
 .status { margin: 0; color: var(--muted); }
 .status.error { color: var(--alert); }
 .hint { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); }

@@ -336,7 +336,17 @@ export async function runPhoneCamera(pairId) {
     }
   }
 
+  // The phone must be on the Wi-Fi network of the computer: the first Start camera of the
+  // page says so in a box that needs an OK, then the camera starts.
+  const wifi = $('pm-wifi');
+  let wifiTold = !wifi;
+  $('pm-wifi-ok')?.addEventListener('click', () => {
+    wifi.hidden = true;
+    wifiTold = true;
+    start();
+  });
   ui.start.addEventListener('click', () => {
+    if (!stream && !wifiTold) { wifi.hidden = false; $('pm-wifi-ok').focus(); return; }
     if (!stream) return start();
     stop();
     status('Stopped.' + AGAIN);
