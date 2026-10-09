@@ -122,11 +122,16 @@ function translate() {
   $('phone').classList.toggle('on', !!phone);
 }
 
-// The panel as tall as what it shows, within what the Viewer allows.
+// The panel as tall as what it shows, within what the Viewer allows. Measured from the
+// content and not from the page, which fills the panel to keep the footer at the bottom.
 let lastHeight = 0;
 function fitPanel() {
   if (!Viewer) return;
-  const height = Math.max(80, Math.min(560, Math.ceil(document.documentElement.scrollHeight) + 2));
+  const pad = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+  const gap = parseFloat(getComputedStyle(document.body).rowGap) || 0;
+  const content = Math.max($('preview').getBoundingClientRect().bottom, document.querySelector('.side').getBoundingClientRect().bottom);
+  const natural = content + gap + document.querySelector('.legal').offsetHeight + pad;
+  const height = Math.max(80, Math.min(560, Math.ceil(natural) + 2));
   if (Math.abs(height - lastHeight) < 4) return;
   lastHeight = height;
   Viewer.panel.height(height);

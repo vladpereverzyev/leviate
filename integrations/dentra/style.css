@@ -22,9 +22,14 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
+/* The footer stays at the bottom of the panel: its row takes the room left over and it sits
+   at the end of it. */
 body {
   display: grid;
   grid-template-columns: 280px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  box-sizing: border-box;
   align-items: start;
   gap: 10px 12px;
   padding: 10px;
@@ -98,7 +103,7 @@ select {
 .check input { margin: 0; accent-color: var(--accent); }
 
 /* The footer of every Leviate app. */
-.legal { grid-column: 1 / -1; margin: 0; text-align: center; font-size: 11px; line-height: 1.6; color: var(--dim); }
+.legal { grid-column: 1 / -1; align-self: end; margin: 0; text-align: center; font-size: 11px; line-height: 1.6; color: var(--dim); }
 .legal a { color: var(--dim); text-decoration: none; }
 .legal a:hover { color: var(--text); }
 
@@ -107,5 +112,5 @@ select {
 
 /* A narrow panel (the Viewer gives about 280 pixels): the preview on top, the controls under it. */
 @media (max-width: 519px) {
-  body { grid-template-columns: 1fr; }
+  body { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; }
 }

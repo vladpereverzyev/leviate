@@ -1,7 +1,7 @@
 {
   "id": "leviate",
   "name": "Leviate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turn, pan and zoom the models with your hand in front of the webcam or your phone: open hand turns, fist pans, pinch zooms. Free and open source.",
   "author": {
     "name": "Vladyslav Pereverzyev",
