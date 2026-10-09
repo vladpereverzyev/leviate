@@ -65,14 +65,16 @@ function releaseLine(html, release) {
     + `<a href="https://github.com/${REPO}/releases" target="_blank" rel="noopener">All versions</a></p>`);
 }
 
-// Every page has the same footer as the web app, and so does Leviate for Desktop: same
+// Every page has the same footer as the web app, and so do Leviate for Desktop, for Chrome
+// and for Dentra Viewer: same
 // links, same words, same order. Stop if one of them is different.
 function footerTexts(file) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
   return [...html.matchAll(/<footer[^>]*>([\s\S]*?)<\/footer>/g)]
     .map((foot) => foot[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
 }
-const FOOTERS = ['web/index.html', 'web/download.html', 'web/privacy.html', 'web/404.html', 'desktop/renderer/control.html'];
+const FOOTERS = ['web/index.html', 'web/download.html', 'web/privacy.html', 'web/404.html', 'desktop/renderer/control.html',
+  'integrations/chrome-extension/panel.html', 'integrations/dentra/index.html'];
 const [footer] = footerTexts(FOOTERS[0]);
 for (const file of FOOTERS) {
   const texts = footerTexts(file);
