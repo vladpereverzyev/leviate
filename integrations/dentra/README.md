@@ -12,7 +12,8 @@ Nitrile and latex gloves work too, as in the other Leviate apps.
 ## Use
 
 1. In Dentra Viewer open the **Plugin** panel and turn on **Leviate**. Dentra shows what
-   it asks for: the view, the camera and the internet (only for the phone).
+   it asks for: the view, the camera, the internet (only for the phone) and the clipboard
+   (only for the links at the bottom).
 2. Press **Start** and allow the camera. Or press **Use phone** and scan the QR code with
    your phone: it opens the Leviate page made for the phone, no app needed. Connect the
    phone and the computer to the same Wi-Fi network.
@@ -40,6 +41,7 @@ or sent anywhere.
 | `view` | To turn, pan and zoom the models |
 | `camera` | To see the hand |
 | `internet` | Only for **Use phone**: the free PeerJS server and a STUN server of Google connect the phone. Nothing else goes out |
+| `clipboard` | The links at the bottom of the panel are copied, because the Viewer opens no tabs from a plugin: paste them in a new tab |
 
 ## Build
 

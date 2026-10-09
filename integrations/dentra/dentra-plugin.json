@@ -12,11 +12,13 @@
   "permissions": [
     "view",
     "camera",
-    "internet"
+    "internet",
+    "clipboard"
   ],
   "reasons": {
     "camera": "To see your hand: the hand is tracked inside the plugin and the video is never recorded or sent.",
-    "internet": "Only for Use phone: the free PeerJS server and a STUN server of Google connect your phone as the camera. Nothing else goes out."
+    "internet": "Only for Use phone: the free PeerJS server and a STUN server of Google connect your phone as the camera. Nothing else goes out.",
+    "clipboard": "The links at the bottom of the panel (license, source, privacy) are copied, to open them in a new tab."
   },
   "platforms": [
     "web",

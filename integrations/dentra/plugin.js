@@ -38,6 +38,7 @@ const TEXT = {
     Turn: 'Turn', Pan: 'Pan', Zoom: 'Zoom', seen: 'Hand seen', off: 'Press Start and allow the camera, or use your phone.',
     failed: 'Hand tracking failed to start.', cameraOff: 'The camera is not available.',
     connecting: 'Connecting…', scan: 'Scan with your phone. Same Wi‑Fi on both', phoneLeft: 'Phone disconnected. Tap Start camera on the phone or scan again',
+    copied: 'Link copied: paste it in a new tab of the browser.',
     phoneOn: 'The phone is the camera.', phoneFailed: 'Phone pairing is not available.',
     noticeTitle: 'Same Wi‑Fi network',
     noticeText: 'Connect the phone and this computer to the same Wi‑Fi network.' },
@@ -48,6 +49,7 @@ const TEXT = {
     Turn: 'Gira', Pan: 'Sposta', Zoom: 'Zoom', seen: 'Mano vista', off: 'Premi Avvia e consenti la camera, oppure usa il telefono.',
     failed: 'Il tracciamento della mano non parte.', cameraOff: 'La camera non è disponibile.',
     connecting: 'Mi collego…', scan: 'Inquadra col telefono. Stessa rete Wi‑Fi', phoneLeft: 'Telefono scollegato. Tocca Start camera sul telefono o inquadra di nuovo',
+    copied: 'Link copiato: incollalo in una nuova scheda del browser.',
     phoneOn: 'Il telefono è la camera.', phoneFailed: 'Il collegamento col telefono non è disponibile.',
     noticeTitle: 'Stessa rete Wi‑Fi',
     noticeText: 'Collega il telefono e questo computer alla stessa rete Wi‑Fi.' },
@@ -58,6 +60,7 @@ const TEXT = {
     Turn: 'Girar', Pan: 'Mover', Zoom: 'Zoom', seen: 'Mano vista', off: 'Pulsa Iniciar y permite la cámara, o usa el teléfono.',
     failed: 'El seguimiento de la mano no arranca.', cameraOff: 'La cámara no está disponible.',
     connecting: 'Conectando…', scan: 'Escanea con el teléfono. Misma red Wi‑Fi', phoneLeft: 'Teléfono desconectado. Toca Start camera en el teléfono o escanea de nuevo',
+    copied: 'Enlace copiado: pégalo en una pestaña nueva del navegador.',
     phoneOn: 'El teléfono es la cámara.', phoneFailed: 'La conexión con el teléfono no está disponible.',
     noticeTitle: 'Misma red Wi‑Fi',
     noticeText: 'Conecta el teléfono y este ordenador a la misma red Wi‑Fi.' },
@@ -68,6 +71,7 @@ const TEXT = {
     Turn: 'Tourner', Pan: 'Déplacer', Zoom: 'Zoom', seen: 'Main vue', off: 'Appuyez sur Démarrer et autorisez la caméra, ou utilisez le téléphone.',
     failed: 'Le suivi de la main ne démarre pas.', cameraOff: "La caméra n'est pas disponible.",
     connecting: 'Connexion…', scan: 'Scannez avec le téléphone. Même réseau Wi‑Fi', phoneLeft: 'Téléphone déconnecté. Touchez Start camera sur le téléphone ou scannez à nouveau',
+    copied: 'Lien copié : collez-le dans un nouvel onglet du navigateur.',
     phoneOn: 'Le téléphone est la caméra.', phoneFailed: "La connexion avec le téléphone n'est pas disponible.",
     noticeTitle: 'Même réseau Wi‑Fi',
     noticeText: 'Connectez le téléphone et cet ordinateur au même réseau Wi‑Fi.' },
@@ -78,6 +82,7 @@ const TEXT = {
     Turn: 'Drehen', Pan: 'Verschieben', Zoom: 'Zoom', seen: 'Hand erkannt', off: 'Drück Starten und erlaube die Kamera, oder nutze dein Handy.',
     failed: 'Die Handerkennung startet nicht.', cameraOff: 'Die Kamera ist nicht verfügbar.',
     connecting: 'Verbinde…', scan: 'Mit dem Handy scannen. Gleiches WLAN', phoneLeft: 'Handy getrennt. Tipp auf Start camera am Handy oder scanne erneut',
+    copied: 'Link kopiert: füg ihn in einem neuen Browser-Tab ein.',
     phoneOn: 'Das Handy ist die Kamera.', phoneFailed: 'Die Verbindung mit dem Handy ist nicht verfügbar.',
     noticeTitle: 'Gleiches WLAN',
     noticeText: 'Verbinde Handy und Computer mit demselben WLAN.' },
@@ -415,6 +420,16 @@ async function setup() {
   };
   $('phone-cancel').onclick = () => { $('phone-notice').hidden = true; fitPanel(); };
   $('reset').onclick = () => Viewer.view.reset();
+  // The Viewer keeps the plugin in a sandbox that opens no tabs: the links of the footer
+  // copy their address instead, to paste in a new tab.
+  for (const link of document.querySelectorAll('.legal a')) {
+    link.title = link.href;
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      Viewer.clipboard.write(link.href);
+      status(t.copied);
+    });
+  }
 
   Viewer.camera.onFrame(onFrame);
   Viewer.camera.onStatus?.((s) => {
