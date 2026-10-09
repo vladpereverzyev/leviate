@@ -31,8 +31,10 @@ function randomId() {
   return 'leviate-' + [...bytes].map((b) => b.toString(36).padStart(2, '0')).join('').slice(0, 14);
 }
 
-function pairingUrl(id) {
-  const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol !== 'https:';
+// public: always the published copy, for hosts that are not a Leviate page (a plugin
+// inside another program).
+function pairingUrl(id, publicOnly = false) {
+  const local = publicOnly || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol !== 'https:';
   const base = local ? PUBLIC_URL : location.origin + location.pathname;
   return `${base}?pair=${id}`;
 }
@@ -53,7 +55,7 @@ let identity = null;
 // Waits for a phone. Calls onStream(stream, facing) when video arrives,
 // onFacing(facing) when the phone switches camera and onHangUp() when it hangs up:
 // the computer then keeps waiting with the same code. onEnd() follows close().
-export async function hostPhone({ onStream, onFacing, onHangUp, onEnd, onStatus }) {
+export async function hostPhone({ onStream, onFacing, onHangUp, onEnd, onStatus, publicOnly }) {
   const Peer = await loadPeer();
   identity ||= { id: randomId(), token: randomId().slice(8) };
   const { id } = identity;
@@ -103,7 +105,7 @@ export async function hostPhone({ onStream, onFacing, onHangUp, onEnd, onStatus 
   });
   peer.on('disconnected', () => { if (!call) peer.reconnect(); });
 
-  return { url: pairingUrl(id), close: end };
+  return { url: pairingUrl(id, publicOnly), close: end };
 }
 
 // --------------------------------------------------------------- phone

@@ -53,6 +53,10 @@ richiesta e i tuoi file non lasciano mai il dispositivo.
 - **Mouse e touch** funzionano sempre accanto ai gesti.
 - **Blender**: l'add-on Leviate for Blender porta lo stesso controllo con la mano dentro
   Blender, con la webcam o con il telefono. La mano muove la vista o gli oggetti selezionati.
+- **Chrome**: l'estensione Leviate for Chrome porta i moduli 3D e Mouse dell'app desktop
+  dentro le pagine di Chrome, dal suo pannello laterale.
+- **Dentra Viewer**: il plugin Leviate gira, sposta e ingrandisce i modelli nel Viewer di
+  Dentra, con la webcam o con il telefono.
 - **Completamente offline**: tutte le librerie e il modello della mano sono nel repository.
 
 ## Gesti
@@ -209,6 +213,25 @@ Guida completa in [desktop](desktop/) (in inglese).
 
 ![Le pose del modulo Mouse: mano aperta sposta il cursore, un dito fermo fa clic sinistro e poi doppio clic, due dita clic destro](docs/mouse-gestures.png)
 
+## Usalo in Chrome
+
+**Leviate for Chrome** porta i moduli 3D e Mouse di Leviate for Desktop dentro le pagine di
+Chrome, Edge e degli altri browser basati su Chrome. Clicca la sua icona: si apre il pannello
+laterale con la webcam (o **Use phone**) e i modi Off, 3D e Mouse. In **3D** la mano gira,
+sposta e ingrandisce il viewer 3D sotto il mouse; in **Mouse** muove un cursore blu nella
+pagina e clicca. **Alt+Shift+M** accende o spegne la mano da qualsiasi pagina.
+
+Finché non è sul Chrome Web Store, scarica `leviate-chrome-<versione>.zip` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest),
+scompattalo, apri `chrome://extensions`, attiva **Modalità sviluppatore** e premi **Carica
+estensione non pacchettizzata**. Guida completa in [integrations/chrome-extension](integrations/chrome-extension/).
+
+## Usalo in Dentra Viewer
+
+**Leviate for Dentra Viewer** è un plugin per il Viewer di [Dentra](https://dentra.it): mano
+aperta gira, pugno sposta, pizzico ingrandisce i modelli, con la webcam o con il telefono.
+Accendilo nel pannello **Plugin** del Viewer e premi **Avvia**. Guida completa in
+[integrations/dentra](integrations/dentra/).
+
 ## File supportati
 
 | Formato | Colori | Note |
@@ -304,7 +327,8 @@ le scansioni nel software approvato per quello scopo.
 Il flusso video e le tue scansioni vengono elaborati solo dentro il browser. Non viene
 caricato niente, nessun tracciamento e nessun account. Gli unici servizi esterni sono quelli di
 **Use phone** (il broker PeerJS e un server STUN di Google), che vedono i dati di
-connessione ma mai il video. Tutti i dettagli nella [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
+connessione ma mai il video. Leviate for Chrome e il plugin per Dentra tengono il video sul
+computer allo stesso modo. Tutti i dettagli nella [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contribuire
 

@@ -54,6 +54,10 @@ und deine Dateien verlassen nie dein Gerät.
 - **Maus und Touch** funktionieren weiter neben den Gesten.
 - **Blender**: das Add-on Leviate for Blender bringt dieselbe Handsteuerung in Blender,
   mit der Webcam oder dem Handy. Die Hand bewegt die Ansicht oder die ausgewählten Objekte.
+- **Chrome**: die Erweiterung Leviate for Chrome bringt die Module 3D und Mouse der
+  Desktop-App in die Seiten von Chrome, aus ihrem Seitenbereich.
+- **Dentra Viewer**: das Plugin Leviate dreht, verschiebt und zoomt die Modelle im Viewer
+  von Dentra, mit der Webcam oder dem Handy.
 - **Komplett offline**: alle Bibliotheken und das Handmodell liegen im Repository.
 
 ## Gesten
@@ -211,6 +215,27 @@ Vollständige Anleitung in [desktop](desktop/) (auf Englisch).
 
 ![Die Posen des Moduls Mouse: offene Hand bewegt den Cursor, ein ruhiger Finger klickt links und dann doppelt, zwei Finger rechts](docs/mouse-gestures.png)
 
+## In Chrome nutzen
+
+**Leviate for Chrome** bringt die Module 3D und Mouse von Leviate for Desktop in die Seiten
+von Chrome, Edge und den anderen Browsern auf Chrome-Basis. Klick auf das Symbol: der
+Seitenbereich öffnet sich mit der Webcam (oder **Use phone**) und den Modi Off, 3D und Mouse.
+In **3D** dreht, verschiebt und zoomt die Hand den 3D-Viewer unter der Maus; in **Mouse**
+bewegt sie einen blauen Cursor auf der Seite und klickt. **Alt+Shift+M** schaltet die Hand
+auf jeder Seite ein oder aus.
+
+Bis sie im Chrome Web Store ist, lade `leviate-chrome-<Version>.zip` aus dem
+[neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest), entpacke es, öffne `chrome://extensions`, schalte den
+**Entwicklermodus** ein und drück **Entpackte Erweiterung laden**. Vollständige Anleitung in
+[integrations/chrome-extension](integrations/chrome-extension/).
+
+## In Dentra Viewer nutzen
+
+**Leviate for Dentra Viewer** ist ein Plugin für den Viewer von [Dentra](https://dentra.it):
+offene Hand dreht, Faust verschiebt, Pinch zoomt die Modelle, mit der Webcam oder dem Handy.
+Schalte es im Bereich **Plugin** des Viewers ein und drück **Starten**. Vollständige
+Anleitung in [integrations/dentra](integrations/dentra/).
+
 ## Unterstützte Dateien
 
 | Format | Farben | Hinweise |
@@ -307,7 +332,8 @@ der dafür zugelassenen Software.
 Der Videostream und deine Scans werden nur in deinem Browser verarbeitet. Nichts wird
 hochgeladen, kein Tracking und kein Konto. Die einzigen externen Dienste sind die von
 **Use phone** (der PeerJS-Broker und ein STUN-Server von Google), die die Verbindungsdaten
-sehen, aber nie das Video. Alle Details in der [Datenschutzerklärung](https://vladpereverzyev.github.io/leviate/privacy.html).
+sehen, aber nie das Video. Leviate for Chrome und das Plugin für Dentra behalten das Video
+genauso auf dem Computer. Alle Details in der [Datenschutzerklärung](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Mitwirken
 

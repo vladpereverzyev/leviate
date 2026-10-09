@@ -4,7 +4,7 @@
 // Puts Leviate for Dentra Viewer together in dist/dentra/ and packs it into
 // dist/leviate-dentra-<version>.zip, the file uploaded in the Developer area of Dentra:
 //   integrations/dentra/   dentra-plugin.json, the page, the plugin and its look
-//   shared/                gestures, gloves, version, MediaPipe (SIMD build), hand model, font
+//   shared/                gestures, gloves, phone pairing, MediaPipe (SIMD build), PeerJS, QR code, hand model, font
 // The plugin keeps its own version, in dentra-plugin.json.
 //
 //   node scripts/build-dentra.mjs
@@ -26,7 +26,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 // the license goes in as LICENSE.txt below.
 fs.cpSync(SRC, OUT, { recursive: true, filter: (f) => !['README.md', 'LICENSE'].includes(path.basename(f)) });
 fs.mkdirSync(path.join(OUT, 'js'));
-for (const name of ['gestures.js', 'gloves.js']) fs.copyFileSync(path.join(SHARED, 'js', name), path.join(OUT, 'js', name));
+for (const name of ['gestures.js', 'gloves.js', 'phone.js', 'consent.js']) fs.copyFileSync(path.join(SHARED, 'js', name), path.join(OUT, 'js', name));
 // The footer of the plugin shows the version of the plugin, not the one of the apps.
 fs.writeFileSync(path.join(OUT, 'js', 'version.js'), `// Written by scripts/build-dentra.mjs from dentra-plugin.json.
 export const VERSION = '${version}';
@@ -35,6 +35,13 @@ export const VERSION = '${version}';
 fs.cpSync(path.join(SHARED, 'vendor', 'mediapipe'), path.join(OUT, 'vendor', 'mediapipe'), {
   recursive: true, filter: (f) => !/nosimd/.test(path.basename(f)),
 });
+// Use phone: the QR code and PeerJS, as in the other apps.
+for (const dir of ['qrcode', 'peerjs']) {
+  fs.cpSync(path.join(SHARED, 'vendor', dir), path.join(OUT, 'vendor', dir), { recursive: true });
+  for (const name of fs.readdirSync(path.join(OUT, 'vendor', dir))) {
+    if (!path.extname(name)) fs.renameSync(path.join(OUT, 'vendor', dir, name), path.join(OUT, 'vendor', dir, name + '.txt'));
+  }
+}
 fs.mkdirSync(path.join(OUT, 'models'));
 fs.copyFileSync(path.join(SHARED, 'models', 'hand_landmarker.task'), path.join(OUT, 'models', 'hand_landmarker.task'));
 fs.mkdirSync(path.join(OUT, 'fonts'));

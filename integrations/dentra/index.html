@@ -10,19 +10,69 @@
 <body>
   <div class="preview">
     <canvas id="view" width="320" height="240"></canvas>
+    <div id="qr" class="qr" hidden>
+      <div id="qr-code" class="qr-code"></div>
+      <p id="qr-text"></p>
+    </div>
     <span id="badge" class="badge" hidden></span>
   </div>
   <div class="side">
-    <button id="start" class="btn">Start</button>
+    <div class="row">
+      <button id="start" class="btn">Start</button>
+      <button id="phone" class="btn ghost">Use phone</button>
+    </div>
+    <!-- Told once before the first pairing, like in the other Leviate apps. -->
+    <div id="phone-notice" class="notice" hidden>
+      <p data-t="noticeTitle"></p>
+      <p class="sub" data-t="noticeText"></p>
+      <div class="row"><button id="phone-go" class="btn small" data-t="continue"></button><button id="phone-cancel" class="btn small ghost" data-t="cancel"></button></div>
+    </div>
     <p id="status" class="status"></p>
     <p class="hint">
       <span><i class="dot rotate"></i><span data-t="rotate">Open hand turns</span></span>
       <span><i class="dot pan"></i><span data-t="pan">Fist pans</span></span>
       <span><i class="dot zoom"></i><span data-t="zoom">Pinch zooms</span></span>
     </p>
-    <label class="check"><input id="mirror" type="checkbox" checked> <span data-t="mirror">Mirror</span></label>
-    <p class="legal"><a href="https://vladpereverzyev.github.io/leviate/" target="_blank" rel="noopener">Leviate</a> · AGPL-3.0 · v<span id="version"></span></p>
+    <button id="reset" class="link" data-t="reset">Reset the view</button>
+
+    <details class="more">
+      <summary data-t="camera">Camera</summary>
+      <div class="field two">
+        <select id="quality" aria-label="Quality">
+          <option value="480">480 px</option>
+          <option value="640">640 px</option>
+          <option value="960">960 px</option>
+          <option value="1280">1280 px</option>
+        </select>
+        <select id="fps" aria-label="Frame rate">
+          <option value="15">15 fps</option>
+          <option value="30">30 fps</option>
+        </select>
+      </div>
+      <label class="check"><input id="mirror" type="checkbox"> <span data-t="mirror">Mirror</span></label>
+    </details>
+
+    <details class="more">
+      <summary data-t="gestures">Gestures</summary>
+      <div class="field slider"><label for="rotate" data-t="sRotate">Turn</label><input id="rotate" type="range" min="1" max="12" step="0.5"><output></output></div>
+      <div class="field slider"><label for="panSpeed" data-t="sPan">Pan</label><input id="panSpeed" type="range" min="0.25" max="3" step="0.25"><output></output></div>
+      <div class="field slider"><label for="zoomSpeed" data-t="sZoom">Zoom</label><input id="zoomSpeed" type="range" min="0.25" max="3" step="0.25"><output></output></div>
+      <div class="field slider"><label for="smooth" data-t="sSmooth">Smooth</label><input id="smooth" type="range" min="0" max="0.9" step="0.05"><output></output></div>
+      <label class="check"><input id="invertZoom" type="checkbox"> <span data-t="invertZoom">Invert zoom</span></label>
+    </details>
   </div>
+
+  <!-- Same footer as the web app, Leviate for Desktop and Leviate for Chrome. -->
+  <footer class="legal">
+    © 2026 <a href="https://www.vladpereverzyev.com" target="_blank" rel="noopener">Vladyslav Pereverzyev</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0</a> ·
+    <a href="https://github.com/vladpereverzyev/leviate" target="_blank" rel="noopener">Source</a> ·
+    <a href="https://vladpereverzyev.github.io/leviate/download.html" target="_blank" rel="noopener">Download</a> ·
+    <a href="https://vladpereverzyev.github.io/leviate/privacy.html#dentra" target="_blank" rel="noopener">Privacy</a> ·
+    <a href="https://ko-fi.com/vladpereverzyev" target="_blank" rel="noopener">Support</a> ·
+    <span id="version"></span>
+  </footer>
+
   <script type="module" src="plugin.js"></script>
 </body>
 </html>

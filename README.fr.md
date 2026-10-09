@@ -56,6 +56,10 @@ GPU nécessaire et vos fichiers ne quittent jamais votre appareil.
 - **Souris et tactile** fonctionnent toujours à côté des gestes.
 - **Blender** : l'add-on Leviate for Blender amène le même contrôle à la main dans
   Blender, avec la webcam ou le téléphone. La main déplace la vue ou les objets sélectionnés.
+- **Chrome** : l'extension Leviate for Chrome amène les modules 3D et Mouse de l'app de
+  bureau dans les pages de Chrome, depuis son panneau latéral.
+- **Dentra Viewer** : le plugin Leviate tourne, déplace et zoome les modèles dans le Viewer
+  de Dentra, avec la webcam ou le téléphone.
 - **Entièrement hors ligne** : toutes les bibliothèques et le modèle de la main sont
   dans le dépôt.
 
@@ -217,6 +221,27 @@ Guide complet dans [desktop](desktop/) (en anglais).
 
 ![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche puis double clic, deux doigts clic droit](docs/mouse-gestures.png)
 
+## Utilisez-le dans Chrome
+
+**Leviate for Chrome** amène les modules 3D et Mouse de Leviate for Desktop dans les pages
+de Chrome, Edge et des autres navigateurs basés sur Chrome. Cliquez sur son icône : le
+panneau latéral s'ouvre avec la webcam (ou **Use phone**) et les modes Off, 3D et Mouse. En
+**3D** la main tourne, déplace et zoome la visionneuse 3D sous la souris ; en **Mouse** elle
+déplace un curseur bleu dans la page et clique. **Alt+Shift+M** active ou désactive la main
+depuis n'importe quelle page.
+
+En attendant le Chrome Web Store, téléchargez `leviate-chrome-<version>.zip` depuis la
+[dernière version](https://github.com/vladpereverzyev/leviate/releases/latest), décompressez-le, ouvrez `chrome://extensions`, activez le **Mode
+développeur** et appuyez sur **Charger l'extension non empaquetée**. Guide complet dans
+[integrations/chrome-extension](integrations/chrome-extension/).
+
+## Utilisez-le dans Dentra Viewer
+
+**Leviate for Dentra Viewer** est un plugin pour le Viewer de [Dentra](https://dentra.it) :
+main ouverte tourne, poing déplace, pince zoome les modèles, avec la webcam ou le téléphone.
+Activez-le dans le panneau **Plugin** du Viewer et appuyez sur **Démarrer**. Guide complet
+dans [integrations/dentra](integrations/dentra/).
+
 ## Fichiers pris en charge
 
 | Format | Couleurs | Remarques |
@@ -313,7 +338,8 @@ Vérifiez toujours les scans dans le logiciel approuvé pour cet usage.
 Le flux vidéo et vos scans sont traités uniquement dans votre navigateur. Rien n'est
 envoyé, aucun suivi et aucun compte. Les seuls services externes sont ceux de
 **Use phone** (le broker PeerJS et un serveur STUN de Google), qui voient les détails de
-connexion mais jamais la vidéo. Tous les détails dans la [politique de confidentialité](https://vladpereverzyev.github.io/leviate/privacy.html).
+connexion mais jamais la vidéo. Leviate for Chrome et le plugin pour Dentra gardent la vidéo
+sur l'ordinateur de la même façon. Tous les détails dans la [politique de confidentialité](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contribuer
 

@@ -2,7 +2,7 @@
   "id": "leviate",
   "name": "Leviate",
   "version": "1.0.0",
-  "description": "Turn, pan and zoom the models with your hand in front of the webcam: open hand turns, fist pans, pinch zooms. Free and open source.",
+  "description": "Turn, pan and zoom the models with your hand in front of the webcam or your phone: open hand turns, fist pans, pinch zooms. Free and open source.",
   "author": {
     "name": "Vladyslav Pereverzyev",
     "website": "https://vladpereverzyev.github.io/leviate/"
@@ -11,10 +11,12 @@
   "icon": "icon.png",
   "permissions": [
     "view",
-    "camera"
+    "camera",
+    "internet"
   ],
   "reasons": {
-    "camera": "To see your hand: the hand is tracked inside the plugin and the video is never recorded or sent."
+    "camera": "To see your hand: the hand is tracked inside the plugin and the video is never recorded or sent.",
+    "internet": "Only for Use phone: the free PeerJS server and a STUN server of Google connect your phone as the camera. Nothing else goes out."
   },
   "platforms": [
     "web",

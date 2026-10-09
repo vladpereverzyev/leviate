@@ -1,7 +1,7 @@
 # Leviate for Dentra Viewer
 
-A plugin for [Dentra Viewer](https://dentra.it): the hand in front of the webcam turns,
-pans and zooms the models, with the gestures of the Leviate web app.
+A plugin for [Dentra Viewer](https://dentra.it): the hand in front of the webcam, or of your
+phone, turns, pans and zooms the models, with the gestures of the Leviate web app.
 
 - **Open hand** turns the models.
 - **Fist** pans them.
@@ -12,25 +12,34 @@ Nitrile and latex gloves work too, as in the other Leviate apps.
 ## Use
 
 1. In Dentra Viewer open the **Plugin** panel and turn on **Leviate**. Dentra shows what
-   it asks for: the view and the camera.
-2. Press **Start** in the panel of Leviate and allow the camera.
+   it asks for: the view, the camera and the internet (only for the phone).
+2. Press **Start** and allow the camera. Or press **Use phone** and scan the QR code with
+   your phone: it opens the Leviate page made for the phone, no app needed. Connect the
+   phone and the computer to the same Wi-Fi network.
 3. Raise your hand in front of the camera. The preview shows the hand points and the
-   gesture Leviate sees. **Mirror** flips the preview and the left and right moves.
+   gesture Leviate sees. **Reset the view** puts the models back as they were.
+
+Under **Camera**: the size of the pictures (480 to 1280 pixels), 15 or 30 frames a second
+and **Mirror**, which flips the preview and the left and right moves. Under **Gestures**:
+the speed of turn, pan and zoom, how smooth the moves are and **Invert zoom**. The Viewer
+keeps the settings on your device.
 
 The texts follow the language of the Viewer: English, Italian, Spanish, French and German.
 
 ## How it works
 
-The Viewer opens the camera and sends its pictures to the plugin. MediaPipe finds the
-hand inside the plugin, on the CPU, with the same model and the same gesture rules as the
-web app (`shared/js/gestures.js` and `shared/js/gloves.js`). Only the moves of the view go
-back to the Viewer, through `DentraViewer.view.move`. The video is never recorded or sent
-anywhere and the plugin cannot reach the internet: it does not ask for it.
+The Viewer opens the camera and sends its pictures to the plugin; with **Use phone** the
+pictures come from the phone through WebRTC, paired as in the other Leviate apps. MediaPipe
+finds the hand inside the plugin, on the CPU, with the same model and the same gesture rules
+as the web app (`shared/js/gestures.js` and `shared/js/gloves.js`). Only the moves of the
+view go back to the Viewer, through `DentraViewer.view.move`. The video is never recorded
+or sent anywhere.
 
 | Permission | Why |
 | --- | --- |
 | `view` | To turn, pan and zoom the models |
 | `camera` | To see the hand |
+| `internet` | Only for **Use phone**: the free PeerJS server and a STUN server of Google connect the phone. Nothing else goes out |
 
 ## Build
 

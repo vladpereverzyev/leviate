@@ -49,6 +49,10 @@ and your files never leave your device.
 - **Mouse and touch** still work next to the gestures.
 - **Blender**: the Leviate for Blender add-on brings the same hand control inside
   Blender, with the webcam or your phone. Your hand moves the view or the selected objects.
+- **Chrome**: the Leviate for Chrome extension brings the 3D and Mouse modes of the desktop
+  app inside the pages of Chrome, from its side panel.
+- **Dentra Viewer**: the Leviate plugin turns, pans and zooms the models in the Viewer of
+  Dentra, with the webcam or your phone.
 - **Fully offline**: all libraries and the hand model are bundled in the repository.
 
 ## Gestures
@@ -202,6 +206,25 @@ Full guide in [desktop](desktop/).
 
 ![The Mouse poses: open hand moves the cursor, one finger held still clicks left and then double clicks, two fingers click right](docs/mouse-gestures.png)
 
+## Use it in Chrome
+
+**Leviate for Chrome** puts the 3D and Mouse modes of Leviate for Desktop inside the pages
+of Chrome, Edge and the other browsers built on Chrome. Click its icon: the side panel opens
+with the webcam (or **Use phone**) and the modes Off, 3D and Mouse. In **3D** the hand turns,
+pans and zooms the 3D viewer under the mouse; in **Mouse** it moves a blue cursor in the page
+and clicks. **Alt+Shift+M** turns the hand on or off from any page.
+
+Until it is on the Chrome Web Store, download `leviate-chrome-<version>.zip` from the
+[latest release](https://github.com/vladpereverzyev/leviate/releases/latest), unzip it, open `chrome://extensions`, turn on **Developer mode**
+and press **Load unpacked**. Full guide in [integrations/chrome-extension](integrations/chrome-extension/).
+
+## Use it in Dentra Viewer
+
+**Leviate for Dentra Viewer** is a plugin for the Viewer of [Dentra](https://dentra.it):
+open hand turns, fist pans, pinch zooms the models, with the webcam or your phone. Turn it on
+in the **Plugin** panel of the Viewer and press **Start**. Full guide in
+[integrations/dentra](integrations/dentra/).
+
 ## Supported files
 
 | Format | Colors | Notes |
@@ -298,7 +321,8 @@ approved for that purpose.
 The video stream and your scans are processed only inside your browser. Nothing is
 uploaded, there is no tracking and no account. The only outside services are the ones of
 **Use phone** (the PeerJS broker and a STUN server of Google), which see the connection
-details but never the video. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
+details but never the video. Leviate for Chrome and the Dentra plugin keep the video on the
+computer in the same way. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
 ## Contributing
 
