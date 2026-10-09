@@ -637,7 +637,7 @@ section.phone-mode {
 @media (max-width: 700px) {
   /* Header and footer in the same place and size as on the other pages. */
   .top { top: max(32px, env(safe-area-inset-top)); left: var(--gutter); right: var(--gutter); }
-  .kofi { top: 76px; }
+  .kofi { top: 76px; width: calc(100vw - 24px); }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win, #win-cam { width: calc(100vw - 24px); max-width: none; max-height: calc(100dvh - 76px - 130px); }

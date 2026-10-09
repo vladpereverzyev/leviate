@@ -301,7 +301,7 @@ async function startPhone() {
     session.close = host.close;
     session.url = host.url;
     $('qr-code').innerHTML = qrSvg(host.url);
-    $('qr-text').textContent = 'Scan with your phone camera';
+    $('qr-text').textContent = 'Scan with your phone. Same Wi‑Fi on both';
     status('');
   } catch (err) {
     if (phone === session) stopCamera();

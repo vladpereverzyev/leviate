@@ -29,8 +29,8 @@ richiesta e i tuoi file non lasciano mai il dispositivo.
 
 - **Gesti della mano**: mano aperta per ruotare, pugno per spostare, pollice e indice
   per lo zoom.
-- **Guanti medicali**: la mano viene riconosciuta anche con guanti in nitrile o lattice,
-  anche blu, viola e neri. Niente da attivare.
+- **Guanti medicali e da lavoro**: la mano viene riconosciuta anche con guanti in nitrile
+  o lattice, anche blu, viola e neri, e con guanti da lavoro. Niente da attivare.
 - **Qualsiasi webcam**: integrata o USB sul computer, anteriore o posteriore sul telefono.
 - **Il telefono come webcam**: inquadri un codice QR con un iPhone o un Android e la sua
   camera trasmette al computer. Nessuna app da installare.
@@ -126,7 +126,8 @@ GitHub Pages, Netlify o Cloudflare Pages.
 ## Usa il telefono come webcam
 
 Qualsiasi iPhone o Android può fare da camera a Leviate aperto su un computer.
-Niente da installare su nessuno dei due.
+Niente da installare su nessuno dei due. Collega il telefono e il computer alla stessa
+rete Wi-Fi.
 
 <table>
 <tr>
@@ -167,7 +168,8 @@ tracciamento della mano girano in Blender stesso, senza browser.
 
 1. Scarica lo zip per il tuo sistema dalla [pagina download](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<versione>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
-   Trascinalo in Blender 4.2 o successivo.
+   Trascinalo in Blender 4.2 o successivo. Oppure prendilo dalla piattaforma ufficiale
+   Blender Extensions: <https://extensions.blender.org/add-ons/leviate/> (in Blender **Get Extensions**, cerca Leviate).
 2. Nella vista 3D premi **N** e apri la scheda **Leviate**. Scegli **This computer** per
    la webcam o **Phone**, poi premi **Start camera**. Con **Phone** compare un codice QR:
    inquadralo e tocca **Start camera** sul telefono, senza installare app.

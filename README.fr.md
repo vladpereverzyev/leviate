@@ -29,8 +29,8 @@ GPU nécessaire et vos fichiers ne quittent jamais votre appareil.
 
 - **Gestes de la main** : main ouverte pour tourner, poing pour déplacer, pouce et index
   pour zoomer.
-- **Gants médicaux** : la main est reconnue aussi avec des gants en nitrile ou latex,
-  bleus, violets et noirs compris. Rien à activer.
+- **Gants médicaux et de travail** : la main est reconnue aussi avec des gants en nitrile
+  ou latex, bleus, violets et noirs compris, et avec des gants de travail. Rien à activer.
 - **N'importe quelle webcam** : intégrée ou USB sur un ordinateur, avant ou arrière sur
   un téléphone.
 - **Votre téléphone comme webcam** : scannez un code QR avec un iPhone ou un Android et
@@ -131,7 +131,8 @@ comme GitHub Pages, Netlify ou Cloudflare Pages.
 ## Votre téléphone comme webcam
 
 N'importe quel iPhone ou Android peut servir de caméra à Leviate ouvert sur un
-ordinateur. Rien à installer sur l'un ou l'autre.
+ordinateur. Rien à installer sur l'un ou l'autre. Connectez le téléphone et l'ordinateur au même
+réseau Wi-Fi.
 
 <table>
 <tr>
@@ -174,7 +175,8 @@ la main tournent dans Blender lui-même, sans navigateur.
 
 1. Téléchargez le zip pour votre système depuis la [page de téléchargement](https://vladpereverzyev.github.io/leviate/download.html#blender) :
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` ou `-linux-x64.zip`.
-   Glissez-le dans Blender 4.2 ou plus récent.
+   Glissez-le dans Blender 4.2 ou plus récent. Ou installez-le depuis la plateforme
+   officielle Blender Extensions : <https://extensions.blender.org/add-ons/leviate/> (dans Blender **Get Extensions**, cherchez Leviate).
 2. Dans la vue 3D appuyez sur **N** et ouvrez l'onglet **Leviate**. Choisissez
    **This computer** pour la webcam ou **Phone**, puis appuyez sur **Start camera**. Avec
    **Phone** un code QR apparaît : scannez-le et touchez **Start camera** sur le téléphone,

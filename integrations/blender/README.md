@@ -10,6 +10,10 @@ Silicon) and Linux (x64).
 
 ## Install
 
+Leviate for Blender is on the official Blender Extensions platform:
+<https://extensions.blender.org/add-ons/leviate/>. In Blender open **Edit > Preferences > Get Extensions**, search
+Leviate and press **Install**. Or install the zip by hand:
+
 1. Download the zip for your system from the
    [download page](https://vladpereverzyev.github.io/leviate/download.html#blender):
    - Windows: `leviate-blender-<version>-windows-x64.zip`

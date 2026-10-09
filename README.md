@@ -27,8 +27,8 @@ and your files never leave your device.
 ## Features
 
 - **Hand gestures**: open hand to rotate, fist to pan, thumb and index to zoom.
-- **Medical gloves**: the hand is found with nitrile or latex gloves too, blue, purple
-  and black included. Nothing to turn on.
+- **Medical and work gloves**: the hand is found with nitrile or latex gloves too, blue,
+  purple and black included, and with work gloves. Nothing to turn on.
 - **Any webcam**: built-in or USB cameras on a computer, front or rear camera on a phone.
 - **Your phone as a webcam**: scan a QR code with an iPhone or Android phone and its
   camera streams to the computer. No app to install.
@@ -121,7 +121,8 @@ Cloudflare Pages.
 ## Use your phone as a webcam
 
 Any iPhone or Android phone can be the camera of Leviate running on a computer.
-Nothing to install on either device.
+Nothing to install on either device. Connect the phone and the computer to the same
+Wi-Fi network.
 
 <table>
 <tr>
@@ -161,7 +162,8 @@ tracking run in Blender itself, no browser needed.
 
 1. Download the zip for your system from the [download page](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` or `-linux-x64.zip`.
-   Drag it into Blender 4.2 or later.
+   Drag it into Blender 4.2 or later. Or get it from the official Blender Extensions
+   platform: <https://extensions.blender.org/add-ons/leviate/> (in Blender **Get Extensions**, search Leviate).
 2. In the 3D view press **N** and open the **Leviate** tab. Choose **This computer** for
    the webcam or **Phone**, then press **Start camera**. With **Phone** a QR code appears:
    scan it and tap **Start camera** on the phone, no app needed.

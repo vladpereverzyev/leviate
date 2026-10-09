@@ -29,8 +29,9 @@ und deine Dateien verlassen nie dein Gerät.
 
 - **Handgesten**: offene Hand zum Drehen, Faust zum Verschieben, Daumen und Zeigefinger
   zum Zoomen.
-- **Medizinische Handschuhe**: die Hand wird auch mit Nitril- oder Latexhandschuhen
-  erkannt, auch blau, lila und schwarz. Nichts einzuschalten.
+- **Medizinische und Arbeitshandschuhe**: die Hand wird auch mit Nitril- oder
+  Latexhandschuhen erkannt, auch blau, lila und schwarz, und mit Arbeitshandschuhen.
+  Nichts einzuschalten.
 - **Jede Webcam**: eingebaute oder USB-Kameras am Computer, Front- oder Rückkamera am Handy.
 - **Dein Handy als Webcam**: scanne einen QR-Code mit einem iPhone oder Android-Handy
   und seine Kamera streamt zum Computer. Keine App zu installieren.
@@ -127,7 +128,8 @@ GitHub Pages, Netlify oder Cloudflare Pages.
 ## Dein Handy als Webcam
 
 Jedes iPhone oder Android-Handy kann die Kamera von Leviate auf einem Computer sein.
-Auf keinem der beiden Geräte muss etwas installiert werden.
+Auf keinem der beiden Geräte muss etwas installiert werden. Verbinde Handy und Computer
+mit demselben WLAN.
 
 <table>
 <tr>
@@ -168,7 +170,8 @@ laufen in Blender selbst, ohne Browser.
 
 1. Lade das Zip für dein System von der [Download-Seite](https://vladpereverzyev.github.io/leviate/download.html#blender):
    `leviate-blender-<version>-windows-x64.zip`, `-macos-arm64.zip` oder `-linux-x64.zip`.
-   Zieh es in Blender 4.2 oder neuer.
+   Zieh es in Blender 4.2 oder neuer. Oder hol es dir von der offiziellen Plattform
+   Blender Extensions: <https://extensions.blender.org/add-ons/leviate/> (in Blender **Get Extensions**, nach Leviate suchen).
 2. Drück in der 3D-Ansicht **N** und öffne den Tab **Leviate**. Wähl **This computer**
    für die Webcam oder **Phone**, dann drück **Start camera**. Mit **Phone** erscheint ein
    QR-Code: scanne ihn und tippe auf dem Handy auf **Start camera**, ohne App.

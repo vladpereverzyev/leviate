@@ -371,7 +371,7 @@ ipcMain.handle('phone:notice', async () => {
     type: 'info',
     title: 'Phone',
     message: 'Your phone becomes the camera of Leviate',
-    detail: 'To find each other, the phone and this computer go through the free PeerJS server '
+    detail: 'Connect the phone and this computer to the same Wi-Fi network. To find each other, the phone and this computer go through the free PeerJS server '
       + '(0.peerjs.com) and a STUN server of Google, which see the IP addresses of both devices but '
       + 'never the video. The video goes straight from the phone to this computer, encrypted and '
       + 'never recorded.',

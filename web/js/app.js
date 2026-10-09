@@ -834,6 +834,7 @@ async function usePhone() {
     return;
   }
   stopCamera();
+  toast('Connect the phone and this computer to the same Wi‑Fi network.', 5000);
   $('qr-code').replaceChildren();
   $('qr-text').textContent = 'Connecting…';
   $('qr').hidden = false;
@@ -873,7 +874,7 @@ async function usePhone() {
     session.close = host.close;
     $('qr-code').innerHTML = qrSvg(host.url);
     $('qr').dataset.url = host.url;
-    $('qr-text').textContent = 'Scan with your phone camera';
+    $('qr-text').textContent = 'Scan with your phone. Same Wi‑Fi on both';
   } catch (err) {
     console.error(err);
     closePhone();

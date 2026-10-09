@@ -150,6 +150,7 @@ jobs:
 
           Leviate for Blender is at version **${BLENDER#v}**, in a release of its own: [${BLENDER}](https://github.com/vladpereverzyev/leviate/releases/tag/${BLENDER}).
           The add-on keeps its own version and gets a new release only when it changes.
+          It is also on the official Blender Extensions platform: <https://extensions.blender.org/add-ons/leviate/>.
 
           The "Source code" archives below are added by GitHub; to use the app open the link above.
           EOF
@@ -199,6 +200,8 @@ jobs:
           Then open the **Leviate** tab in the 3D view (N), choose the webcam or **Phone** and press
           **Start camera**: the camera and the hand tracking run inside Blender. With **Phone** scan
           the QR code that appears in the 3D view, no app needed. Guide: [integrations/blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender).
+
+          Also on the official Blender Extensions platform: <https://extensions.blender.org/add-ons/leviate/>.
 
           The web app runs in the browser: <https://vladpereverzyev.github.io/leviate/>.
           The "Source code" archives below are added by GitHub.
