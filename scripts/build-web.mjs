@@ -89,6 +89,17 @@ fs.cpSync(path.join(ROOT, 'web'), OUT, { recursive: true });
 // A file in both folders would hide one of them: stop instead.
 fs.cpSync(path.join(ROOT, 'shared'), OUT, { recursive: true, force: false, errorOnExist: true });
 
+// The catalog for AI agents: .well-known/ai-catalog.json is the source and ard.json, the name
+// of the newer revision of the specification, gets the same entries. Stop on a broken entry.
+const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'web', '.well-known', 'ai-catalog.json'), 'utf8'));
+for (const e of catalog.entries) {
+  if (!/^urn:air:[a-zA-Z0-9.-]+(:[a-zA-Z0-9._-]+)+$/.test(e.identifier) || !e.displayName || !e.type || !e.url === !e.data) {
+    console.error(`ai-catalog.json: entry ${e.identifier} is not valid`);
+    process.exit(1);
+  }
+}
+fs.writeFileSync(path.join(OUT, '.well-known', 'ard.json'), JSON.stringify(catalog, null, 2) + '\n');
+
 const { desktop, blender } = await latestReleases();
 const page = path.join(OUT, 'download.html');
 let html = fs.readFileSync(page, 'utf8');

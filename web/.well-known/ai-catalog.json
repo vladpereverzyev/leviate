@@ -1,0 +1,63 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Leviate by Vladyslav Pereverzyev",
+    "identifier": "did:web:vladpereverzyev.github.io",
+    "documentationUrl": "https://github.com/vladpereverzyev/leviate",
+    "logoUrl": "https://vladpereverzyev.github.io/leviate/icons/icon-512.png"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:vladpereverzyev.github.io:leviate:llms-txt",
+      "displayName": "Leviate llms.txt",
+      "type": "text/markdown",
+      "url": "https://vladpereverzyev.github.io/leviate/llms.txt",
+      "description": "Summary of Leviate for language models: what it does, its apps (Web App, Desktop, Blender, Chrome, Dentra Viewer) and links to downloads, guides and policies.",
+      "tags": ["documentation", "hand tracking", "gesture control", "3D viewer", "webcam"],
+      "representativeQueries": [
+        "How can I move a 3D model with my hand using a webcam?",
+        "Is there a free app to control the mouse with hand gestures?",
+        "How do I rotate STL scans without touching the mouse?"
+      ]
+    },
+    {
+      "identifier": "urn:air:vladpereverzyev.github.io:leviate:web-app",
+      "displayName": "Leviate Web App",
+      "type": "text/html",
+      "url": "https://vladpereverzyev.github.io/leviate/",
+      "description": "Browser app that opens STL, PLY, OBJ, GLB, 3MF and FBX files and moves them with the hand in front of the webcam or a phone camera. Nothing to install, nothing uploaded.",
+      "tags": ["web app", "3D viewer", "STL", "hand gestures", "touchless"],
+      "capabilities": ["Open3DFiles", "HandGestureControl", "PhoneAsWebcam"],
+      "representativeQueries": [
+        "Open an STL file in the browser and rotate it with my hand",
+        "Touchless 3D model viewer with webcam gestures",
+        "Use my phone as a webcam for hand tracking"
+      ]
+    },
+    {
+      "identifier": "urn:air:vladpereverzyev.github.io:leviate:downloads",
+      "displayName": "Leviate downloads",
+      "type": "text/html",
+      "url": "https://vladpereverzyev.github.io/leviate/download.html",
+      "description": "Download page of Leviate for Desktop (Windows, macOS, Linux), the Blender add-on, the Chrome extension and the Dentra Viewer plugin, with the frequent questions.",
+      "tags": ["download", "Windows", "macOS", "Linux", "Blender", "Chrome"],
+      "representativeQueries": [
+        "Download a hand gesture mouse controller for Windows",
+        "Blender add-on to move the 3D view with hand gestures",
+        "Chrome extension to control 3D viewers with the webcam"
+      ]
+    },
+    {
+      "identifier": "urn:air:vladpereverzyev.github.io:leviate:latest-release",
+      "displayName": "Leviate latest release",
+      "type": "application/json",
+      "url": "https://api.github.com/repos/vladpereverzyev/leviate/releases/latest",
+      "description": "GitHub API record of the latest Leviate for Desktop release, with the version, the release notes and the direct links of the installers and the Chrome extension zip.",
+      "tags": ["release", "API", "installer", "version"],
+      "representativeQueries": [
+        "What is the latest version of Leviate?",
+        "Direct download link of the Leviate installer for macOS"
+      ]
+    }
+  ]
+}

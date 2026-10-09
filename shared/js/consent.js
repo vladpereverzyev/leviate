@@ -155,6 +155,23 @@ panel.querySelector('[data-cc-save]').addEventListener('click', () => {
 panel.querySelector('[data-cc-close]').addEventListener('click', close);
 panel.addEventListener('click', (e) => { if (e.target === panel) close(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) close(); });
+// Until a choice is made the Tab key stays in the banner (or in the preferences window when
+// it is open) and never reaches the page behind it.
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab') return;
+  const box = !panel.hidden ? panel : !banner.hidden ? banner : null;
+  if (!box) return;
+  const items = [...box.querySelectorAll(FOCUSABLE)].filter((el) => el.offsetParent !== null);
+  if (!items.length) return;
+  const first = items[0];
+  const last = items[items.length - 1];
+  const inside = box.contains(document.activeElement);
+  if (!inside || (e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus();
+  }
+});
 document.querySelectorAll('[data-cc-open]').forEach((a) => a.addEventListener('click', (e) => {
   e.preventDefault();
   open();

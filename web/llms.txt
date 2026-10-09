@@ -1,0 +1,40 @@
+# Leviate
+
+> Leviate moves 3D models, 3D programs and the mouse with your hand, using any webcam or your phone as the camera. Free and open source (AGPL-3.0), it tracks the hand on the device with MediaPipe and never records or uploads the video.
+
+Leviate comes in several forms that share the same gestures: open hand turns, fist pans, thumb and index (pinch) zoom.
+
+- The Web App runs in Chrome, Edge, Firefox or Safari with nothing to install. It opens STL, PLY, OBJ, GLB, 3MF and FBX files, keeps colors and textures and moves them with the hand.
+- Leviate for Desktop (Windows, macOS, Linux) puts the hand on any program: a 3D module that turns, pans and zooms the 3D view of the program under the cursor and a Mouse module that moves the cursor and clicks (one finger held still is a left click, two fingers a right click). Ctrl+Alt+M turns the hand on or off.
+- Leviate for Blender is an add-on for Blender 4.2 or later, also on the official Blender Extensions platform.
+- Leviate for Chrome is an extension that brings the 3D and Mouse modules into the pages of Chrome and the browsers built on it. It loads no files: it is a controller for the page you are on.
+- Leviate for Dentra Viewer is a plugin for the Viewer of Dentra.
+
+Any phone can be the camera: scan a QR code, no app needed. The phone and the computer should be on the same Wi-Fi network. Nitrile and latex gloves work too, blue, purple and black included. Leviate is not a medical device.
+
+## Use and download
+
+- [Web App](https://vladpereverzyev.github.io/leviate/): open it in the browser and drop your 3D files, or try the demo
+- [Download page](https://vladpereverzyev.github.io/leviate/download.html): Leviate for Desktop, the Blender add-on, the Chrome extension, the Dentra plugin and the questions people ask most
+- [Latest release](https://github.com/vladpereverzyev/leviate/releases/latest): installers for Windows, macOS and Linux and the Chrome extension zip
+- [Leviate on Blender Extensions](https://extensions.blender.org/add-ons/leviate/): the add-on from inside Blender (Get Extensions, search Leviate)
+
+## Guides
+
+- [README](https://github.com/vladpereverzyev/leviate/blob/main/README.md): features, gestures, the phone as a webcam, supported files and how it works
+- [Leviate for Desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop): the 3D and Mouse modules, the mouse buttons of each 3D program and the system permissions
+- [Leviate for Blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender): install, use, phone as the camera
+- [Leviate for Chrome](https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension): install, the side panel, the 3D and Mouse modes and its permissions
+- [Leviate for Dentra Viewer](https://github.com/vladpereverzyev/leviate/tree/main/integrations/dentra): the plugin, its options and its permissions
+- [Integrations](https://github.com/vladpereverzyev/leviate/blob/main/integrations/README.md): how to bring the hand control to other programs
+
+## Policies
+
+- [Privacy and cookie policy](https://vladpereverzyev.github.io/leviate/privacy.html): what happens to the camera, the phone pairing and the settings in each app
+- [License](https://github.com/vladpereverzyev/leviate/blob/main/LICENSE): AGPL-3.0, with a commercial license available on request
+
+## Optional
+
+- [Source code](https://github.com/vladpereverzyev/leviate): the whole project on GitHub
+- [Author](https://www.vladpereverzyev.com): Vladyslav Pereverzyev, dental CAD designer and developer
+- [Support on Ko-fi](https://ko-fi.com/vladpereverzyev): Leviate is free and stays free
