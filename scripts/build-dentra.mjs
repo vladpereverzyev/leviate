@@ -22,7 +22,9 @@ const OUT = path.join(ROOT, 'dist', 'dentra');
 const { version } = JSON.parse(fs.readFileSync(path.join(SRC, 'dentra-plugin.json'), 'utf8'));
 
 fs.rmSync(OUT, { recursive: true, force: true });
-fs.cpSync(SRC, OUT, { recursive: true, filter: (f) => !/README\.md$|\.png$/.test(path.basename(f)) || path.basename(f) === 'icon.png' });
+// The README and the LICENSE of the folder stay out: Dentra takes only some file types and
+// the license goes in as LICENSE.txt below.
+fs.cpSync(SRC, OUT, { recursive: true, filter: (f) => !['README.md', 'LICENSE'].includes(path.basename(f)) });
 fs.mkdirSync(path.join(OUT, 'js'));
 for (const name of ['gestures.js', 'gloves.js']) fs.copyFileSync(path.join(SHARED, 'js', name), path.join(OUT, 'js', name));
 // The footer of the plugin shows the version of the plugin, not the one of the apps.

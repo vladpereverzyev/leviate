@@ -67,6 +67,7 @@ let lastTs = 0;
 function status(text, error = false) {
   $('status').textContent = text;
   $('status').classList.toggle('error', error);
+  if (Viewer) fitPanel();
 }
 
 function translate() {
@@ -193,13 +194,25 @@ function stop() {
   status(t.off);
 }
 
+// The panel as tall as what it shows, within what the Viewer allows.
+let lastHeight = 0;
+function fitPanel() {
+  const height = Math.max(80, Math.min(560, Math.ceil(document.documentElement.scrollHeight) + 2));
+  if (Math.abs(height - lastHeight) < 4) return;
+  lastHeight = height;
+  Viewer.panel.height(height);
+}
+
 async function setup() {
   $('version').textContent = VERSION;
   const info = await Viewer.ready();
   t = TEXT[String(info?.language || 'en').slice(0, 2)] || TEXT.en;
   translate();
   status(t.off);
-  Viewer.panel.height(220);
+  fitPanel();
+  addEventListener('resize', fitPanel);
+  // The font changes the height of the texts once it has loaded.
+  document.fonts?.ready.then(fitPanel);
   const saved = await Viewer.storage.get().catch(() => null);
   if (saved && typeof saved.mirror === 'boolean') settings.mirror = saved.mirror;
   $('mirror').checked = settings.mirror;

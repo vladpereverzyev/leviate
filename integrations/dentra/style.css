@@ -65,3 +65,10 @@ body {
 .check input { margin: 0; accent-color: var(--accent); }
 .legal { margin: auto 0 0; font-size: 11px; color: var(--dim); }
 .legal a { color: var(--dim); }
+
+/* A narrow panel (the Viewer gives about 280 pixels): the preview on top, the controls under it. */
+@media (max-width: 479px) {
+  body { flex-direction: column; overflow: auto; }
+  .preview { width: 100%; height: auto; max-height: none; }
+  .legal { margin-top: 0; }
+}

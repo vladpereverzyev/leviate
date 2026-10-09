@@ -135,7 +135,7 @@ export class Page {
 
   stop() {
     this.wanted = false;
-    this.endDrag();
+    this.dragEnd();
     return this.follow(null);
   }
 
@@ -242,7 +242,7 @@ export class Page {
   // The drag starts where the real mouse was last in the page: the cursor goes over the
   // 3D view first, as in Leviate for Desktop.
   async dragStart(button, keys) {
-    this.endDrag();
+    this.dragEnd();
     if (this.tabId === null) return;
     const buttons = String(button).split('+').sort((a, b) => (b === 'right') - (a === 'right'));
     if (!buttons.every((b) => b in BUTTON_BITS)) return;
@@ -325,7 +325,7 @@ export class Page {
     d.pos = next;
   }
 
-  endDrag() {
+  dragEnd() {
     const d = this.drag;
     this.drag = null;
     if (!d) return;

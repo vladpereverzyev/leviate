@@ -225,7 +225,7 @@ async function attach(s) {
 function release() {
   // The 3D module may hold a mouse button: let it go when the video stops.
   control3d.stop();
-  page.endDrag();
+  page.dragEnd();
   engine.reset();
   pointer.reset();
   ring();
