@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Leviate - Hand control",
+  "name": "Leviate",
   "short_name": "Leviate",
   "version": "0.0.0",
   "description": "Move 3D models and the mouse in Chrome with your hand, with the webcam or your phone. Free and open source.",
