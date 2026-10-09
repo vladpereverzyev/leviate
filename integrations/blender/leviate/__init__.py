@@ -73,7 +73,7 @@ class LeviateSettings(bpy.types.PropertyGroup):
         name="Camera",
         items=(
             ("WEBCAM", "This computer", "A webcam on this computer"),
-            ("PHONE", "Phone", "Your phone as the camera: scan a QR code, no app to install"),
+            ("PHONE", "Phone", "Your phone as the camera: scan a QR code, no app to install. Keep the phone and this computer on the same Wi-Fi network"),
         ),
         default="WEBCAM", update=_restart,
     )
@@ -472,9 +472,12 @@ class LEVIATE_PT_panel(bpy.types.Panel):
                 col = layout.column(align=True)
                 col.label(text="Scan the QR code in the 3D view")
                 col.label(text="and tap Start camera on the phone")
+                col.label(text="Same Wi-Fi on the phone and this computer", icon="INFO")
                 col.operator("leviate.copy_link", icon="COPYDOWN")
         else:
             layout.operator("leviate.start", icon="OUTLINER_OB_CAMERA")
+            if phone:
+                layout.label(text="Same Wi-Fi on the phone and this computer", icon="INFO")
             if _engine is not None and _engine.error:
                 layout.label(text=_engine.error, icon="ERROR")
             reason = online_reason(settings)

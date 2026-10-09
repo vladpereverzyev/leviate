@@ -51,7 +51,7 @@ start. Only the phone needs **Allow Online Access**.
 ## Phone as the camera
 
 With **Phone** selected, **Start camera** shows a QR code in the bottom left corner of the
-3D view.
+3D view. Connect the phone and the computer to the same Wi-Fi network.
 
 1. Scan it with the phone camera. It opens the Leviate page made for the phone, in the
    browser, with nothing to install.
