@@ -35,11 +35,12 @@
         <div class="row">
           <button id="phone-link" class="btn small ghost">Use phone</button>
         </div>
-        <!-- Told once before the first pairing, like the notice of Leviate for Desktop. -->
+        <!-- Told once before the first pairing, with the words of the web app. The pairing
+             servers are in the privacy policy, linked here. -->
         <div id="phone-notice" class="notice" hidden>
-          <p>Your phone becomes the camera of Leviate. Connect the phone and this computer to the same Wi&#8209;Fi network.</p>
-          <p class="sub">To find each other, the phone and this computer go through the free PeerJS server (0.peerjs.com) and a STUN server of Google, which see the IP addresses of both devices but never the video. The video goes straight from the phone to this computer, encrypted and never recorded.</p>
-          <div class="row"><button id="phone-go" class="btn small">Continue</button><button id="phone-cancel" class="btn small ghost">Cancel</button></div>
+          <p>Same Wi&#8209;Fi network</p>
+          <p class="sub">Connect the phone and this computer to the same Wi&#8209;Fi network. <a href="https://vladpereverzyev.github.io/leviate/privacy.html#phone" target="_blank" rel="noopener">How pairing works</a></p>
+          <div class="row"><button id="phone-go" class="btn small">OK</button><button id="phone-cancel" class="btn small ghost">Cancel</button></div>
         </div>
         <p id="status" class="info"></p>
 

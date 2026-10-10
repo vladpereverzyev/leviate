@@ -6,6 +6,13 @@ version are on the [releases page](https://github.com/vladpereverzyev/leviate/re
 
 ## Leviate (web app, Desktop, Chrome)
 
+### 1.3.37 (2026-10-10)
+
+- Leviate for Chrome: before **Use phone** the panel shows the same short Same Wi-Fi network
+  note as the web app, with a link to how pairing works.
+- Leviate for Chrome: on Chrome pages and the Chrome Web Store, where extensions cannot work,
+  the panel says to open a website in the tab.
+
 ### 1.3.36 (2026-10-10)
 
 - Leviate for Desktop runs on Electron 44.6.0, with its latest fixes.

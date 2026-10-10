@@ -156,8 +156,8 @@ export class Page {
       await chrome.debugger.attach({ tabId }, PROTOCOL);
     } catch (err) {
       this.onError(/chrome:|extensions gallery|Cannot access|Cannot attach/i.test(err.message)
-        ? 'Leviate cannot work on this tab: Chrome keeps its own pages and the Chrome Web Store closed to extensions.'
-        : `Leviate cannot work on this tab. ${err.message}`);
+        ? 'The hand works on websites. Open a website in this tab: Chrome pages and the Chrome Web Store are closed to extensions.'
+        : `The hand cannot work on this tab. ${err.message}`);
       return;
     }
     this.tabId = tabId;
