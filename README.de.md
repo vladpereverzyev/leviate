@@ -335,6 +335,13 @@ hochgeladen, kein Tracking und kein Konto. Die einzigen externen Dienste sind di
 sehen, aber nie das Video. Leviate for Chrome und das Plugin für Dentra behalten das Video
 genauso auf dem Computer. Alle Details in der [Datenschutzerklärung](https://vladpereverzyev.github.io/leviate/privacy.html).
 
+## Einsatz von KI
+
+Teile von Leviate, seines Codes, seiner Dokumentation und seiner Pakete für die App-Stores
+(darunter die Linux-Dateien in `desktop/linux/`: der Desktop-Eintrag, die AppStream-Metainfo und
+das Flatpak-Manifest) wurden mit Hilfe von Werkzeugen generativer KI geschrieben. Jeder Teil
+wurde vom Autor geprüft und getestet, der ihn pflegt und dafür verantwortlich ist.
+
 ## Mitwirken
 
 Issues und Pull Requests sind willkommen. Lies vorher [CONTRIBUTING.md](CONTRIBUTING.md)

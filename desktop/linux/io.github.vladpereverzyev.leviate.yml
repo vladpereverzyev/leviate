@@ -11,6 +11,9 @@
 #
 # X11 because the Mouse module moves the cursor with XTest, which Wayland does not allow;
 # the network for the phone pairing; all devices for the webcam.
+#
+# This manifest, the desktop entry and the metainfo next to it were written with the help
+# of generative AI tools and reviewed by the author (see "Use of AI" in the README).
 
 app-id: io.github.vladpereverzyev.leviate
 runtime: org.freedesktop.Platform

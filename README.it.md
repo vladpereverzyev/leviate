@@ -330,6 +330,13 @@ caricato niente, nessun tracciamento e nessun account. Gli unici servizi esterni
 connessione ma mai il video. Leviate for Chrome e il plugin per Dentra tengono il video sul
 computer allo stesso modo. Tutti i dettagli nella [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
+## Uso dell'IA
+
+Parti di Leviate, del suo codice, della documentazione e dei pacchetti per gli store (tra cui i
+file Linux in `desktop/linux/`: la voce desktop, il metainfo AppStream e il manifest Flatpak)
+sono state scritte con l'aiuto di strumenti di intelligenza artificiale generativa. Ogni parte è
+stata rivista, provata ed è mantenuta dall'autore, che ne è responsabile.
+
 ## Contribuire
 
 Issue e pull request sono benvenute. Leggi prima [CONTRIBUTING.md](CONTRIBUTING.md)

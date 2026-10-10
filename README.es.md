@@ -334,6 +334,14 @@ hay seguimiento ni cuenta. Los únicos servicios externos son los de
 conexión pero nunca el vídeo. Leviate for Chrome y el plugin para Dentra mantienen el vídeo en
 el ordenador de la misma forma. Todos los detalles en la [política de privacidad](https://vladpereverzyev.github.io/leviate/privacy.html).
 
+## Uso de IA
+
+Partes de Leviate, de su código, de su documentación y de sus paquetes para las tiendas de
+aplicaciones (entre ellas los archivos de Linux de `desktop/linux/`: la entrada de escritorio, el
+metainfo de AppStream y el manifiesto de Flatpak) se escribieron con la ayuda de herramientas de
+IA generativa. Cada parte fue revisada y probada por el autor, que la mantiene y es responsable
+de ella.
+
 ## Contribuir
 
 Issues y pull requests son bienvenidos. Lee antes [CONTRIBUTING.md](CONTRIBUTING.md) y
