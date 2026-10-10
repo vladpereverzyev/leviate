@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 Vladyslav Pereverzyev -->
+<component type="desktop-application">
+  <id>io.github.vladpereverzyev.leviate</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-only</project_license>
+
+  <name>Leviate</name>
+  <summary>Move 3D and the mouse by hand</summary>
+  <developer id="io.github.vladpereverzyev">
+    <name>Vladyslav Pereverzyev</name>
+  </developer>
+
+  <description>
+    <p>
+      Leviate turns your hand into a controller. Raise your hand in front of the webcam and
+      work without touching the mouse: useful when your hands are busy, gloved or not clean,
+      in dental and medical labs, workshops and presentations.
+    </p>
+    <p>Two modules, one click to switch:</p>
+    <ul>
+      <li>3D: the open hand turns, the fist pans and thumb and index zoom the 3D view of the
+        program under the cursor. Leviate presses the mouse buttons that program uses, or the
+        buttons you set yourself.</li>
+      <li>Mouse: the open hand moves the cursor. Hold one finger still for a left click and keep
+        holding for a double click; two fingers make a right click.</li>
+    </ul>
+    <p>
+      Ctrl+Alt+M turns the hand on and off from any program. A phone can be the camera too:
+      scan the QR code and keep both devices on the same Wi-Fi.
+    </p>
+    <p>
+      The hand is tracked on your computer. The video is never recorded or sent anywhere.
+      There are no accounts, no analytics and no advertising.
+    </p>
+    <p>
+      Moving the cursor and pressing the buttons of other programs works in an X11 session.
+      Wayland does not let applications move the system cursor, so there the hand only
+      reaches programs that run through XWayland.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.vladpereverzyev.leviate.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>The 3D module turns the view of a 3D program with the hand</caption>
+      <image>https://raw.githubusercontent.com/vladpereverzyev/leviate/main/docs/screenshots/desktop-3d.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Mouse module moves the cursor and clicks</caption>
+      <image>https://raw.githubusercontent.com/vladpereverzyev/leviate/main/docs/screenshots/desktop-mouse.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A phone becomes the camera with a QR code</caption>
+      <image>https://raw.githubusercontent.com/vladpereverzyev/leviate/main/docs/screenshots/desktop-phone.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://vladpereverzyev.github.io/leviate/</url>
+  <url type="bugtracker">https://github.com/vladpereverzyev/leviate/issues</url>
+  <url type="vcs-browser">https://github.com/vladpereverzyev/leviate</url>
+  <url type="donation">https://ko-fi.com/vladpereverzyev</url>
+
+  <content_rating type="oars-1.1"/>
+
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>vision</control>
+  </supports>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#8fc8e8</color>
+    <color type="primary" scheme_preference="dark">#0b2a3c</color>
+  </branding>
+
+  <keywords>
+    <keyword>hand</keyword>
+    <keyword>gesture</keyword>
+    <keyword>touchless</keyword>
+    <keyword>webcam</keyword>
+    <keyword>mouse</keyword>
+    <keyword>3D</keyword>
+    <keyword>CAD</keyword>
+  </keywords>
+
+  <releases>
+    <release version="1.3.32" date="2026-10-09">
+      <description>
+        <p>The phone camera shows a notice to keep the phone and the computer on the same Wi-Fi.</p>
+      </description>
+    </release>
+  </releases>
+</component>

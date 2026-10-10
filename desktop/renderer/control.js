@@ -498,16 +498,17 @@ function setup() {
     } catch {}
   };
 
+  // A copy from a store (Mac App Store, Flathub) gets its updates from there; the Mac App
+  // Store one also leaves out Ko-fi.
   if (desktop.store) {
-    // The Mac App Store copy: the Store brings the updates, and Ko-fi stays out.
     $('win-settings').hidden = true;
-    $('footer-support').hidden = true;
   } else {
     $('checkUpdates').checked = settings.checkUpdates;
     $('checkUpdates').onchange = (e) => { settings.checkUpdates = e.target.checked; save(); };
-    setupSupport();
     if (settings.checkUpdates) desktop.checkUpdate().then(offerUpdate);
   }
+  if (desktop.macStore) $('footer-support').hidden = true;
+  else setupSupport();
   desktop.onToggle(() => setMode(settings.mode === 'off' ? settings.lastMode : 'off'));
   desktop.onError((text) => {
     if (text) setMode('off');

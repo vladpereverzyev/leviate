@@ -347,14 +347,17 @@ ipcMain.on('mouse:flash', (e, mode) => {
   ringHide = setTimeout(() => { ringHide = null; showRing(false); }, 380);
 });
 
-// The Mac App Store copy (process.mas): the Store updates it, and the window leaves out
-// what the Store does not allow, the updater and the Ko-fi links.
-ipcMain.on('app:store', (e) => { e.returnValue = process.mas === true; });
+// Copies a store brings and updates: the Mac App Store (process.mas) and Flathub (a
+// Flatpak has /.flatpak-info). Neither has the updater; the Mac App Store copy also
+// leaves out the Ko-fi links, which that Store does not allow.
+const MAC_STORE = process.mas === true;
+const FROM_STORE = MAC_STORE || fs.existsSync('/.flatpak-info');
+ipcMain.on('app:store', (e) => { e.returnValue = { store: FROM_STORE, macStore: MAC_STORE }; });
 
 // New versions: the window asks once it is open, if the user did not turn it off.
 let pending = null;
 ipcMain.handle('update:check', async () => {
-  if (process.mas) return null;
+  if (FROM_STORE) return null;
   // A development copy is no release; LEVIATE_UPDATE_FROM pretends a version to try this.
   const current = app.isPackaged ? VERSION : process.env.LEVIATE_UPDATE_FROM;
   if (!current) return null;
@@ -362,7 +365,7 @@ ipcMain.handle('update:check', async () => {
   return pending && { version: pending.version, notes: pending.notes };
 });
 ipcMain.handle('update:install', async (e) => {
-  if (process.mas || !pending) return 'There is no update to install';
+  if (FROM_STORE || !pending) return 'There is no update to install';
   try {
     await update.install(pending, (part) => e.sender.send('update:progress', part));
     return '';

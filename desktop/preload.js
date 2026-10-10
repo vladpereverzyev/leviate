@@ -8,7 +8,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('leviateDesktop', {
   platform: process.platform,
   hotkey: process.platform === 'darwin' ? 'Ctrl+Option+M' : 'Ctrl+Alt+M',
-  store: ipcRenderer.sendSync('app:store'),
+  ...ipcRenderer.sendSync('app:store'),
   enable: () => ipcRenderer.send('mouse:enable'),
   move: (u, v, allScreens) => ipcRenderer.send('mouse:move', u, v, allScreens),
   click: (button) => ipcRenderer.send('mouse:click', button),
