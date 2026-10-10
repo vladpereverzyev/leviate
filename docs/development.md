@@ -26,6 +26,30 @@ cd desktop && npm ci && cd ..
 node scripts/build-desktop.mjs --dir
 ```
 
+## Packaging Leviate for Desktop on Linux
+
+What a Linux package (Flatpak, Flathub, a distribution package) needs to know to build
+Leviate for Desktop from the sources:
+
+- **Build**: in `desktop/` run `npm ci`, then from the repository root
+  `node scripts/build-desktop.mjs --dir`. The app comes out unpacked in
+  `dist/desktop/linux-unpacked/`, with the program `leviate` and its `resources/app.asar`.
+  The script also copies `shared/` (hand tracking, hand model, libraries) and the license
+  files into the app; running `electron main.js` from `desktop/` without it does not find them.
+- **Network during the build**: `npm ci` needs the npm registry, and electron-builder
+  downloads `electron-v<version>-linux-x64.zip` (the version is in `desktop/package.json`).
+  For an offline build, put that zip in the folder named by `ELECTRON_CACHE`, or pass
+  `-c.electronDist=<folder of an unpacked Electron>` to the script. The native module koffi
+  ships prebuilt binaries in its npm package and needs no compiler.
+- **Files for the system**: the desktop entry, the AppStream metainfo and the self-hosted
+  Flatpak test manifest are in `desktop/packaging/linux/`; the icon is
+  `shared/icons/icon.svg`. The app id is `io.github.vladpereverzyev.leviate`.
+- **In a Flatpak**: start the program through `zypak-wrapper` and remove `chrome-sandbox`, as
+  the test manifest does. The app turns off its own update check when `/.flatpak-info` exists.
+- **Permissions it uses**: the camera (`--device=all`), the network for **Use phone**,
+  X11 to move the cursor of the other programs (Wayland does not allow it) and IPC.
+  No audio, no files outside its own data folder.
+
 ## How it works
 
 1. **Camera**: `getUserMedia` opens the selected webcam with the requested
