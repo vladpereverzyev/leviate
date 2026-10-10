@@ -457,7 +457,7 @@ async function loadFiles(files) {
   const all = [...files];
   const models = all.filter((f) => MODEL_EXT.includes(extOf(f.name)));
   if (!models.length) {
-    if (all.length) toast('No 3D file found. Use ' + MODEL_EXT.map((e) => e.toUpperCase()).join(', '), 6000);
+    if (all.length) toast('No 3D file found', 6000, 'Use ' + MODEL_EXT.map((e) => e.toUpperCase()).join(', ') + '.');
     return;
   }
   const side = sideFiles(all);
@@ -571,14 +571,32 @@ function renderList() {
   $('empty').hidden = items.length > 0;
 }
 
+// Messages in the box of the Ko-fi and Wi-Fi notes, in their place under the header (not at the
+// bottom over the footer). One at a time: a message replaces the Wi-Fi note and holds the Ko-fi one.
+// ms 0 keeps it until the next call (Loading...), without the OK button.
 let toastTimer = 0;
-function toast(text, ms = 3000) {
+function toast(title, ms = 3000, sub = '') {
   const el = $('toast');
   clearTimeout(toastTimer);
-  el.textContent = text;
-  el.hidden = !text;
-  if (text && ms) toastTimer = setTimeout(() => { el.hidden = true; }, ms);
+  if (!title) { hideToast(); return; }
+  $('wifi').hidden = true;
+  holdSupport(true);
+  $('toast-title').textContent = title;
+  $('toast-sub').textContent = sub;
+  $('toast-sub').hidden = !sub;
+  $('toast-ok').hidden = !ms;
+  el.hidden = false;
+  if (ms) toastTimer = setTimeout(hideToast, Math.max(ms, 5000));
 }
+
+function hideToast() {
+  clearTimeout(toastTimer);
+  if ($('toast').hidden) return;
+  $('toast').hidden = true;
+  holdSupport(false);
+}
+
+$('toast-ok').addEventListener('click', hideToast);
 
 for (const id of ['file']) {
   // iOS and some Android pickers grey out extensions they do not know (.stl, .ply,
@@ -755,11 +773,11 @@ function stopCamera() {
 
 async function startCamera() {
   if (!await ensure('camera')) {
-    toast('The camera needs your consent in the cookie preferences.', 4000);
+    toast('Camera off', 6000, 'The camera needs your consent in the cookie preferences.');
     return;
   }
   if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
-    toast('The camera needs HTTPS or localhost', 5000);
+    toast('Camera not available', 6000, 'The camera needs HTTPS or localhost.');
     return;
   }
   closePhone();
@@ -778,7 +796,7 @@ async function startCamera() {
     console.error(err);
     stream = null;
     setCamUi(false);
-    toast('Camera not available. ' + err.message, 5000);
+    toast('Camera not available', 6000, err.message);
     return;
   }
 
@@ -835,6 +853,7 @@ function closePhone() {
 
 // Same Wi-Fi network: a note like the Ko-fi one, before it and never together with it.
 function showWifi() {
+  hideToast();
   holdSupport(true);
   $('wifi').hidden = false;
 }
@@ -853,7 +872,7 @@ async function usePhone() {
   }
   // The PeerJS broker is an outside service: it needs consent first.
   if (!await ensure('camera', 'external')) {
-    toast('Use phone needs Camera and External services in the cookie preferences.', 4000);
+    toast('Use phone off', 6000, 'Use phone needs Camera and External services in the cookie preferences.');
     return;
   }
   stopCamera();
@@ -901,7 +920,7 @@ async function usePhone() {
   } catch (err) {
     console.error(err);
     closePhone();
-    toast('Phone pairing is not available. ' + err.message, 5000);
+    toast('Phone pairing is not available', 6000, err.message);
   }
 }
 

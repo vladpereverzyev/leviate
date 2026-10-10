@@ -165,19 +165,6 @@ a.link { text-decoration: none; }
   z-index: 100;
 }
 
-.toast {
-  position: absolute;
-  left: 50%;
-  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 84px);
-  transform: translateX(-50%);
-  max-width: calc(100% - 32px);
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: var(--panel-solid);
-  border: 1px solid var(--line);
-  z-index: 100;
-}
-
 /* The Ko-fi note, the same as in Leviate for Desktop, under the header in the middle. */
 .kofi {
   position: absolute;
@@ -675,7 +662,6 @@ section.phone-mode {
   .tool { padding: 6px 9px; font-size: 12.5px; }
   .sep, #fullscreen { display: none; }
 
-  .toast { bottom: calc(max(6px, env(safe-area-inset-bottom)) + 110px); }
   .legal { left: var(--gutter); right: var(--gutter); bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 11px; line-height: 1.6; }
 }
 

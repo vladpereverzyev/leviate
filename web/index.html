@@ -173,7 +173,14 @@
     </footer>
 
     <div id="drop" class="drop" hidden><span>Drop to load</span></div>
-    <div id="toast" class="toast" hidden></div>
+    <!-- Messages (camera, files, phone): the box of the Ko-fi note, in its place: js/app.js -->
+    <section id="toast" class="kofi" role="status" aria-live="polite" hidden>
+      <div class="kofi-copy">
+        <p id="toast-title"></p>
+        <p id="toast-sub" class="kofi-sub" hidden></p>
+      </div>
+      <button id="toast-ok" class="btn small">OK</button>
+    </section>
 
     <!-- Same Wi-Fi network, told at Use phone in the box of the Ko-fi note: js/app.js -->
     <section id="wifi" class="kofi" role="dialog" aria-labelledby="wifi-title" hidden>
