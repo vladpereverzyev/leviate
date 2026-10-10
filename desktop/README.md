@@ -34,6 +34,8 @@ Download from the [download page](https://vladpereverzyev.github.io/leviate/down
 | macOS, Apple silicon | `leviate-<version>-macos-arm64.dmg` |
 | macOS, Intel | `leviate-<version>-macos-x64.dmg` |
 | Linux | `leviate-<version>-linux-x64.AppImage`, make it executable and start it |
+| Linux, Flatpak | `leviate-<version>-linux-x64.flatpak`, open it or `flatpak install --user` it |
+| Ubuntu and Linux with snap | from the [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 
 - **Windows**: the installer is not signed yet and Windows may say "Windows protected your
   PC": choose **More info** and **Run anyway**.
