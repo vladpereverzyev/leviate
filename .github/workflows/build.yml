@@ -325,6 +325,10 @@ jobs:
           path: dist
           merge-multiple: true
 
+      # The MSIX goes to the Microsoft Store only (Partner Center), not to the release.
+      - name: Leave out the Microsoft Store package
+        run: rm -f dist/*-windows-store.appx
+
       - name: Release notes
         env:
           GH_TOKEN: ${{ github.token }}

@@ -35,12 +35,11 @@ Download from the [download page](https://vladpereverzyev.github.io/leviate/down
 | macOS, Intel | `leviate-<version>-macos-x64.dmg` |
 | Linux | `leviate-<version>-linux-x64.AppImage`, make it executable and start it |
 
-The app is not signed yet:
-
-- **Windows** may say "Windows protected your PC": choose **More info** and **Run anyway**.
-- **macOS** says the app cannot be opened: open **System Settings > Privacy & Security** and
-  choose **Open Anyway**. For the Mouse and 3D modules allow Leviate in **Accessibility**
-  too, macOS asks the first time.
+- **Windows**: the installer is not signed yet and Windows may say "Windows protected your
+  PC": choose **More info** and **Run anyway**.
+- **macOS**: the app is signed with the Developer ID of the author and notarized by Apple, so
+  it opens with a double click. For the Mouse and 3D modules allow Leviate in
+  **Accessibility**, macOS asks the first time.
 - **Linux** needs an X11 session ("Xorg" on the login screen). Wayland does not let
   programs move the mouse, so there the hand only shows in the preview.
 
