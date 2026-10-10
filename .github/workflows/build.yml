@@ -345,15 +345,22 @@ jobs:
           VER="${GITHUB_REF_NAME#v}"
           # The newest release of Leviate for Blender, linked straight from the notes.
           BLENDER="$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=50" --jq '[.[] | select(any(.assets[]; .name | startswith("leviate-blender-")))][0].tag_name')"
+          # What is new: the section of this version in CHANGELOG.md.
+          NEWS="$(awk -v v="### ${VER} " 'index($0, v) == 1 { f = 1; next } /^##/ { if (f) exit } f' CHANGELOG.md | sed '/./,$!d')"
+          [ -n "$NEWS" ] || { echo "CHANGELOG.md has no section for ${VER}"; exit 1; }
           cat > notes.md <<EOF
           **Leviate runs in the browser, nothing to download:** <https://vladpereverzyev.github.io/leviate/>
+
+          ### What is new in ${VER}
+
+          ${NEWS}
 
           ### Leviate for Desktop
 
           Your hand on any program, with the webcam or the phone. **3D**: open hand turns, fist
           pans, pinch zooms the 3D program under the cursor. **Mouse**: open hand moves the
           cursor, one finger held still is a left click, two fingers a right click.
-          Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
+          Windows \`leviate-${VER}-windows-x64.exe\`, macOS (signed and notarized) \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\` or \`-linux-x64.flatpak\`.
           On Ubuntu and the other Linux systems with snap it is on the **[Snap Store](https://snapcraft.io/leviate)**: \`sudo snap install leviate\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).

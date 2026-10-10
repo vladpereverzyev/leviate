@@ -86,7 +86,8 @@ raises the patch number on every commit; enable it once after cloning:
 git config core.hooksPath .githooks
 ```
 
-Each new version gets a few lines in [CHANGELOG.md](../CHANGELOG.md) and a `<release>` entry in
+Each new version gets a few lines in [CHANGELOG.md](../CHANGELOG.md), which become the "What is new" of
+the release notes (the release stops when they are missing), and a `<release>` entry in
 the AppStream metainfo (`desktop/packaging/linux/`). For a minor or major release run `node scripts/bump.mjs minor` (or `major`) before
 committing. A tag `v<version>` starts the Build & Release workflow: it builds every
 download, publishes them as a new release on the
