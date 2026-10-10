@@ -66,6 +66,7 @@ from any program in Leviate for Desktop.
   [Guide](integrations/dentra/)
 
 How it is made, how to run your own copy and how to build it: [docs/development.md](docs/development.md).
+What changed in each version: [CHANGELOG.md](CHANGELOG.md). Help and questions: [SUPPORT.md](SUPPORT.md).
 
 ## Not a medical device
 

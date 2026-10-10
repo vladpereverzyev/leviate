@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use Leviate in your work, please cite it as below."
+title: "Leviate"
+abstract: >-
+  Move 3D models and the mouse with your bare hand, through any webcam or a phone.
+  The hand is tracked on the device and the video never leaves it. Web app, desktop
+  app for Windows, macOS and Linux, Chrome extension and Blender add-on.
+type: software
+authors:
+  - given-names: "Vladyslav"
+    family-names: "Pereverzyev"
+    website: "https://www.vladpereverzyev.com"
+repository-code: "https://github.com/vladpereverzyev/leviate"
+url: "https://vladpereverzyev.github.io/leviate/"
+license: AGPL-3.0-only
+keywords:
+  - hand tracking
+  - gesture control
+  - 3D viewer
+  - webcam
+  - accessibility
+  - MediaPipe
