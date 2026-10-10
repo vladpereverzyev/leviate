@@ -89,6 +89,11 @@
   </keywords>
 
   <releases>
+    <release version="1.3.34" date="2026-10-10">
+      <description>
+        <p>Leviate is on the Snap Store for Ubuntu. Messages of the web app show under the header, and on phones its windows start folded and the demo opens the webcam.</p>
+      </description>
+    </release>
     <release version="1.3.33" date="2026-10-10">
       <description>
         <p>Leviate for Linux also comes as a Flatpak and as a snap. Copies from a store or a package get their updates from there.</p>
