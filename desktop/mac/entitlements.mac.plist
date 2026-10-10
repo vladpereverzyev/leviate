@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- The dmg downloaded from the site: signed with Developer ID, hardened runtime and
+       notarized by Apple (.github/workflows/build.yml). Not sandboxed: the 3D and Mouse modes
+       move the cursor of the other programs. The camera to see the hand. -->
+  <key>com.apple.security.device.camera</key>
+  <true/>
+  <!-- Electron's V8 needs these under the hardened runtime. -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+</dict>
+</plist>
