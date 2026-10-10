@@ -55,7 +55,6 @@ platforms:
 apps:
   leviate:
     command: app/leviate --no-sandbox
-    desktop: meta/gui/leviate.desktop
     extensions: [gnome]
     plugs:
       - camera
