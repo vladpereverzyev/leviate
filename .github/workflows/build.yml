@@ -358,11 +358,12 @@ jobs:
           On Ubuntu and the other Linux systems with snap it is on the **[Snap Store](https://snapcraft.io/leviate)**: \`sudo snap install leviate\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
-          ### Leviate for Chrome
+          ### [Leviate for Chrome](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)
 
-          The same 3D and Mouse modes in the pages of Chrome, from its side panel.
-          Install it from the **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**, or by hand:
-          unzip \`leviate-chrome-${VER}.zip\`, open \`chrome://extensions\`, turn on Developer mode
+          **Install it from the Chrome Web Store: <https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh>**
+
+          The same 3D and Mouse modes in the pages of Chrome, from its side panel. To load it by hand
+          instead, unzip \`leviate-chrome-${VER}.zip\`, open \`chrome://extensions\`, turn on Developer mode
           and press Load unpacked. Guide: [chrome-extension](https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension).
 
           ### Leviate for Blender
