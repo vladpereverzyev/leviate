@@ -103,6 +103,17 @@
       "artifactName": "leviate-${version}-mac-app-store.${ext}",
       "icon": "mas/icon.png",
       "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/@koromix/koffi-*/**"
+    },
+    "appx": {
+      "identityName": "VladyslavPereverzyev.Leviate",
+      "publisher": "CN=F7184246-76F6-4B55-B18C-F2CCDED1319E",
+      "publisherDisplayName": "Vladyslav Pereverzyev",
+      "applicationId": "Leviate",
+      "displayName": "Leviate",
+      "backgroundColor": "transparent",
+      "languages": ["en-US"],
+      "capabilities": ["internetClient", "privateNetworkClientServer", "webcam"],
+      "artifactName": "leviate-${version}-windows-store.${ext}"
     }
   },
   "allowScripts": {

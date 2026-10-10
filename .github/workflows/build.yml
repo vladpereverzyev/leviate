@@ -154,6 +154,37 @@ jobs:
           path: leviate-*-linux-x64.flatpak
           if-no-files-found: error
 
+  # The MSIX package for the Microsoft Store (product 9P3LPW31MJV0). The Store signs it;
+  # it is uploaded by hand in Partner Center, so it is an artifact, not part of the release.
+  microsoft-store:
+    needs: [kind]
+    if: needs.kind.outputs.desktop == 'true'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build the Microsoft Store package
+        run: node scripts/build-desktop.mjs --appx
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: microsoft-store
+          path: dist/desktop/leviate-*-windows-store.appx
+          if-no-files-found: error
+
   # The Linux app as a snap for the Snap Store (snap/snapcraft.yaml). On a release tag it is
   # published to the stable channel, once the SNAPCRAFT_STORE_CREDENTIALS secret is set
   # (snapcraft export-login, from the account that owns the name leviate).
