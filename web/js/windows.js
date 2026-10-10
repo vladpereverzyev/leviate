@@ -179,9 +179,17 @@ export function setupWindows(root = document) {
     });
   }
 
+  // A window opened from elsewhere in the page (Try the demo opens the webcam on a phone).
+  document.addEventListener('leviate:open-window', (e) => {
+    const win = wins.find((w) => w.id === e.detail);
+    if (win && win.classList.contains('collapsed')) toggle(win);
+  });
+
   // Content can change size (files added, settings opened), so restack on phones.
   const observer = new ResizeObserver(() => { if (phone()) stack(); });
   wins.forEach((win) => observer.observe(win));
   window.addEventListener('resize', layout);
   layout();
+  // Shown only now, already folded and in place (the phone CSS hides them until then).
+  wins.forEach((win) => win.classList.add('placed'));
 }

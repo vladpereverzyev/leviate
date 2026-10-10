@@ -654,6 +654,9 @@ section.phone-mode {
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win, #win-cam { width: calc(100vw - 24px); max-width: none; max-height: calc(100dvh - 76px - 130px); }
   .win:not(.collapsed) { z-index: 30; }
+  /* Hidden until js/windows.js has folded and stacked them: before that they showed open
+     for a moment and then closed while the page was loading. */
+  .win:not(.placed) { visibility: hidden; }
   .win-head { padding: 8px 8px 8px 12px; }
   .obj-list { max-height: 30vh; }
   .preview { aspect-ratio: 16 / 10; }

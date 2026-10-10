@@ -589,7 +589,13 @@ for (const id of ['file']) {
     e.target.value = '';
   });
 }
-$('demo').addEventListener('click', loadDemo);
+$('demo').addEventListener('click', () => {
+  loadDemo();
+  // On a phone the webcam opens straight away, ready to start the hand.
+  if (matchMedia('(max-width: 700px)').matches) {
+    document.dispatchEvent(new CustomEvent('leviate:open-window', { detail: 'win-cam' }));
+  }
+});
 $('clear').addEventListener('click', () => {
   for (const it of items.splice(0)) {
     content.remove(it.object);
