@@ -2,7 +2,7 @@
 
 <table>
 <tr>
-<td width="220"><img src="../docs/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200"></td>
+<td width="220"><img src="../docs/images/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200"></td>
 <td valign="middle">
 
 The hand on any program of the computer, with the webcam or the phone. Choose a module in
@@ -80,7 +80,7 @@ other way round.
 
 ## Mouse
 
-![The Mouse poses: open hand moves the cursor, one finger held still clicks left and then double clicks, two fingers click right](../docs/mouse-gestures.png)
+![The Mouse poses: open hand moves the cursor, one finger held still clicks left and then double clicks, two fingers click right](../docs/images/mouse-gestures.png)
 
 | Pose | What it does |
 | --- | --- |

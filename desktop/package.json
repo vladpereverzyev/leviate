@@ -97,11 +97,11 @@
     "mas": {
       "type": "distribution",
       "hardenedRuntime": false,
-      "entitlements": "mas/entitlements.mas.plist",
-      "entitlementsInherit": "mas/entitlements.mas.inherit.plist",
-      "provisioningProfile": "mas/embedded.provisionprofile",
+      "entitlements": "packaging/mas/entitlements.mas.plist",
+      "entitlementsInherit": "packaging/mas/entitlements.mas.inherit.plist",
+      "provisioningProfile": "packaging/mas/embedded.provisionprofile",
       "artifactName": "leviate-${version}-mac-app-store.${ext}",
-      "icon": "mas/icon.png",
+      "icon": "packaging/mas/icon.png",
       "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/@koromix/koffi-*/**"
     },
     "appx": {

@@ -22,7 +22,8 @@ permissions:
   contents: write # needed to create releases
 
 jobs:
-  # On a tag: is it the version of the desktop app or of the Blender add-on?
+  # Checks the syntax of the JavaScript first (every other job waits for this one), then,
+  # on a tag: is it the version of the desktop app or of the Blender add-on?
   kind:
     runs-on: ubuntu-latest
     outputs:
@@ -31,6 +32,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Check the JavaScript
+        run: node --experimental-vm-modules scripts/check.mjs
 
       - name: Which release
         id: kind
@@ -141,8 +150,8 @@ jobs:
           node scripts/build-desktop.mjs
           "-c.mac.identity=${{ steps.devid.outputs.identity }}"
           -c.mac.hardenedRuntime=true
-          -c.mac.entitlements=mac/entitlements.mac.plist
-          -c.mac.entitlementsInherit=mac/entitlements.mac.plist
+          -c.mac.entitlements=packaging/mac/entitlements.mac.plist
+          -c.mac.entitlementsInherit=packaging/mac/entitlements.mac.plist
           -c.mac.notarize=true
 
       - name: Remove the signing secrets from the runner
@@ -161,7 +170,7 @@ jobs:
             dist/desktop/leviate-*.AppImage
           if-no-files-found: error
 
-  # The Linux app as a Flatpak bundle too (desktop/linux/io.github.vladpereverzyev.leviate.yml),
+  # The Linux app as a Flatpak bundle too (desktop/packaging/linux/io.github.vladpereverzyev.leviate.yml),
   # installed with a double click or flatpak install --user leviate-<version>-linux-x64.flatpak.
   flatpak:
     needs: [kind]
@@ -193,7 +202,7 @@ jobs:
       - name: Build the Flatpak bundle
         uses: flathub-infra/flatpak-github-actions/flatpak-builder@master
         with:
-          manifest-path: desktop/linux/io.github.vladpereverzyev.leviate.yml
+          manifest-path: desktop/packaging/linux/io.github.vladpereverzyev.leviate.yml
           bundle: leviate-${{ steps.version.outputs.version }}-linux-x64.flatpak
           cache: false
           upload-artifact: false

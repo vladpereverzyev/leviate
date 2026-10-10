@@ -47,10 +47,10 @@ const mas = process.argv.includes('--mas');
 // --appx: the MSIX package for the Microsoft Store (Windows only), with its tile images.
 // The Store signs it, so it needs no certificate here.
 const appx = process.argv.includes('--appx');
-if (appx) fs.cpSync(path.join(APP, 'appx'), path.join(BUILD, 'appx'), { recursive: true });
+if (appx) fs.cpSync(path.join(APP, 'packaging', 'appx'), path.join(BUILD, 'appx'), { recursive: true });
 // The Store wants a 1024 px icon (512 pt @2x) in the app's .icns: the build icon becomes
-// the 1024 px one of mas/, which also the universal app picks up.
-if (mas) fs.copyFileSync(path.join(APP, 'mas', 'icon.png'), path.join(BUILD, 'icon.png'));
+// the 1024 px one of packaging/mas/, which also the universal app picks up.
+if (mas) fs.copyFileSync(path.join(APP, 'packaging', 'mas', 'icon.png'), path.join(BUILD, 'icon.png'));
 const args = [builder, ...(mas ? ['--mac', 'mas:universal'] : appx ? ['--win', 'appx:x64'] : [platform]), `-c.extraMetadata.version=${version}`, '--publish', 'never'];
 if (process.argv.includes('--dir')) args.push('--dir');
 args.push(...process.argv.slice(2).filter((a) => a.startsWith('-c.')));

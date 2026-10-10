@@ -55,7 +55,7 @@ jobs:
           MAS_PROVISION_PROFILE: ${{ secrets.MAS_PROVISION_PROFILE }}
           APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY }}
         run: |
-          printf '%s' "$MAS_PROVISION_PROFILE" | base64 --decode > desktop/mas/embedded.provisionprofile
+          printf '%s' "$MAS_PROVISION_PROFILE" | base64 --decode > desktop/packaging/mas/embedded.provisionprofile
           mkdir -p ~/.appstoreconnect/private_keys
           printf '%s' "$APPLE_API_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8
 
@@ -115,5 +115,5 @@ jobs:
       - name: Remove the secrets from the runner
         if: always()
         run: |
-          rm -f desktop/mas/embedded.provisionprofile ~/.appstoreconnect/private_keys/*.p8
+          rm -f desktop/packaging/mas/embedded.provisionprofile ~/.appstoreconnect/private_keys/*.p8
           security delete-keychain "$RUNNER_TEMP/mas.keychain" || true

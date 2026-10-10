@@ -2,7 +2,7 @@
 
 [![Build & Release](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml/badge.svg)](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml)
 [![Latest release](https://img.shields.io/github/v/release/vladpereverzyev/leviate?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
-[![Downloads](https://img.shields.io/github/downloads/vladpereverzyev/leviate/total?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
+[![Snap Store](https://img.shields.io/snapcraft/v/leviate/latest/stable?label=snap)](https://snapcraft.io/leviate)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.md)
@@ -11,312 +11,54 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.de.md)
 
-**Provalo subito: <https://vladpereverzyev.github.io/leviate/>**
+Muovi i modelli 3D e il mouse a mano nuda. Alza la mano davanti alla webcam, o al tuo
+telefono, e ruota, sposta e ingrandisci una scansione 3D senza toccare niente: utile quando
+hai le mani occupate, con i guanti o non pulite. La mano viene riconosciuta sul tuo
+dispositivo e il video non viene mai registrato né inviato.
 
-**Scarica per Windows, macOS, Linux e Blender: <https://vladpereverzyev.github.io/leviate/download.html>**
+**Provalo subito nel browser: <https://vladpereverzyev.github.io/leviate/>**
 
-Muovi le scansioni 3D a mani nude. Leviate è un'app web che trasforma qualsiasi webcam,
-su un computer o su un telefono, in un controller a mano per modelli 3D. Apri una
-scansione, alza la mano davanti alla camera e ruotala, spostala o ingrandiscila senza
-toccare niente.
+![Leviate nel browser](docs/images/screenshot.png)
 
-Tutto gira nel browser sulla CPU. Niente da installare, nessun server, nessuna GPU
-richiesta e i tuoi file non lasciano mai il dispositivo.
+## Installa
 
-![Leviate in un browser desktop](docs/screenshot.png)
+| Dove | Come |
+| --- | --- |
+| **Browser** (computer o telefono) | Niente da installare: apri <https://vladpereverzyev.github.io/leviate/> |
+| **Windows** | `leviate-<version>-windows-x64.exe` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| **macOS** (firmato e notarizzato) | `-macos-arm64.dmg` (Apple silicon) o `-macos-x64.dmg` (Intel) dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| **Ubuntu** e Linux con snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
+| **Linux** | `-linux-x64.AppImage` o `-linux-x64.flatpak` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| **Chrome**, Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Blender** 4.2 o successivo | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), oppure in Blender **Get Extensions** cerca Leviate |
+| **Dentra Viewer** | il pannello **Plugin** del Viewer, vedi [integrations/dentra](integrations/dentra/) |
 
-## Funzioni
-
-- **Gesti della mano**: mano aperta per ruotare, pugno per spostare, pollice e indice
-  per lo zoom.
-- **Guanti medicali e da lavoro**: la mano viene riconosciuta anche con guanti in nitrile
-  o lattice, anche blu, viola e neri, e con guanti da lavoro. Niente da attivare.
-- **Qualsiasi webcam**: integrata o USB sul computer, anteriore o posteriore sul telefono.
-- **Il telefono come webcam**: inquadri un codice QR con un iPhone o un Android e la sua
-  camera trasmette al computer. Nessuna app da installare.
-- **Uscita della camera a scelta**: dispositivo, risoluzione (480p, 720p, 1080p),
-  fotogrammi al secondo, camera anteriore o posteriore e specchio. Il pannello mostra
-  quello che la camera fornisce davvero.
-- **Tanti formati 3D**: STL, PLY, OBJ, GLB, GLTF, 3MF, FBX, DAE, 3DS, AMF, VTK, PCD e XYZ.
-- **Più scansioni insieme**: i file caricati insieme tengono le coordinate originali,
-  così arcata superiore e inferiore o le parti di un assieme restano allineate.
-- **Le scansioni restano a colori**: colori per vertice e texture dei PLY, colori per
-  vertice degli OBJ e OBJ con MTL e immagini delle texture.
-- **Strumenti per ogni oggetto**: colore, mostra o nascondi, rimuovi.
-- **Finestre mobili**: file e webcam stanno in finestre separate che puoi spostare
-  e chiudere. Sul telefono si impilano sotto l'intestazione.
-- **Strumenti di vista**: viste frontale, dall'alto, sinistra e destra, wireframe,
-  piatto rotante, screenshot in PNG e schermo intero.
-- **Ruota intorno a qualsiasi punto**: clic con la rotellina (o doppio clic, doppio tocco
-  sul telefono) su un punto del modello e ogni rotazione gira intorno a quel punto.
-  **Reset** torna al centro.
-- **Mouse e touch** funzionano sempre accanto ai gesti.
-- **Blender**: l'add-on Leviate for Blender porta lo stesso controllo con la mano dentro
-  Blender, con la webcam o con il telefono. La mano muove la vista o gli oggetti selezionati.
-- **Chrome**: l'estensione Leviate for Chrome porta i moduli 3D e Mouse dell'app desktop
-  dentro le pagine di Chrome, dal suo pannello laterale.
-- **Dentra Viewer**: il plugin Leviate gira, sposta e ingrandisce i modelli nel Viewer di
-  Dentra, con la webcam o con il telefono.
-- **Completamente offline**: tutte le librerie e il modello della mano sono nel repository.
+Tutti i download, con una guida per ogni sistema: <https://vladpereverzyev.github.io/leviate/download.html>
 
 ## Gesti
 
-![Le tre pose della mano: la mano aperta ruota, il pugno sposta, pollice e indice fanno lo zoom](docs/gestures.png)
+![Le tre pose della mano: mano aperta ruota, pugno sposta, pollice e indice ingrandiscono](docs/images/gestures.png)
 
-I disegni mostrano i 21 punti della mano che l'app segue e disegna sopra l'anteprima
-della webcam, negli stessi colori che usa per ogni gesto.
-
-| Posa della mano | Azione |
-| --- | --- |
-| Mano aperta (quattro o cinque dita fuori) | Muovi la mano per **ruotare** il modello |
-| Pugno | Muovi la mano per **spostare** il modello nello spazio |
-| Pollice e indice fuori, le altre dita chiuse | Apri le due dita per **ingrandire** e chiudile per **rimpicciolire** |
-
-Lo zoom misura la distanza tra pollice e indice rispetto alla grandezza del palmo,
-quindi avvicinare la mano alla camera non fa zoom da solo. Quando passi da una posa
-all'altra il modello non salta, perché ogni gesto riparte da dove si era fermato
-il precedente.
-
-La sensibilità di ogni gesto e la quantità di smussatura si regolano nella sezione
-**Gestures** del pannello. Le impostazioni restano salvate nel browser.
-
-## Per iniziare
-
-Apri **<https://vladpereverzyev.github.io/leviate/>** in Chrome, Edge, Safari o Firefox,
-carica uno o più file 3D e premi **Start** nella finestra Webcam. Tutto qui: niente da
-installare, nessun account. Dopo la prima visita tutto quello che serve all'app è già
-nel browser.
-
-### Sul telefono
-
-<table>
-<tr>
-<td width="220"><img src="docs/screenshot-phone.png" alt="Leviate su un telefono" width="200"></td>
-<td valign="middle">
-
-Apri lo stesso link sul telefono e funziona tutto anche lì:
-
-- **File**: scegli le scansioni dall'app File, da iCloud Drive o da Google Drive.
-- **Gesti**: la camera anteriore guarda la tua mano mentre guardi lo schermo.
-- **Finestre**: Files e Webcam si impilano sotto l'intestazione e se ne apre una alla
-  volta. Tocca un titolo per aprirla o chiuderla.
-- **Touch**: trascina con un dito per ruotare, con due dita per spostare, pizzica
-  per lo zoom.
-- **Barra degli strumenti**: viste e strumenti restano in basso, a un tocco.
-
-Per usare il telefono solo come camera di un computer, vedi
-[Usa il telefono come webcam](#usa-il-telefono-come-webcam).
-
-</td>
-</tr>
-</table>
-
-### Una copia tutta tua
-
-Leviate è un sito statico, quindi qualsiasi server web lo può ospitare. I browser non
-caricano moduli JavaScript o WebAssembly da `file://`, quindi servi la cartella in HTTP:
-
-```sh
-git clone https://github.com/vladpereverzyev/leviate.git
-cd leviate
-node scripts/build-web.mjs
-python -m http.server 8000 --directory dist/web
-```
-
-Poi apri l'indirizzo che stampa il server. I telefoni hanno bisogno di un indirizzo
-`https` per aprire la camera, quindi pubblica la tua copia su un hosting HTTPS come
-GitHub Pages, Netlify o Cloudflare Pages.
-
-## Usa il telefono come webcam
-
-Qualsiasi iPhone o Android può fare da camera a Leviate aperto su un computer.
-Niente da installare su nessuno dei due. Collega il telefono e il computer alla stessa
-rete Wi-Fi.
-
-<table>
-<tr>
-<td width="260"><img src="docs/phone-qr.png" alt="Finestra Webcam con il codice QR per collegare il telefono" width="240"></td>
-<td valign="middle">
-
-1. Sul computer apri la finestra **Webcam** e premi **Use phone**.
-   Nell'anteprima compare un codice QR.
-2. Inquadralo con la camera del telefono. Leviate si apre in Safari o Chrome sul telefono.
-3. Tocca **Start camera** e consenti la camera. Parte con la camera anteriore;
-   **Flip** passa a quella posteriore.
-4. Il video del telefono compare nella finestra Webcam e i gesti funzionano come con
-   una webcam normale.
-
-</td>
-</tr>
-</table>
-
-Tieni aperta la pagina sul telefono mentre lo usi. Premi **Disconnect phone** sul
-computer per chiudere la sessione. **Stop** sul telefono la mette in pausa: il computer
-mostra di nuovo lo stesso codice QR e **Start camera** sul telefono si ricollega, senza
-inquadrarlo di nuovo. Se il collegamento si perde e il computer mostra un codice nuovo,
-**Scan QR code** nella pagina del telefono lo legge direttamente lì. Un clic sul codice QR
-copia il link di collegamento, comodo quando vuoi mandarlo al telefono in un altro modo.
-
-Come funziona: i due dispositivi si collegano con WebRTC. Il server gratuito
-[PeerJS](https://peerjs.com) li presenta soltanto e passa i dati di connessione; il
-video va dritto dal telefono al computer, cifrato. Se entrambi sono su reti che
-bloccano il collegamento diretto, il video passa da un server TURN di PeerJS, sempre
-cifrato. Il codice QR punta sempre a una pagina `https`, perché un telefono apre la
-camera solo lì. Una copia che gira sul tuo computer si collega attraverso
-<https://vladpereverzyev.github.io/leviate/>.
-
-## Usalo in Blender
-
-**Leviate for Blender** porta il controllo con la mano dentro Blender: la webcam e il
-tracciamento della mano girano in Blender stesso, senza browser.
-
-1. Scarica lo zip per il tuo sistema dalla [pagina download](https://vladpereverzyev.github.io/leviate/download.html#blender):
-   `leviate-blender-<versione>-windows-x64.zip`, `-macos-arm64.zip` o `-linux-x64.zip`.
-   Trascinalo in Blender 4.2 o successivo. Oppure prendilo dalla piattaforma ufficiale
-   Blender Extensions: <https://extensions.blender.org/add-ons/leviate/> (in Blender **Get Extensions**, cerca Leviate).
-2. Nella vista 3D premi **N** e apri la scheda **Leviate**. Scegli **This computer** per
-   la webcam o **Phone**, poi premi **Start camera**. Con **Phone** compare un codice QR:
-   inquadralo e tocca **Start camera** sul telefono, senza installare app.
-3. La mano aperta ruota, il pugno sposta, il pizzico fa lo zoom. **Move** sceglie la vista
-   o gli oggetti selezionati.
-
-Nell'angolo della vista 3D compare una piccola anteprima della camera con i punti della
-mano. Il video non viene mai registrato: la webcam resta in Blender, il telefono manda il
-suo video direttamente a Blender. Guida completa in
-[integrations/blender](integrations/blender/).
-
-## Leviate for Desktop
-
-<table>
-<tr>
-<td width="220"><img src="docs/screenshot-desktop.png" alt="Leviate for Desktop con il modulo 3D" width="200"></td>
-<td valign="middle">
-
-**Leviate for Desktop** porta la mano su qualsiasi programma del computer, con la webcam o con il
-telefono (codice QR, come nell'app web). Ha due moduli:
-
-- **3D**: i gesti dell'app web nel tuo programma 3D. La mano aperta ruota, il pugno sposta,
-  il pizzico fa zoom sulla vista sotto il cursore. Scegli il tuo programma in Program
-  (CAD dentale di serie, Blender, SketchUp, SOLIDWORKS, Fusion, Rhino e altri) o imposta tu
-  i tasti.
-- **Mouse**: la mano aperta sposta il cursore, un dito fermo per un momento fa clic
-  sinistro (tenuto ancora fermo, un secondo cerchio lo fa diventare doppio clic), due dita
-  ferme fanno clic destro.
-
-</td>
-</tr>
-</table>
-
-Scaricala dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest): `leviate-<versione>-windows-x64.exe`,
-`-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) o `-linux-x64.AppImage`.
-Su Ubuntu e sugli altri sistemi Linux con snap si installa dallo **[Snap Store](https://snapcraft.io/leviate)**:
-`sudo snap install leviate`.
-Guida completa in [desktop](desktop/) (in inglese).
-
-![Le pose del modulo Mouse: mano aperta sposta il cursore, un dito fermo fa clic sinistro e poi doppio clic, due dita clic destro](docs/mouse-gestures.png)
-
-## Usalo in Chrome
-
-**Leviate for Chrome** porta i moduli 3D e Mouse di Leviate for Desktop dentro le pagine di
-Chrome, Edge e degli altri browser basati su Chrome. Clicca la sua icona: si apre il pannello
-laterale con la webcam (o **Use phone**) e i modi Off, 3D e Mouse. In **3D** la mano gira,
-sposta e ingrandisce il viewer 3D sotto il mouse; in **Mouse** muove un cursore blu nella
-pagina e clicca. **Alt+Shift+M** accende o spegne la mano da qualsiasi pagina.
-
-Installala dal **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. Per caricarla a mano, scarica invece
-`leviate-chrome-<versione>.zip` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest), scompattalo, apri `chrome://extensions`,
-attiva **Modalità sviluppatore** e premi **Carica estensione non pacchettizzata**. Guida completa in [integrations/chrome-extension](integrations/chrome-extension/).
-
-## Usalo in Dentra Viewer
-
-**Leviate for Dentra Viewer** è un plugin per il Viewer di [Dentra](https://dentra.it): mano
-aperta gira, pugno sposta, pizzico ingrandisce i modelli, con la webcam o con il telefono.
-Accendilo nel pannello **Plugin** del Viewer e premi **Avvia**. Guida completa in
-[integrations/dentra](integrations/dentra/).
-
-## File supportati
-
-| Formato | Colori | Note |
+| Posa della mano | Vista 3D | Mouse (Leviate for Desktop e Chrome) |
 | --- | --- | --- |
-| STL | un colore a tua scelta | le normali vengono ricostruite al caricamento |
-| PLY | colori per vertice o texture | per una texture carica l'immagine insieme al PLY (`comment TextureFile` nell'intestazione); un PLY senza facce si vede come nuvola di punti |
-| OBJ | colori per vertice o MTL con texture | carica l'`.obj` insieme al suo `.mtl` e alle immagini |
-| GLB, GLTF | materiali e texture propri | compressione Draco e meshoptimizer supportata; per i `.gltf` aggiungi il `.bin` e le immagini |
-| 3MF | colori propri | |
-| FBX, DAE, 3DS | materiali e texture propri | aggiungi le immagini delle texture al file |
-| AMF | colori propri | |
-| VTK, VTP | colori per vertice | |
-| PCD, XYZ | colori dei punti | si vedono come nuvole di punti |
+| Mano aperta | **ruota** | **muove** il cursore |
+| Pugno | **sposta** |  |
+| Pollice e indice | apri per **ingrandire**, chiudi per **rimpicciolire** |  |
+| Un dito fermo |  | **clic sinistro**, tienilo fermo per il **doppio clic** |
+| Due dita ferme |  | **clic destro** |
 
-Seleziona o trascina tutti i file di una scansione nello stesso momento. Se manca una
-texture o un file collegato l'app ti dice quale.
+Funziona anche con i guanti, nitrile e lattice di ogni colore. **Ctrl+Alt+M** (Ctrl+Option+M su macOS) spegne e riaccende la mano da qualsiasi programma in Leviate for Desktop.
 
-## Come funziona
+## Cosa contiene
 
-1. **Camera**: `getUserMedia` apre la webcam scelta con la risoluzione e i fotogrammi
-   al secondo richiesti.
-2. **Tracciamento della mano**: [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
-   gira in WebAssembly con il delegato CPU (XNNPACK) e restituisce 21 punti della mano
-   per ogni nuovo fotogramma. Gira in un Web Worker (`shared/js/hand-worker.js`), così la vista
-   3D non lo aspetta mai; i browser senza module worker ripiegano sul thread principale.
-3. **Posa**: `shared/js/gestures.js` controlla quali dita sono distese confrontando la
-   direzione di ogni punta con la direzione del palmo e ne ricava una delle tre pose.
-   Una posa deve restare stabile per qualche fotogramma prima di attivarsi, così non
-   sfarfalla.
-4. **Movimento**: il centro del palmo viene smussato e il suo spostamento tra un
-   fotogramma e l'altro diventa rotazione o spostamento. Per lo zoom si segue nel
-   tempo il rapporto tra la distanza pollice indice e la grandezza del palmo.
-5. **Rendering**: [three.js](https://threejs.org) disegna le scansioni con WebGL.
-   La rotazione segue gli assi dello schermo, quindi muovere la mano a destra gira
-   sempre il modello a destra, qualunque sia la vista.
+- **App web**: apre STL, PLY, OBJ, GLB, GLTF, 3MF, FBX e altri, più scansioni insieme e a colori, su computer o telefono. [Guida](docs/guide.md) (in inglese)
+- **Il telefono come webcam**: inquadra un codice QR, nessuna app da installare. [Come funziona](docs/guide.md#use-your-phone-as-a-webcam)
+- **Leviate for Desktop**: la mano su qualsiasi programma, con un modulo **3D** per il tuo programma 3D o CAD e un modulo **Mouse**. [Guida](desktop/)
+- **Leviate for Chrome**: le modalità 3D e Mouse dentro le pagine del browser. [Guida](integrations/chrome-extension/)
+- **Leviate for Blender**: la vista o gli oggetti selezionati seguono la tua mano. [Guida](integrations/blender/)
+- **Leviate for Dentra Viewer**: ruota, sposta e ingrandisce i modelli del Viewer. [Guida](integrations/dentra/)
 
-## Struttura del progetto
-
-| Percorso | A cosa serve |
-| --- | --- |
-| `web/` | Solo il sito: pagine, stile, l'app web, three.js, icone, immagini, sitemap |
-| `web/index.html` | Layout: scena, oggetti, webcam, gesti e pannelli di vista |
-| `web/css/style.css` | Stili per desktop e telefono |
-| `web/js/app.js` | Scena, caricamento dei file, camera, ciclo di tracciamento e interfaccia |
-| `web/js/windows.js` | Finestre mobili: trascinamento, chiusura, layout per telefono |
-| `web/vendor/three/` | three.js, i suoi loader e decoder (MIT, Draco Apache-2.0) |
-| `web/icons/`, `web/site.webmanifest` | Icone dell'app per browser, iOS e Android |
-| `web/img/` | Immagini del sito: disegni dei gesti, screenshot, immagine per i social |
-| `shared/` | Ciò che sito, app desktop e Blender condividono: tracciamento della mano, gesti, collegamento del telefono, MediaPipe, PeerJS, font, modello della mano, versione |
-| `shared/js/gestures.js` | Riconoscimento delle pose e movimento (niente DOM, facile da testare) |
-| `shared/js/version.js` | Versione attuale, mostrata nell'app |
-| `shared/js/hand-worker.js` | Tracciamento della mano in un Web Worker, fuori dal thread principale |
-| `shared/js/phone.js` | Telefono come webcam: collegamento con QR sul computer, pagina camera sul telefono |
-| `shared/vendor/peerjs/`, `shared/vendor/qrcode/` | Collegamento WebRTC e generatore di codici QR (MIT) |
-| `shared/vendor/fonts/` | Font Jost (SIL OFL 1.1) |
-| `shared/vendor/mediapipe/` | MediaPipe Tasks Vision e il suo runtime WebAssembly (Apache-2.0) |
-| `shared/models/hand_landmarker.task` | Modello della mano di MediaPipe (Apache-2.0) |
-| `desktop/` | Leviate for Desktop (Electron): la mano su qualsiasi programma, moduli 3D e Mouse |
-| `integrations/` | Add-on che portano il controllo con la mano dentro altri programmi (Blender, Chrome, Dentra Viewer) |
-| `docs/` | Screenshot, finestra QR e disegni dei gesti usati in questo README |
-| `scripts/build-web.mjs` | Unisce `web/` e `shared/` in `dist/web/`, pubblicata su GitHub Pages da `.github/workflows/pages.yml` |
-| `scripts/bump.mjs` | Alza la versione (patch, minor o major) |
-| `scripts/build-blender.py` | Crea lo zip dell'add-on per Blender |
-| `scripts/build-chrome.mjs` | Crea lo zip dell'estensione per Chrome |
-| `scripts/build-dentra.mjs` | Crea lo zip del plugin per Dentra Viewer |
-| `scripts/build-desktop.mjs` | Crea l'app desktop per Windows, macOS o Linux |
-
-## Versioni
-
-La versione si vede accanto al nome nell'app e sta in `shared/js/version.js`. Segue il
-[versionamento semantico](https://semver.org) e cresce a ogni commit: l'hook
-pre-commit in `.githooks/` alza da solo il numero di patch. Attivalo una volta dopo
-il clone:
-
-```sh
-git config core.hooksPath .githooks
-```
-
-Per una release minor o major lancia `node scripts/bump.mjs minor` (o `major`) prima
-del commit. Un tag `v<versione>` avvia il workflow Build & Release: crea gli zip delle
-integrazioni e li pubblica in una nuova release nella
-[pagina delle release](https://github.com/vladpereverzyev/leviate/releases). L'app web
-non è nella release, gira sempre dal link in cima.
+Come è fatto, come avviare una tua copia e come compilarlo: [docs/development.md](docs/development.md) (in inglese).
 
 ## Non è un dispositivo medico
 
@@ -335,7 +77,7 @@ computer allo stesso modo. Tutti i dettagli nella [privacy policy](https://vladp
 ## Uso dell'IA
 
 Parti di Leviate, del suo codice, della documentazione e dei pacchetti per gli store (tra cui i
-file Linux in `desktop/linux/`: la voce desktop, il metainfo AppStream e il manifest Flatpak, e la ricetta dello snap in `snap/`)
+file Linux in `desktop/packaging/linux/`: la voce desktop, il metainfo AppStream e il manifest Flatpak, e la ricetta dello snap in `snap/`)
 sono state scritte con l'aiuto di strumenti di intelligenza artificiale generativa. Ogni parte è
 stata rivista, provata ed è mantenuta dall'autore, che ne è responsabile.
 
@@ -343,26 +85,11 @@ stata rivista, provata ed è mantenuta dall'autore, che ne è responsabile.
 
 Issue e pull request sono benvenute. Leggi prima [CONTRIBUTING.md](CONTRIBUTING.md)
 e il [Codice di condotta](CODE_OF_CONDUCT.md). Ogni contributo richiede il
-[Contributor License Agreement](CLA.md): il bot CLA Assistant ti chiede di firmarlo
-con un commento sulla tua prima pull request.
-
-### Porta Leviate nel tuo CAD
-
-Le integrazioni per altri programmi CAD e 3D sono il contributo più gradito: FreeCAD,
-Rhino, Fusion, SolidWorks, Inventor, SketchUp, software CAD dentale con un'API aperta e
-qualsiasi programma che si possa programmare con script. Blender apre la strada. Le
-regole per le integrazioni:
-
-1. Una cartella per programma in `integrations/<programma>/` con sorgente, README e LICENSE.
-2. Gli stessi gesti ovunque: riusa il tracciamento della mano di Leviate for Blender
-   (`gestures.py` e il modello MediaPipe), vedi [integrations/README.md](integrations/README.md).
-3. Solo in locale: la camera viene letta sul computer, niente registrato o inviato, nessun tracciamento.
-4. Leggere: usa gli script e il sistema di add-on del programma, evita installazioni in più.
-5. Licenza: quella che chiede il programma (gli add-on di Blender sono GPL-3.0-or-later),
-   altrimenti AGPL-3.0. Vale il CLA.
-6. Nome: "Leviate for <Programma>", non fatto né approvato dal proprietario del programma.
-7. Ogni integrazione viene creata come zip dal workflow Build & Release e allegata alla
-   release.
+[Contributor License Agreement](CLA.md): il bot CLA Assistant ti chiede di firmarlo con un
+commento sulla tua prima pull request. Le integrazioni per altri programmi CAD e 3D sono le
+più gradite: vedi [Bring Leviate to your CAD](docs/development.md#bring-leviate-to-your-cad).
+I problemi di sicurezza vanno segnalati come spiega la [security policy](SECURITY.md), non in
+una issue pubblica.
 
 ## Supporto
 

@@ -1,0 +1,13 @@
+# Tells when an action of the workflows or a package of Leviate for Desktop has a new
+# version, with a pull request to review. Once a month, so it stays quiet.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    directory: /desktop
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3

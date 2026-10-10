@@ -1,0 +1,16 @@
+name: Feature request
+description: An idea to make Leviate better, or a program it should work with
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What should Leviate do, and in which part (web app, Desktop, Chrome, Blender, Dentra Viewer)?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: The work it would help with, for example a 3D or CAD program you use.

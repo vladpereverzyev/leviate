@@ -1,0 +1,52 @@
+name: Bug report
+description: Something in Leviate does not work as it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. For a security problem do not open an issue: follow the
+        [security policy](https://github.com/vladpereverzyev/leviate/security/policy).
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part of Leviate
+      options:
+        - Web app (browser)
+        - Leviate for Desktop
+        - Leviate for Chrome
+        - Leviate for Blender
+        - Leviate for Dentra Viewer
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Shown next to the name in the app, for example 1.3.35.
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: System and browser
+      description: For example Windows 11 and Chrome 141, macOS 26, Ubuntu 24.04 (X11 or Wayland), iPhone with Safari.
+    validations:
+      required: true
+  - type: input
+    id: camera
+    attributes:
+      label: Camera
+      description: Built-in webcam, USB webcam (which one) or phone as a webcam.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: more
+    attributes:
+      label: Screenshots or files
+      description: A screenshot, a short video, or a sample 3D file that shows the problem. Do not attach patient data.
