@@ -326,6 +326,25 @@ uploaded, there is no tracking and no account. The only outside services are the
 details but never the video. Leviate for Chrome and the Dentra plugin keep the video on the
 computer in the same way. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 
+## Code signing policy
+
+Windows: free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by
+[SignPath Foundation](https://signpath.org/). Only the installer built by the
+[Build & Release](.github/workflows/build.yml) workflow of this repository from its source code
+is signed, and every release is approved by hand before it is signed.
+
+- Committers and reviewers: [Vladyslav Pereverzyev](https://github.com/vladpereverzyev)
+- Approvers: [Vladyslav Pereverzyev](https://github.com/vladpereverzyev)
+
+Privacy: this program will not transfer any information to other networked systems unless
+specifically requested by the user or the person installing or operating it. **Use phone** goes
+through the PeerJS broker and a STUN server of Google only when the user turns it on, and the check
+for new versions asks GitHub and can be turned off in the settings. See the
+[privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
+
+macOS: the dmg is signed with the Developer ID of the author and notarized by Apple. The copies
+from the Mac App Store, the Microsoft Store and the Snap Store are signed by those stores.
+
 ## Use of AI
 
 Parts of Leviate, its code, its documentation and its packaging for the app stores (among them
