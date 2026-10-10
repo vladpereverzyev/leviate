@@ -329,7 +329,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Download the builds
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
@@ -403,7 +403,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Download the zips
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: integrations
           path: dist
