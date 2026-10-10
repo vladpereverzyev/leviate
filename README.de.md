@@ -224,8 +224,8 @@ In **3D** dreht, verschiebt und zoomt die Hand den 3D-Viewer unter der Maus; in 
 bewegt sie einen blauen Cursor auf der Seite und klickt. **Alt+Shift+M** schaltet die Hand
 auf jeder Seite ein oder aus.
 
-Bis sie im Chrome Web Store ist, lade `leviate-chrome-<Version>.zip` aus dem
-[neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest), entpacke es, öffne `chrome://extensions`, schalte den
+Installiere sie aus dem **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. Um sie von Hand zu laden, lade
+stattdessen `leviate-chrome-<Version>.zip` aus dem [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest), entpacke es, öffne `chrome://extensions`, schalte den
 **Entwicklermodus** ein und drück **Entpackte Erweiterung laden**. Vollständige Anleitung in
 [integrations/chrome-extension](integrations/chrome-extension/).
 

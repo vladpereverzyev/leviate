@@ -7,7 +7,7 @@ the same gesture rules as the Leviate web app, so the hand behaves the same ever
 | Program | Folder | Status |
 | --- | --- | --- |
 | Blender 4.2 or later | [`blender/`](blender/) | Available, zips on the [download page](https://vladpereverzyev.github.io/leviate/download.html#blender) |
-| Chrome 116 or later | [`chrome-extension/`](chrome-extension/) | 3D and Mouse in the pages of Chrome, load it unpacked until it is on the Chrome Web Store |
+| Chrome 116 or later | [`chrome-extension/`](chrome-extension/) | 3D and Mouse in the pages of Chrome, from the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
 | Dentra Viewer | [`dentra/`](dentra/) | Plugin for the Viewer of Dentra, turned on from its Plugin panel |
 
 Your program is not in the list? Build its integration. The pieces below are all it

@@ -15,7 +15,10 @@ Windows, macOS, Linux and ChromeOS.
 
 ## Install
 
-Until it is on the Chrome Web Store:
+Install it from the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) and pin Leviate to the toolbar with the
+puzzle icon.
+
+To load it by hand instead (a version not yet on the store, or to try a change):
 
 1. Download `leviate-chrome-<version>.zip` from the
    [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) and unzip it.

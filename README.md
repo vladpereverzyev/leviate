@@ -214,9 +214,9 @@ with the webcam (or **Use phone**) and the modes Off, 3D and Mouse. In **3D** th
 pans and zooms the 3D viewer under the mouse; in **Mouse** it moves a blue cursor in the page
 and clicks. **Alt+Shift+M** turns the hand on or off from any page.
 
-Until it is on the Chrome Web Store, download `leviate-chrome-<version>.zip` from the
-[latest release](https://github.com/vladpereverzyev/leviate/releases/latest), unzip it, open `chrome://extensions`, turn on **Developer mode**
-and press **Load unpacked**. Full guide in [integrations/chrome-extension](integrations/chrome-extension/).
+Install it from the **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. To load it by hand instead, download
+`leviate-chrome-<version>.zip` from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest), unzip it, open `chrome://extensions`,
+turn on **Developer mode** and press **Load unpacked**. Full guide in [integrations/chrome-extension](integrations/chrome-extension/).
 
 ## Use it in Dentra Viewer
 

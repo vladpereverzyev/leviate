@@ -221,9 +221,9 @@ laterale con la webcam (o **Use phone**) e i modi Off, 3D e Mouse. In **3D** la 
 sposta e ingrandisce il viewer 3D sotto il mouse; in **Mouse** muove un cursore blu nella
 pagina e clicca. **Alt+Shift+M** accende o spegne la mano da qualsiasi pagina.
 
-Finché non è sul Chrome Web Store, scarica `leviate-chrome-<versione>.zip` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest),
-scompattalo, apri `chrome://extensions`, attiva **Modalità sviluppatore** e premi **Carica
-estensione non pacchettizzata**. Guida completa in [integrations/chrome-extension](integrations/chrome-extension/).
+Installala dal **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. Per caricarla a mano, scarica invece
+`leviate-chrome-<versione>.zip` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest), scompattalo, apri `chrome://extensions`,
+attiva **Modalità sviluppatore** e premi **Carica estensione non pacchettizzata**. Guida completa in [integrations/chrome-extension](integrations/chrome-extension/).
 
 ## Usalo in Dentra Viewer
 

@@ -224,8 +224,8 @@ panel lateral con la webcam (o **Use phone**) y los modos Off, 3D y Mouse. En **
 gira, mueve y acerca el visor 3D bajo el ratón; en **Mouse** mueve un cursor azul en la
 página y hace clic. **Alt+Shift+M** enciende o apaga la mano desde cualquier página.
 
-Hasta que esté en la Chrome Web Store, descarga `leviate-chrome-<versión>.zip` de la
-[última versión](https://github.com/vladpereverzyev/leviate/releases/latest), descomprímelo, abre `chrome://extensions`, activa el **Modo de
+Instálala desde la **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. Para cargarla a mano, descarga en su lugar
+`leviate-chrome-<versión>.zip` de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest), descomprímelo, abre `chrome://extensions`, activa el **Modo de
 desarrollador** y pulsa **Cargar descomprimida**. Guía completa en [integrations/chrome-extension](integrations/chrome-extension/).
 
 ## Úsalo en Dentra Viewer

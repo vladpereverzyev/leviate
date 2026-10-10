@@ -230,8 +230,8 @@ panneau latéral s'ouvre avec la webcam (ou **Use phone**) et les modes Off, 3D 
 déplace un curseur bleu dans la page et clique. **Alt+Shift+M** active ou désactive la main
 depuis n'importe quelle page.
 
-En attendant le Chrome Web Store, téléchargez `leviate-chrome-<version>.zip` depuis la
-[dernière version](https://github.com/vladpereverzyev/leviate/releases/latest), décompressez-le, ouvrez `chrome://extensions`, activez le **Mode
+Installez-la depuis le **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**. Pour la charger à la main, téléchargez
+plutôt `leviate-chrome-<version>.zip` depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest), décompressez-le, ouvrez `chrome://extensions`, activez le **Mode
 développeur** et appuyez sur **Charger l'extension non empaquetée**. Guide complet dans
 [integrations/chrome-extension](integrations/chrome-extension/).
 
