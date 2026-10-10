@@ -338,7 +338,7 @@ el ordenador de la misma forma. Todos los detalles en la [política de privacida
 
 Partes de Leviate, de su código, de su documentación y de sus paquetes para las tiendas de
 aplicaciones (entre ellas los archivos de Linux de `desktop/linux/`: la entrada de escritorio, el
-metainfo de AppStream y el manifiesto de Flatpak) se escribieron con la ayuda de herramientas de
+metainfo de AppStream y el manifiesto de Flatpak, y la receta del snap en `snap/`) se escribieron con la ayuda de herramientas de
 IA generativa. Cada parte fue revisada y probada por el autor, que la mantiene y es responsable
 de ella.
 

@@ -339,7 +339,7 @@ genauso auf dem Computer. Alle Details in der [Datenschutzerklärung](https://vl
 
 Teile von Leviate, seines Codes, seiner Dokumentation und seiner Pakete für die App-Stores
 (darunter die Linux-Dateien in `desktop/linux/`: der Desktop-Eintrag, die AppStream-Metainfo und
-das Flatpak-Manifest) wurden mit Hilfe von Werkzeugen generativer KI geschrieben. Jeder Teil
+das Flatpak-Manifest sowie das Snap-Rezept in `snap/`) wurden mit Hilfe von Werkzeugen generativer KI geschrieben. Jeder Teil
 wurde vom Autor geprüft und getestet, der ihn pflegt und dafür verantwortlich ist.
 
 ## Mitwirken

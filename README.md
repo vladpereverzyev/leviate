@@ -328,7 +328,7 @@ computer in the same way. Full details in the [privacy policy](https://vladperev
 
 Parts of Leviate, its code, its documentation and its packaging for the app stores (among them
 the Linux files in `desktop/linux/`: the desktop entry, the AppStream metainfo and the Flatpak
-manifest), were written with the help of generative AI tools. Every part was reviewed, tried
+manifest, and the snap recipe in `snap/`), were written with the help of generative AI tools. Every part was reviewed, tried
 and is maintained by the author, who is responsible for it.
 
 ## Contributing

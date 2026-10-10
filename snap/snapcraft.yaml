@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Vladyslav Pereverzyev
+#
+# Leviate for Desktop as a snap for the Snap Store (Ubuntu). It packs the Linux app that
+# scripts/build-desktop.mjs --dir builds first, then:
+#
+#   node scripts/build-desktop.mjs --dir
+#   snapcraft pack
+#
+# The camera to see the hand, the network for the phone pairing, X11 because the Mouse
+# module moves the cursor with XTest (Wayland does not allow it). This file and the ones in
+# snap/gui/ were written with the help of generative AI tools and reviewed by the author
+# (see "Use of AI" in the README).
+
+name: leviate
+title: Leviate
+summary: Move 3D programs and the mouse with your hand
+description: |
+  Leviate turns your hand into a controller. Raise your hand in front of the webcam and
+  work without touching the mouse: useful when your hands are busy, gloved or not clean,
+  in dental and medical labs, workshops and presentations.
+
+  Two modules, one click to switch:
+
+  * 3D: the open hand turns, the fist pans and thumb and index zoom the 3D view of the
+    program under the cursor. Leviate presses the mouse buttons that program uses, or the
+    buttons you set yourself.
+  * Mouse: the open hand moves the cursor. Hold one finger still for a left click and keep
+    holding for a double click; two fingers make a right click.
+
+  Ctrl+Alt+M turns the hand on and off from any program. A phone can be the camera too:
+  scan the QR code and keep both devices on the same Wi-Fi.
+
+  The hand is tracked on your computer. The video is never recorded or sent anywhere.
+  There are no accounts, no analytics and no advertising.
+
+  Moving the cursor and pressing the buttons of other programs works in an X11 session.
+  Wayland does not let applications move the system cursor, so there the hand only reaches
+  programs that run through XWayland.
+adopt-info: leviate
+license: AGPL-3.0-only
+icon: snap/gui/leviate.svg
+website: https://vladpereverzyev.github.io/leviate/
+source-code: https://github.com/vladpereverzyev/leviate
+issues: https://github.com/vladpereverzyev/leviate/issues
+donation: https://ko-fi.com/vladpereverzyev
+contact: info@vladpereverzyev.com
+
+base: core24
+grade: stable
+confinement: strict
+platforms:
+  amd64:
+
+apps:
+  leviate:
+    command: leviate/leviate --no-sandbox
+    desktop: meta/gui/leviate.desktop
+    extensions: [gnome]
+    plugs:
+      - camera
+      - network
+      - x11
+      - browser-support
+    environment:
+      # Electron under X11 (XWayland on a Wayland session): the Mouse module needs XTest.
+      ELECTRON_OZONE_PLATFORM_HINT: x11
+
+parts:
+  leviate:
+    plugin: dump
+    source: dist/desktop/linux-unpacked
+    organize:
+      '*': leviate/
+    # Chromium's setuid sandbox cannot be used in a snap: the app runs with --no-sandbox
+    # inside the snap confinement.
+    prime:
+      - -leviate/chrome-sandbox
+    stage-packages:
+      - libnss3
+      - libnspr4
+      - libxss1
+      - libxtst6
+      - libasound2t64
+    override-pull: |
+      craftctl default
+      craftctl set version="$(grep -oP "VERSION = '\K[0-9.]+" "$CRAFT_PROJECT_DIR/shared/js/version.js")"

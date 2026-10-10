@@ -347,11 +347,11 @@ ipcMain.on('mouse:flash', (e, mode) => {
   ringHide = setTimeout(() => { ringHide = null; showRing(false); }, 380);
 });
 
-// Copies a store brings and updates: the Mac App Store (process.mas) and Flathub (a
-// Flatpak has /.flatpak-info). Neither has the updater; the Mac App Store copy also
-// leaves out the Ko-fi links, which that Store does not allow.
+// Copies a package or a store brings and updates: the Mac App Store (process.mas), a
+// Flatpak (it has /.flatpak-info) and a snap (SNAP is set). None has the updater; the Mac
+// App Store copy also leaves out the Ko-fi links, which that Store does not allow.
 const MAC_STORE = process.mas === true;
-const FROM_STORE = MAC_STORE || fs.existsSync('/.flatpak-info');
+const FROM_STORE = MAC_STORE || fs.existsSync('/.flatpak-info') || Boolean(process.env.SNAP);
 ipcMain.on('app:store', (e) => { e.returnValue = { store: FROM_STORE, macStore: MAC_STORE }; });
 
 // New versions: the window asks once it is open, if the user did not turn it off.

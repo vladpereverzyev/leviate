@@ -154,6 +154,51 @@ jobs:
           path: leviate-*-linux-x64.flatpak
           if-no-files-found: error
 
+  # The Linux app as a snap for the Snap Store (snap/snapcraft.yaml). On a release tag it is
+  # published to the stable channel, once the SNAPCRAFT_STORE_CREDENTIALS secret is set
+  # (snapcraft export-login, from the account that owns the name leviate).
+  snap:
+    needs: [kind]
+    if: needs.kind.outputs.desktop == 'true'
+    runs-on: ubuntu-latest
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build the Linux app
+        run: node scripts/build-desktop.mjs --dir
+
+      - name: Build the snap
+        id: snap
+        uses: snapcore/action-build@v1
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snap
+          path: ${{ steps.snap.outputs.snap }}
+          if-no-files-found: error
+
+      - name: Publish to the Snap Store
+        if: github.ref_type == 'tag' && env.SNAPCRAFT_STORE_CREDENTIALS != ''
+        uses: snapcore/action-publish@v1
+        with:
+          snap: ${{ steps.snap.outputs.snap }}
+          release: stable
+
   # Leviate for Chrome goes in the release of the app, with its version. The Dentra plugin
   # is built too, to catch mistakes: its zip is uploaded on Dentra, not released here.
   chrome:

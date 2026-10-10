@@ -345,7 +345,7 @@ sur l'ordinateur de la même façon. Tous les détails dans la [politique de con
 
 Des parties de Leviate, de son code, de sa documentation et de ses paquets pour les boutiques
 d'applications (dont les fichiers Linux de `desktop/linux/` : l'entrée de bureau, le metainfo
-AppStream et le manifeste Flatpak) ont été écrites avec l'aide d'outils d'IA générative. Chaque
+AppStream et le manifeste Flatpak, ainsi que la recette du snap dans `snap/`) ont été écrites avec l'aide d'outils d'IA générative. Chaque
 partie a été relue et testée par l'auteur, qui la maintient et en est responsable.
 
 ## Contribuer

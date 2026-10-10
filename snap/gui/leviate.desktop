@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Leviate
+GenericName=Hand Controller
+Comment=Move 3D programs and the mouse with your hand, through the webcam
+Exec=leviate
+Icon=${SNAP}/meta/gui/leviate.svg
+Terminal=false
+Categories=Graphics;3DGraphics;Utility;Accessibility;
+Keywords=hand;gesture;touchless;webcam;mouse;3D;CAD;STL;hands-free;gloves;
+StartupWMClass=Leviate

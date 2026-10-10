@@ -333,7 +333,7 @@ computer allo stesso modo. Tutti i dettagli nella [privacy policy](https://vladp
 ## Uso dell'IA
 
 Parti di Leviate, del suo codice, della documentazione e dei pacchetti per gli store (tra cui i
-file Linux in `desktop/linux/`: la voce desktop, il metainfo AppStream e il manifest Flatpak)
+file Linux in `desktop/linux/`: la voce desktop, il metainfo AppStream e il manifest Flatpak, e la ricetta dello snap in `snap/`)
 sono state scritte con l'aiuto di strumenti di intelligenza artificiale generativa. Ogni parte è
 stata rivista, provata ed è mantenuta dall'autore, che ne è responsabile.
 
