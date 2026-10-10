@@ -291,12 +291,14 @@ jobs:
           cursor, one finger held still is a left click, two fingers a right click.
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\` or \`-linux-x64.flatpak\`.
+          On Ubuntu and the other Linux systems with snap it is on the **[Snap Store](https://snapcraft.io/leviate)**: \`sudo snap install leviate\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
           ### Leviate for Chrome
 
           The same 3D and Mouse modes in the pages of Chrome, from its side panel.
-          Unzip \`leviate-chrome-${VER}.zip\`, open \`chrome://extensions\`, turn on Developer mode
+          Install it from the **[Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)**, or by hand:
+          unzip \`leviate-chrome-${VER}.zip\`, open \`chrome://extensions\`, turn on Developer mode
           and press Load unpacked. Guide: [chrome-extension](https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension).
 
           ### Leviate for Blender

@@ -217,6 +217,8 @@ ou le téléphone (code QR, comme l'app web). Elle a deux modules :
 
 Téléchargez-la depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) : `leviate-<version>-windows-x64.exe`,
 `-macos-arm64.dmg` (Apple silicon), `-macos-x64.dmg` (Intel) ou `-linux-x64.AppImage`.
+Sous Ubuntu et les autres systèmes Linux avec snap, installez-le depuis le **[Snap Store](https://snapcraft.io/leviate)** :
+`sudo snap install leviate`.
 Guide complet dans [desktop](desktop/) (en anglais).
 
 ![Les poses du module Mouse : main ouverte déplace le curseur, un doigt immobile clic gauche puis double clic, deux doigts clic droit](docs/mouse-gestures.png)
