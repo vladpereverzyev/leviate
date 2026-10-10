@@ -54,7 +54,7 @@ platforms:
 
 apps:
   leviate:
-    command: leviate/leviate --no-sandbox
+    command: app/leviate --no-sandbox
     desktop: meta/gui/leviate.desktop
     extensions: [gnome]
     plugs:
@@ -71,17 +71,22 @@ parts:
     plugin: dump
     source: dist/desktop/linux-unpacked
     organize:
-      '*': leviate/
+      '*': app/
     # Chromium's setuid sandbox cannot be used in a snap: the app runs with --no-sandbox
     # inside the snap confinement.
     prime:
-      - -leviate/chrome-sandbox
+      - -app/chrome-sandbox
+    override-pull: |
+      craftctl default
+      craftctl set version="$(grep -oP "VERSION = '\K[0-9.]+" "$CRAFT_PROJECT_DIR/shared/js/version.js")"
+
+  # The system libraries Electron and the Mouse module (XTest) load, in a part of their own
+  # so they stay in usr/lib where the app finds them.
+  libraries:
+    plugin: nil
     stage-packages:
       - libnss3
       - libnspr4
       - libxss1
       - libxtst6
       - libasound2t64
-    override-pull: |
-      craftctl default
-      craftctl set version="$(grep -oP "VERSION = '\K[0-9.]+" "$CRAFT_PROJECT_DIR/shared/js/version.js")"
