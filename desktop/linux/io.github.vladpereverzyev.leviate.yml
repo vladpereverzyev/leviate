@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Vladyslav Pereverzyev
+#
+# Leviate for Desktop as a Flatpak bundle for the releases on GitHub
+# (leviate-<version>-linux-x64.flatpak). It packs the Linux app that
+# scripts/build-desktop.mjs --dir builds first, so it is not a Flathub submission:
+# Flathub builds everything from source and asks for a manifest written by a person.
+#
+#   node scripts/build-desktop.mjs --dir
+#   flatpak-builder --user --install --force-clean build-flatpak desktop/linux/io.github.vladpereverzyev.leviate.yml
+#
+# X11 because the Mouse module moves the cursor with XTest, which Wayland does not allow;
+# the network for the phone pairing; all devices for the webcam.
+
+app-id: io.github.vladpereverzyev.leviate
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '25.08'
+command: leviate
+separate-locales: false
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --share=network
+  - --device=all
+
+modules:
+  - name: leviate
+    buildsystem: simple
+    sources:
+      - type: dir
+        path: ../../dist/desktop/linux-unpacked
+        dest: app
+      - type: file
+        path: io.github.vladpereverzyev.leviate.desktop
+      - type: file
+        path: io.github.vladpereverzyev.leviate.metainfo.xml
+      - type: file
+        path: ../../shared/icons/icon.svg
+      - type: file
+        path: ../../LICENSE
+      - type: script
+        dest-filename: leviate.sh
+        commands:
+          - exec zypak-wrapper /app/leviate/leviate "$@"
+    build-commands:
+      - cp -a app /app/leviate
+      # Chromium's setuid sandbox has no place in a Flatpak: zypak gives it the Flatpak one.
+      - rm -f /app/leviate/chrome-sandbox
+      - install -Dm755 leviate.sh /app/bin/leviate
+      - install -Dm644 io.github.vladpereverzyev.leviate.desktop /app/share/applications/io.github.vladpereverzyev.leviate.desktop
+      - install -Dm644 io.github.vladpereverzyev.leviate.metainfo.xml /app/share/metainfo/io.github.vladpereverzyev.leviate.metainfo.xml
+      - install -Dm644 icon.svg /app/share/icons/hicolor/scalable/apps/io.github.vladpereverzyev.leviate.svg
+      - install -Dm644 LICENSE /app/share/licenses/io.github.vladpereverzyev.leviate/LICENSE

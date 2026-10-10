@@ -110,6 +110,50 @@ jobs:
             dist/desktop/leviate-*.AppImage
           if-no-files-found: error
 
+  # The Linux app as a Flatpak bundle too (desktop/linux/io.github.vladpereverzyev.leviate.yml),
+  # installed with a double click or flatpak install --user leviate-<version>-linux-x64.flatpak.
+  flatpak:
+    needs: [kind]
+    if: needs.kind.outputs.desktop == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
+      options: --privileged
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Install
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build the Linux app
+        run: node scripts/build-desktop.mjs --dir
+
+      - name: Version
+        id: version
+        run: echo "version=$(grep -oP "VERSION = '\K[0-9.]+" shared/js/version.js)" >> "$GITHUB_OUTPUT"
+
+      - name: Build the Flatpak bundle
+        uses: flathub-infra/flatpak-github-actions/flatpak-builder@master
+        with:
+          manifest-path: desktop/linux/io.github.vladpereverzyev.leviate.yml
+          bundle: leviate-${{ steps.version.outputs.version }}-linux-x64.flatpak
+          cache: false
+          upload-artifact: false
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: leviate-*-linux-x64.flatpak
+          if-no-files-found: error
+
   # Leviate for Chrome goes in the release of the app, with its version. The Dentra plugin
   # is built too, to catch mistakes: its zip is uploaded on Dentra, not released here.
   chrome:
@@ -138,7 +182,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [kind, desktop, chrome]
+    needs: [kind, desktop, chrome, flatpak]
     if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -170,7 +214,7 @@ jobs:
           pans, pinch zooms the 3D program under the cursor. **Mouse**: open hand moves the
           cursor, one finger held still is a left click, two fingers a right click.
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS \`-macos-arm64.dmg\` (Apple silicon) or
-          \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\`.
+          \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\` or \`-linux-x64.flatpak\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
           ### Leviate for Chrome
