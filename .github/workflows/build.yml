@@ -447,3 +447,51 @@ jobs:
         run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
         env:
           GH_TOKEN: ${{ github.token }}
+
+  # After a desktop release: Leviate for Chrome to the Chrome Web Store, where it waits for the
+  # review of Google. It runs only after an approval in the environment chrome-web-store, which
+  # alone holds the OAuth credentials (CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN), and
+  # it calls the Chrome Web Store API with curl, no third-party code. Without the secrets the zip
+  # stays in the release, to upload by hand.
+  chrome-web-store:
+    needs: [kind, release]
+    if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
+    runs-on: ubuntu-latest
+    environment: chrome-web-store
+    permissions:
+      contents: read
+    env:
+      HAS_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN != '' }}
+    steps:
+      - name: Download Leviate for Chrome
+        if: env.HAS_TOKEN == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: chrome
+          path: dist
+
+      - name: Upload to the Chrome Web Store and submit it for review
+        if: env.HAS_TOKEN == 'true'
+        env:
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          ITEM: publishers/a0835c06-1b5d-4e4a-b918-e060fe96f98d/items/moipdbapejodmhhmhhngbcehcgngchlh
+        run: |
+          set -euo pipefail
+          zip=$(ls dist/leviate-chrome-*.zip | head -1)
+          token=$(curl -sS --fail-with-body https://oauth2.googleapis.com/token \
+            --data-urlencode "client_id=$CLIENT_ID" --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "refresh_token=$REFRESH_TOKEN" -d grant_type=refresh_token | jq -r .access_token)
+          echo "::add-mask::$token"
+          api=https://chromewebstore.googleapis.com
+          state=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $token" \
+            -H "Content-Type: application/zip" --data-binary "@$zip" "$api/upload/v2/$ITEM:upload" | tee /dev/stderr | jq -r .uploadState)
+          for i in $(seq 30); do
+            [ "$state" = IN_PROGRESS ] || break
+            sleep 10
+            state=$(curl -sS --fail-with-body -H "Authorization: Bearer $token" "$api/v2/$ITEM:fetchStatus" \
+              | tee /dev/stderr | jq -r '.lastAsyncUploadState // .uploadState')
+          done
+          [ "$state" = SUCCEEDED ] || { echo "Upload of $zip: $state"; exit 1; }
+          curl -sS --fail-with-body -X POST -H "Authorization: Bearer $token" "$api/v2/$ITEM:publish"
