@@ -496,6 +496,7 @@ function loadDemo() {
   refit();
   resetView();
   renderList();
+  maybeShowGestures();
 }
 
 function disposeObject(object) {
@@ -579,6 +580,7 @@ function toast(title, ms = 3000, sub = '') {
   const el = $('toast');
   clearTimeout(toastTimer);
   if (!title) { hideToast(); return; }
+  hideGestures();
   $('wifi').hidden = true;
   holdSupport(true);
   $('toast-title').textContent = title;
@@ -594,6 +596,7 @@ function hideToast() {
   if ($('toast').hidden) return;
   $('toast').hidden = true;
   holdSupport(false);
+  maybeShowGestures();
 }
 
 $('toast-ok').addEventListener('click', hideToast);
@@ -769,6 +772,8 @@ function stopCamera() {
   video.srcObject = null;
   engine.reset();
   setCamUi(false);
+  gesturesDue = false;
+  hideGestures();
 }
 
 async function startCamera() {
@@ -823,6 +828,8 @@ async function attach(s) {
     }
   }
   $('badge').textContent = 'No hand';
+  gesturesDue = true;
+  maybeShowGestures();
 }
 
 function showCameraInfo() {
@@ -854,6 +861,7 @@ function closePhone() {
 // Same Wi-Fi network: a note like the Ko-fi one, before it and never together with it.
 function showWifi() {
   hideToast();
+  hideGestures();
   holdSupport(true);
   $('wifi').hidden = false;
 }
@@ -861,6 +869,83 @@ function showWifi() {
 $('wifi-ok').addEventListener('click', () => {
   $('wifi').hidden = true;
   holdSupport(false);
+});
+
+// ------------------------------------------------------------- gestures
+
+// The three gestures, one at a time, each time the camera starts with a model in the scene (or
+// the first model comes while the camera is on). In the box of the Ko-fi note, before it like
+// the other notes. A hand held up for a moment, a click or a tap anywhere closes it.
+const SLIDE_MS = 2500;
+let gesturesDue = false;
+let gestureSlide = 0;
+let gestureTimer = 0;
+let gesturesShownAt = 0;
+let handSince = 0;
+const gestureSlides = $('gestures').querySelectorAll('.g-slide');
+const gestureDots = $('gestures').querySelectorAll('.g-dots button');
+if (matchMedia('(pointer: coarse)').matches) $('g-hint').textContent = 'Show your hand or tap to start';
+
+function showGestureSlide(n) {
+  gestureSlide = n;
+  gestureSlides.forEach((e, k) => e.classList.toggle('on', k === n));
+  gestureDots.forEach((e, k) => e.classList.toggle('on', k === n));
+  clearTimeout(gestureTimer);
+  gestureTimer = setTimeout(() => showGestureSlide((n + 1) % gestureSlides.length), SLIDE_MS);
+}
+
+function maybeShowGestures() {
+  if (!gesturesDue || !stream || !items.length || !$('toast').hidden) return;
+  gesturesDue = false;
+  $('wifi').hidden = true;
+  holdSupport(true);
+  handSince = 0;
+  gesturesShownAt = performance.now();
+  $('gestures').hidden = false;
+  showGestureSlide(0);
+}
+
+function hideGestures() {
+  if ($('gestures').hidden) return;
+  clearTimeout(gestureTimer);
+  $('gestures').hidden = true;
+  holdSupport(false);
+}
+
+// Closes once a hand has been seen for a moment, and not in the first second: a hand already
+// up when the camera starts should not close it before it is read.
+function gesturesSeeHand(lm, now) {
+  if ($('gestures').hidden) return;
+  if (!lm) { handSince = 0; return; }
+  handSince ||= now;
+  if (now - handSince > 700 && now - gesturesShownAt > 1500) hideGestures();
+}
+
+// Inside the box: the dots, a swipe or a horizontal scroll go to the other gestures, a click
+// goes to the next one. Outside it, a click or a tap closes it.
+const stepGesture = (d) => showGestureSlide((gestureSlide + d + gestureSlides.length) % gestureSlides.length);
+gestureDots.forEach((b, k) => b.addEventListener('click', (e) => { e.stopPropagation(); showGestureSlide(k); }));
+let swipeX = null;
+$('gestures').addEventListener('pointerdown', (e) => { swipeX = e.clientX; });
+$('gestures').addEventListener('pointerup', (e) => {
+  if (swipeX === null || e.target.closest('.g-dots')) return;
+  const dx = e.clientX - swipeX;
+  swipeX = null;
+  stepGesture(Math.abs(dx) > 30 ? (dx < 0 ? 1 : -1) : 1);
+});
+let wheelAt = 0;
+$('gestures').addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaX) < Math.abs(e.deltaY) || Math.abs(e.deltaX) < 10) return;
+  e.preventDefault();
+  if (performance.now() - wheelAt < 500) return;
+  wheelAt = performance.now();
+  stepGesture(e.deltaX > 0 ? 1 : -1);
+}, { passive: false });
+document.addEventListener('pointerdown', (e) => {
+  if (!$('gestures').hidden && !e.target.closest('#gestures')) hideGestures();
+}, true);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') hideGestures();
 });
 
 async function usePhone() {
@@ -1097,6 +1182,7 @@ function handleHand(lm) {
   const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
+  gesturesSeeHand(lm, performance.now());
 
   const badge = $('badge');
   badge.textContent = lm ? MODE_LABEL[cmd.mode] : 'No hand';

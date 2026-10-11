@@ -191,6 +191,35 @@ a.link { text-decoration: none; }
 .kofi-links button:hover { color: var(--text); }
 .kofi > .btn { flex: none; text-decoration: none; color: #fff; }
 
+/* The three gestures in the same box: one at a time, the hand moving as it does. */
+.kofi.gestures { flex-direction: column; align-items: stretch; width: min(280px, calc(100% - 40px)); padding: 14px 16px 12px; gap: 6px; cursor: pointer; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.g-pic img { -webkit-user-drag: none; pointer-events: none; }
+.kofi.gestures[hidden] { display: none; }
+.g-slides { display: grid; }
+.g-slide { grid-area: 1 / 1; opacity: 0; transition: opacity 0.5s; text-align: center; }
+.g-slide.on { opacity: 1; }
+.kofi .g-name { font-size: 20px; font-weight: 300; line-height: 1.2; }
+.kofi .g-name b { font-weight: 400; }
+.g-name .rotate { color: var(--rotate); }
+.g-name .pan { color: var(--pan); }
+.g-name .zoom { color: var(--zoom); }
+.kofi .g-desc { margin-top: 2px; font-size: 12px; color: var(--muted); }
+.g-pic { width: 150px; height: 150px; margin: 10px auto 0; }
+.g-pic img { display: block; width: 100%; height: 100%; }
+.g-slide.on .g-pic img.rotate { animation: g-rotate 2.5s ease-in-out infinite; }
+.g-slide.on .g-pic img.pan { animation: g-pan 2.5s ease-in-out infinite; }
+.g-slide.on .g-pic img.zoom { animation: g-zoom 2.5s ease-in-out infinite; }
+@keyframes g-rotate { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@keyframes g-pan { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
+@keyframes g-zoom { 0%, 100% { transform: scale(0.92); } 50% { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .g-pic img { animation: none !important; } }
+.g-dots { display: flex; justify-content: center; gap: 2px; margin-top: 4px; }
+/* a large tap area around each small dot */
+.g-dots button { width: 22px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; }
+.g-dots button::after { content: ''; display: block; width: 7px; height: 7px; margin: auto; border-radius: 50%; background: var(--accent); opacity: 0.35; transition: opacity 0.3s; }
+.g-dots button.on::after { opacity: 1; }
+.kofi .g-hint { text-align: center; font-size: 11px; color: var(--dim); }
+
 .legal {
   position: absolute;
   left: 20px;
@@ -636,7 +665,7 @@ section.phone-mode {
 @media (max-width: 700px) {
   /* Header and footer in the same place and size as on the other pages. */
   .top { top: max(32px, env(safe-area-inset-top)); left: var(--gutter); right: var(--gutter); }
-  .kofi { top: 76px; width: calc(100vw - 24px); }
+  .kofi, .kofi.gestures { top: 76px; width: calc(100vw - 24px); }
 
   /* Windows stack in one column under the header (js/windows.js places them). */
   .win, #win-cam { width: calc(100vw - 24px); max-width: none; max-height: calc(100dvh - 76px - 130px); }
