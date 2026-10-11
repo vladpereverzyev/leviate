@@ -41,4 +41,4 @@ Google, the app stores) should be reported to those services.
 - The camera video is processed on your device and never recorded or sent anywhere; see the
   [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
 - The downloads are built from this repository by GitHub Actions. The macOS app is signed
-  and notarized by Apple; see the [code signing policy](README.md#code-signing-policy).
+  and notarized by Apple; see [code signing](README.md#code-signing).
