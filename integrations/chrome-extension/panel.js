@@ -18,8 +18,10 @@ import { VERSION } from './js/version.js';
 import { Control3D, PROFILES } from './renderer/control3d.js';
 import { Pointer, Pose } from './renderer/pointer.js';
 import { Page } from './page.js';
+import { nameBrowser } from './browser.js';
 
 const $ = (id) => document.getElementById(id);
+nameBrowser();   // the panel names the browser it runs in, Chrome or Edge
 const STORE_KEY = 'leviate.chrome';
 const FPS = 30;
 const HOTKEY = 'Alt+Shift+M';

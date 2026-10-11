@@ -10,6 +10,8 @@
 // A small layer drawn in the page shows the cursor of the hand (Mouse) and the ring of
 // the click poses. It also keeps where the real mouse was last, where 3D drags start.
 
+import { BROWSER, STORE } from './browser.js';
+
 const PROTOCOL = '1.3';
 const PRESS = 6;      // how far the hand moves before the buttons go down, in pixels
 const CLUTCH = 350;   // how far a drag goes before it starts again from where it began
@@ -115,7 +117,7 @@ export class Page {
       this.tabId = null;
       this.drag = null;
       // Closing the bar of Chrome (Cancel) means: stop. A tab that closes or crashes does not.
-      if (reason === 'canceled_by_user') this.onError('Chrome stopped Leviate on this tab. Turn the hand on again to go on.');
+      if (reason === 'canceled_by_user') this.onError(`${BROWSER} stopped Leviate on this tab. Turn the hand on again to go on.`);
     });
     chrome.tabs.onActivated.addListener(({ tabId, windowId }) => {
       if (this.wanted && windowId === this.windowId) this.follow(tabId);
@@ -156,7 +158,7 @@ export class Page {
       await chrome.debugger.attach({ tabId }, PROTOCOL);
     } catch (err) {
       this.onError(/chrome:|extensions gallery|Cannot access|Cannot attach/i.test(err.message)
-        ? 'The hand works on websites. Open a website in this tab: Chrome pages and the Chrome Web Store are closed to extensions.'
+        ? `The hand works on websites. Open a website in this tab: ${BROWSER} pages and ${STORE} are closed to extensions.`
         : `The hand cannot work on this tab. ${err.message}`);
       return;
     }

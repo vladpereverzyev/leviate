@@ -6,6 +6,11 @@ version are on the [releases page](https://github.com/vladpereverzyev/leviate/re
 
 ## Leviate (web app, Desktop, Chrome)
 
+### 1.3.38 (2026-10-11)
+
+- Leviate for Chrome is ready for Edge too: the panel, the camera page and the messages name the
+  browser it runs in (Chrome or Edge), and its description no longer names a browser.
+
 ### 1.3.37 (2026-10-10)
 
 - Leviate for Chrome: before **Use phone** the panel shows the same short Same Wi-Fi network
