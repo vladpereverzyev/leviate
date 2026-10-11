@@ -365,7 +365,7 @@ jobs:
           On Ubuntu and the other Linux systems with snap it is on the **[Snap Store](https://snapcraft.io/leviate)**: \`sudo snap install leviate\`.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
-          ### [Leviate for Chrome](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh)
+          ### Leviate for Chrome
 
           **Install it from the Chrome Web Store: <https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh>**
 
