@@ -426,7 +426,7 @@ function offerUpdate(found) {
       text.textContent = 'The update did not work';
       sub.textContent = `${error}. `;
       const page = document.createElement('a');
-      page.href = 'https://vladpereverzyev.github.io/leviate/download.html';
+      page.href = 'https://vladpereverzyev.github.io/leviate/download';
       page.target = '_blank';
       page.textContent = 'Download it from the site';
       sub.append(page);

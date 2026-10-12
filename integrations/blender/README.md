@@ -15,7 +15,7 @@ Leviate for Blender is on the official Blender Extensions platform:
 Leviate and press **Install**. Or install the zip by hand:
 
 1. Download the zip for your system from the
-   [download page](https://vladpereverzyev.github.io/leviate/download.html#blender):
+   [download page](https://vladpereverzyev.github.io/leviate/download#blender):
    - Windows: `leviate-blender-<version>-windows-x64.zip`
    - macOS: `leviate-blender-<version>-macos-arm64.zip`
    - Linux: `leviate-blender-<version>-linux-x64.zip`

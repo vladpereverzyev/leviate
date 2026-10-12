@@ -38,7 +38,7 @@
       "identifier": "urn:air:vladpereverzyev.github.io:leviate:downloads",
       "displayName": "Leviate downloads",
       "type": "text/html",
-      "url": "https://vladpereverzyev.github.io/leviate/download.html",
+      "url": "https://vladpereverzyev.github.io/leviate/download",
       "description": "Download page of Leviate for Desktop (Windows, macOS, Linux), the Blender add-on, the Chrome extension and the Dentra Viewer plugin, with the frequent questions.",
       "tags": ["download", "Windows", "macOS", "Linux", "Blender", "Chrome"],
       "representativeQueries": [

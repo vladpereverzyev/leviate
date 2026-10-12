@@ -34,7 +34,7 @@ ni se envía.
 | **Blender** 4.2 o posterior | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), o en Blender **Get Extensions** y busca Leviate |
 | **Dentra Viewer** | el panel **Plugin** del Viewer, ver [integrations/dentra](integrations/dentra/) |
 
-Todas las descargas, con una guía para cada sistema: <https://vladpereverzyev.github.io/leviate/download.html>
+Todas las descargas, con una guía para cada sistema: <https://vladpereverzyev.github.io/leviate/download>
 
 ## Gestos
 
@@ -73,7 +73,7 @@ El vídeo y tus escaneos se procesan solo dentro de tu navegador. No se sube nad
 hay seguimiento ni cuenta. Los únicos servicios externos son los de
 **Use phone** (el broker PeerJS y un servidor STUN de Google), que ven los datos de
 conexión pero nunca el vídeo. Leviate for Chrome y el plugin para Dentra mantienen el vídeo en
-el ordenador de la misma forma. Todos los detalles en la [política de privacidad](https://vladpereverzyev.github.io/leviate/privacy.html).
+el ordenador de la misma forma. Todos los detalles en la [política de privacidad](https://vladpereverzyev.github.io/leviate/privacy).
 
 ## Uso de IA
 

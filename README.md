@@ -34,7 +34,7 @@ is never recorded or sent anywhere.
 | **Blender** 4.2 or later | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), or in Blender **Get Extensions** and search Leviate |
 | **Dentra Viewer** | the **Plugin** panel of the Viewer, see [integrations/dentra](integrations/dentra/) |
 
-All downloads, with a guide for each system: <https://vladpereverzyev.github.io/leviate/download.html>
+All downloads, with a guide for each system: <https://vladpereverzyev.github.io/leviate/download>
 
 ## Gestures
 
@@ -81,7 +81,7 @@ The video stream and your scans are processed only inside your browser. Nothing 
 uploaded, there is no tracking and no account. The only outside services are the ones of
 **Use phone** (the PeerJS broker and a STUN server of Google), which see the connection
 details but never the video. Leviate for Chrome and the Dentra plugin keep the video on the
-computer in the same way. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
+computer in the same way. Full details in the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy).
 
 ## Code signing
 

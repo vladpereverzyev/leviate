@@ -34,7 +34,7 @@ appareil et la vidéo n'est jamais enregistrée ni envoyée.
 | **Blender** 4.2 ou plus récent | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), ou dans Blender **Get Extensions** et cherchez Leviate |
 | **Dentra Viewer** | le panneau **Plugin** du Viewer, voir [integrations/dentra](integrations/dentra/) |
 
-Tous les téléchargements, avec un guide pour chaque système: <https://vladpereverzyev.github.io/leviate/download.html>
+Tous les téléchargements, avec un guide pour chaque système: <https://vladpereverzyev.github.io/leviate/download>
 
 ## Gestes
 
@@ -73,7 +73,7 @@ Le flux vidéo et vos scans sont traités uniquement dans votre navigateur. Rien
 envoyé, aucun suivi et aucun compte. Les seuls services externes sont ceux de
 **Use phone** (le broker PeerJS et un serveur STUN de Google), qui voient les détails de
 connexion mais jamais la vidéo. Leviate for Chrome et le plugin pour Dentra gardent la vidéo
-sur l'ordinateur de la même façon. Tous les détails dans la [politique de confidentialité](https://vladpereverzyev.github.io/leviate/privacy.html).
+sur l'ordinateur de la même façon. Tous les détails dans la [politique de confidentialité](https://vladpereverzyev.github.io/leviate/privacy).
 
 ## Utilisation de l'IA
 

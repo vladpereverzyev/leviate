@@ -15,7 +15,7 @@ Any phone can be the camera: scan a QR code, no app needed. The phone and the co
 ## Use and download
 
 - [Web App](https://vladpereverzyev.github.io/leviate/): open it in the browser and drop your 3D files, or try the demo
-- [Download page](https://vladpereverzyev.github.io/leviate/download.html): Leviate for Desktop, the Blender add-on, the Chrome extension, the Dentra plugin and the questions people ask most
+- [Download page](https://vladpereverzyev.github.io/leviate/download): Leviate for Desktop, the Blender add-on, the Chrome extension, the Dentra plugin and the questions people ask most
 - [Latest release](https://github.com/vladpereverzyev/leviate/releases/latest): installers for Windows and macOS, the Linux AppImage, Flatpak and snap, and the Chrome extension zip
 - [Leviate on the Snap Store](https://snapcraft.io/leviate): Leviate for Desktop on Ubuntu and the other Linux systems with snap
 - [Leviate on the Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0): Leviate for Desktop on Windows 10 and 11, signed by Microsoft
@@ -33,7 +33,7 @@ Any phone can be the camera: scan a QR code, no app needed. The phone and the co
 
 ## Policies
 
-- [Privacy and cookie policy](https://vladpereverzyev.github.io/leviate/privacy.html): what happens to the camera, the phone pairing and the settings in each app
+- [Privacy and cookie policy](https://vladpereverzyev.github.io/leviate/privacy): what happens to the camera, the phone pairing and the settings in each app
 - [License](https://github.com/vladpereverzyev/leviate/blob/main/LICENSE): AGPL-3.0, with a commercial license available on request
 
 ## Optional

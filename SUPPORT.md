@@ -6,7 +6,7 @@ Before opening an issue, these places answer most questions:
   [Leviate for Desktop](desktop/), [Leviate for Chrome](integrations/chrome-extension/),
   [Leviate for Blender](integrations/blender/) and [Leviate for Dentra Viewer](integrations/dentra/).
 - **Frequent questions** (camera, gloves, Windows and macOS warnings, Wayland, privacy): at the
-  bottom of the [download page](https://vladpereverzyev.github.io/leviate/download.html).
+  bottom of the [download page](https://vladpereverzyev.github.io/leviate/download).
 - **Questions and ideas**: ask in [Discussions](https://github.com/vladpereverzyev/leviate/discussions).
 
 Found a bug? Open an [issue](https://github.com/vladpereverzyev/leviate/issues/new/choose) with the

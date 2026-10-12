@@ -48,7 +48,7 @@ the camera and the hand.
 The video is read by the hand tracking inside the extension, frame by frame, and is never
 recorded or sent anywhere. The extension has no accounts, no analytics and no advertising.
 Only **Use phone** goes through the PeerJS server and a STUN server of Google to connect
-the two devices, as the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html#chrome)
+the two devices, as the [privacy policy](https://vladpereverzyev.github.io/leviate/privacy#chrome)
 explains.
 
 Permissions it asks for:

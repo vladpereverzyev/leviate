@@ -25,7 +25,7 @@ again brings back the module you were using.
 
 ## Install
 
-Download from the [download page](https://vladpereverzyev.github.io/leviate/download.html) or the
+Download from the [download page](https://vladpereverzyev.github.io/leviate/download) or the
 [latest release](https://github.com/vladpereverzyev/leviate/releases/latest):
 
 | System | File |
@@ -131,7 +131,7 @@ sent. The connections out are the check for new versions, which asks GitHub for 
 latest release when the app starts (it can be turned off), and **Phone**: the free PeerJS
 server introduces the phone and the computer and sees their IP addresses, never the video.
 Leviate explains this once, before the first pairing. Details in the
-[privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html#desktop).
+[privacy policy](https://vladpereverzyev.github.io/leviate/privacy#desktop).
 
 ## Build
 

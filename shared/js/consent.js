@@ -14,7 +14,7 @@ document.body.insertAdjacentHTML('beforeend', `
   <div class="cc" data-cc hidden><div class="cc__bar" role="dialog" aria-modal="false" aria-labelledby="cc-title"><div class="cc__inner">
     <div class="cc__copy">
       <p class="cc__h" id="cc-title">Cookies and privacy</p>
-      <p class="cc__p">No cookies, no analytics, no ads. The camera runs only if you allow it, and its video stays on your device. <b>Use phone</b> connects through PeerJS and a STUN server of Google, which see IP addresses, never the video. Your choice is kept on this device for six months. <a href="privacy.html">Privacy and cookie policy</a></p>
+      <p class="cc__p">No cookies, no analytics, no ads. The camera runs only if you allow it, and its video stays on your device. <b>Use phone</b> connects through PeerJS and a STUN server of Google, which see IP addresses, never the video. Your choice is kept on this device for six months. <a href="https://vladpereverzyev.github.io/leviate/privacy">Privacy and cookie policy</a></p>
     </div>
     <div class="cc__actions">
       <button class="btn ghost" type="button" data-cc-prefs>Preferences</button>
@@ -47,7 +47,7 @@ if (new URLSearchParams(location.search).has('pair')) {
   $('.cc__p').innerHTML = 'This page makes your phone the webcam of your computer. No cookies, no analytics, no ads. '
     + 'The video goes straight to your computer, encrypted, never recorded. PeerJS and a STUN server of Google '
     + 'connect the two devices and see their IP addresses, never the video. Your choice is kept on this phone for six months. '
-    + '<a href="privacy.html">Privacy and cookie policy</a>';
+    + '<a href="https://vladpereverzyev.github.io/leviate/privacy">Privacy and cookie policy</a>';
 }
 const banner = $('[data-cc]');
 const panel = $('[data-cc-panel]');

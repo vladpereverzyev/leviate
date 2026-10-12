@@ -39,6 +39,6 @@ Google, the app stores) should be reported to those services.
 ## How Leviate keeps you safe
 
 - The camera video is processed on your device and never recorded or sent anywhere; see the
-  [privacy policy](https://vladpereverzyev.github.io/leviate/privacy.html).
+  [privacy policy](https://vladpereverzyev.github.io/leviate/privacy).
 - The downloads are built from this repository by GitHub Actions. The macOS app is signed
   and notarized by Apple; see [code signing](README.md#code-signing).
