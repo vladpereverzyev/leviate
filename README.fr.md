@@ -3,6 +3,7 @@
 [![Build & Release](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml/badge.svg)](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml)
 [![Latest release](https://img.shields.io/github/v/release/vladpereverzyev/leviate?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
 [![Snap Store](https://img.shields.io/snapcraft/v/leviate/latest/stable?label=snap)](https://snapcraft.io/leviate)
+[![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-Leviate-0078D4)](https://apps.microsoft.com/detail/9P3LPW31MJV0)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.md)
@@ -25,7 +26,7 @@ appareil et la vidéo n'est jamais enregistrée ni envoyée.
 | Où | Comment |
 | --- | --- |
 | **Navigateur** (ordinateur ou téléphone) | Rien à installer : ouvrez <https://vladpereverzyev.github.io/leviate/> |
-| **Windows** | `leviate-<version>-windows-x64.exe` depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| **Windows** | [Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0), ou `leviate-<version>-windows-x64.exe` depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **macOS** (signé et notarié) | `-macos-arm64.dmg` (Apple silicon) ou `-macos-x64.dmg` (Intel) depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** et Linux avec snap | [Snap Store](https://snapcraft.io/leviate) : `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` ou `-linux-x64.flatpak` depuis la [dernière version](https://github.com/vladpereverzyev/leviate/releases/latest) |

@@ -3,6 +3,7 @@
 [![Build & Release](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml/badge.svg)](https://github.com/vladpereverzyev/leviate/actions/workflows/build.yml)
 [![Latest release](https://img.shields.io/github/v/release/vladpereverzyev/leviate?cacheSeconds=300)](https://github.com/vladpereverzyev/leviate/releases)
 [![Snap Store](https://img.shields.io/snapcraft/v/leviate/latest/stable?label=snap)](https://snapcraft.io/leviate)
+[![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-Leviate-0078D4)](https://apps.microsoft.com/detail/9P3LPW31MJV0)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/leviate/blob/main/README.md)
@@ -25,7 +26,7 @@ is never recorded or sent anywhere.
 | Where | How |
 | --- | --- |
 | **Browser** (computer or phone) | Nothing to install: open <https://vladpereverzyev.github.io/leviate/> |
-| **Windows** | `leviate-<version>-windows-x64.exe` from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
+| **Windows** | [Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0), or `leviate-<version>-windows-x64.exe` from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **macOS** (signed and notarized) | `-macos-arm64.dmg` (Apple silicon) or `-macos-x64.dmg` (Intel) from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** and Linux with snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` or `-linux-x64.flatpak` from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |

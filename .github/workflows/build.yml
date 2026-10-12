@@ -363,6 +363,7 @@ jobs:
           Windows \`leviate-${VER}-windows-x64.exe\`, macOS (signed and notarized) \`-macos-arm64.dmg\` (Apple silicon) or
           \`-macos-x64.dmg\` (Intel), Linux \`-linux-x64.AppImage\` or \`-linux-x64.flatpak\`.
           On Ubuntu and the other Linux systems with snap it is on the **[Snap Store](https://snapcraft.io/leviate)**: \`sudo snap install leviate\`.
+          On Windows it is also on the **[Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0)**, signed by Microsoft.
           Guide: [desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop).
 
           ### Leviate for Chrome and Edge

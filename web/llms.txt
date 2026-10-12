@@ -18,6 +18,7 @@ Any phone can be the camera: scan a QR code, no app needed. The phone and the co
 - [Download page](https://vladpereverzyev.github.io/leviate/download.html): Leviate for Desktop, the Blender add-on, the Chrome extension, the Dentra plugin and the questions people ask most
 - [Latest release](https://github.com/vladpereverzyev/leviate/releases/latest): installers for Windows and macOS, the Linux AppImage, Flatpak and snap, and the Chrome extension zip
 - [Leviate on the Snap Store](https://snapcraft.io/leviate): Leviate for Desktop on Ubuntu and the other Linux systems with snap
+- [Leviate on the Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0): Leviate for Desktop on Windows 10 and 11, signed by Microsoft
 - [Leviate on Blender Extensions](https://extensions.blender.org/add-ons/leviate/): the add-on from inside Blender (Get Extensions, search Leviate)
 
 ## Guides

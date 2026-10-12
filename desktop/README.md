@@ -30,7 +30,7 @@ Download from the [download page](https://vladpereverzyev.github.io/leviate/down
 
 | System | File |
 | --- | --- |
-| Windows 10 or 11 | `leviate-<version>-windows-x64.exe`, the installer |
+| Windows 10 or 11 | `leviate-<version>-windows-x64.exe`, the installer, or from the [Microsoft Store](https://apps.microsoft.com/detail/9P3LPW31MJV0) |
 | macOS, Apple silicon | `leviate-<version>-macos-arm64.dmg` |
 | macOS, Intel | `leviate-<version>-macos-x64.dmg` |
 | Linux | `leviate-<version>-linux-x64.AppImage`, make it executable and start it |
@@ -38,7 +38,8 @@ Download from the [download page](https://vladpereverzyev.github.io/leviate/down
 | Ubuntu and Linux with snap | from the [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 
 - **Windows**: the installer is not signed yet and Windows may say "Windows protected your
-  PC": choose **More info** and **Run anyway**.
+  PC": choose **More info** and **Run anyway**. The copy from the Microsoft Store is signed by
+  Microsoft and installs without that warning.
 - **macOS**: the app is signed with the Developer ID of the author and notarized by Apple, so
   it opens with a double click. For the Mouse and 3D modules allow Leviate in
   **Accessibility**, macOS asks the first time.
