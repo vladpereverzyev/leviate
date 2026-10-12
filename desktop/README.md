@@ -17,7 +17,7 @@ The hand starts **Off** every time the app opens.
 again brings back the module you were using.
 
 Free and open source, for Windows 10 and 11, macOS (Apple silicon and Intel) and Linux. The
-video never leaves the computer.
+video is never recorded or uploaded.
 
 <br clear="right">
 
