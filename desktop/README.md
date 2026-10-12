@@ -1,9 +1,6 @@
 # Leviate for Desktop
 
-<table>
-<tr>
-<td width="220"><img src="../docs/images/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200"></td>
-<td valign="middle">
+<img src="../docs/images/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200" align="right">
 
 The hand on any program of the computer, with the webcam or the phone. Choose a module in
 **Hand controls**:
@@ -19,9 +16,7 @@ The hand starts **Off** every time the app opens.
 **Ctrl+Alt+M** (Ctrl+Option+M on macOS) turns the hand off from any program and pressing it
 again brings back the module you were using.
 
-</td>
-</tr>
-</table>
+<br clear="right">
 
 ## Install
 
