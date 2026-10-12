@@ -185,6 +185,13 @@ export function setupWindows(root = document) {
     if (win && win.classList.contains('collapsed')) toggle(win);
   });
 
+  // And one folded from elsewhere (on a phone or a tablet the Webcam window folds once the hand
+  // is seen, so the model is in view).
+  document.addEventListener('leviate:close-window', (e) => {
+    const win = wins.find((w) => w.id === e.detail);
+    if (win && !win.classList.contains('collapsed')) toggle(win);
+  });
+
   // Content can change size (files added, settings opened), so restack on phones.
   const observer = new ResizeObserver(() => { if (phone()) stack(); });
   wins.forEach((win) => observer.observe(win));

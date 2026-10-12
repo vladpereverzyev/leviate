@@ -830,17 +830,19 @@ async function attach(s) {
     }
   }
   $('badge').textContent = 'No hand';
+  foldDue = true;
   gesturesDue = true;
   maybeShowGestures();
 }
 
 // Power saving on iOS stops videos that start without a tap: the camera then starts at the
 // next tap or click, and the hand is not tracked until it does.
+const TAP_TO_START = 'Tap the page to start the camera';
 async function playVideo() {
   try {
     await video.play();
   } catch {
-    toast('Tap the page to start the camera', 0);
+    toast(TAP_TO_START, 0);
     document.addEventListener('pointerdown', () => {
       video.play().then(() => toast(''), () => {});
     }, { once: true, capture: true });
@@ -1189,7 +1191,15 @@ function applyGesture({ mode, dx, dy, zoom }) {
   }
 }
 
+// A browser may pause a video it does not show (the Webcam window folded): it plays again here,
+// at most once a second, so the hand is still tracked.
+let resumedAt = 0;
+
 function track() {
+  if (stream && video.paused && performance.now() - resumedAt > 1000) {
+    resumedAt = performance.now();
+    video.play().then(() => { if ($('toast-title').textContent === TAP_TO_START) toast(''); }, () => {});
+  }
   if (!landmarker || !stream || video.readyState < 2 || video.currentTime === lastVideoTime) return;
 
   if (landmarker.worker) {
@@ -1211,11 +1221,27 @@ function track() {
   handleHand(lm);
 }
 
+// On a phone or a tablet the Webcam window covers much of the model: once the camera has seen
+// the hand for a moment, with a model loaded, it folds by itself (once each time the camera
+// starts) and the model moves in full view. The hand tracking goes on with the window folded.
+const TOUCH_SCREEN = matchMedia('(pointer: coarse)').matches;
+let foldDue = false;
+let foldSince = 0;
+function foldOnHand(lm, now) {
+  if (!foldDue || !TOUCH_SCREEN || !items.length) return;
+  if (!lm) { foldSince = 0; return; }
+  foldSince ||= now;
+  if (now - foldSince < 500) return;
+  foldDue = false;
+  document.dispatchEvent(new CustomEvent('leviate:close-window', { detail: 'win-cam' }));
+}
+
 function handleHand(lm) {
   const cmd = engine.update(lm, { mirror: phone ? phoneMirror : settings.mirror });
   if (settings.gestures) applyGesture(cmd);
   drawHand(lm, cmd.mode);
   gesturesSeeHand(lm, performance.now());
+  foldOnHand(lm, performance.now());
 
   const badge = $('badge');
   badge.textContent = lm ? MODE_LABEL[cmd.mode] : 'No hand';
