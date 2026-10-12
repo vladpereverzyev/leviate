@@ -3,20 +3,23 @@
 <img src="../docs/images/screenshot-desktop.png" alt="Leviate for Desktop with the 3D module" width="200" align="right">
 
 The hand on any program of the computer, with the webcam or the phone. Choose a module in
-**Hand controls**: **3D** moves your 3D program, **Mouse** moves the cursor and clicks.
+**Hand controls**:
+
+- **3D**: the gestures of the web app in your 3D program. Open hand turns, fist pans, pinch
+  zooms the view under the cursor.
+- **Mouse**: the open hand moves the cursor, one finger held still is a left click, two
+  fingers held still a right click.
+- **Off**: the hand only shows in the preview.
 
 The hand starts **Off** every time the app opens.
 
 **Ctrl+Alt+M** (Ctrl+Option+M on macOS) turns the hand off from any program and pressing it
 again brings back the module you were using.
 
-<br clear="right">
+Free and open source, for Windows 10 and 11, macOS (Apple silicon and Intel) and Linux. The
+video never leaves the computer.
 
-| Module | What the hand does |
-| --- | --- |
-| **3D** | The gestures of the web app in your 3D program: open hand turns, fist pans, pinch zooms the view under the cursor |
-| **Mouse** | Open hand moves the cursor, one finger held still is a left click, two fingers held still a right click |
-| **Off** | Only shows in the preview |
+<br clear="right">
 
 ## Install
 
