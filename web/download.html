@@ -91,6 +91,7 @@
     .buttons .btn.ghost { color: var(--muted); }
     .buttons .btn small { color: inherit; opacity: 0.7; font-size: 12px; }
     .buttons .btn.mine { background: var(--accent); border-color: transparent; color: #fff; }
+    .buttons .btn.soon { cursor: default; opacity: 0.6; }
     .buttons .btn.mine::after { content: "For this computer"; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; margin-top: 2px; }
 
     .steps { counter-reset: step; list-style: none; padding: 0 !important; }
@@ -256,18 +257,19 @@
       <p><b>Alt+Shift+M</b> turns the hand off and on from any page.</p>
       <div class="buttons" data-kind="desktop">
         <a class="btn" href="https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh" target="_blank" rel="noopener">Chrome Web Store<small>Add to Chrome</small></a>
-        <a class="btn ghost" data-os="chrome" data-file="leviate-chrome-{v}.zip" href="https://github.com/vladpereverzyev/leviate/releases/latest">Chrome and Edge<small>Extension zip</small></a>
+        <!-- The link goes here once the Edge Add-ons store publishes the extension -->
+        <span class="btn ghost soon" aria-disabled="true">Microsoft Edge Add-ons<small>Coming soon</small></span>
       </div>
       <ol class="steps">
-        <li>Open Leviate on the Chrome Web Store and press <b>Add to Chrome</b>. In Edge the same
-          page works too: choose <b>Allow extensions from other stores</b> when Edge asks, then
-          <b>Get</b>.</li>
+        <li>Open Leviate on the Chrome Web Store and press <b>Add to Chrome</b>. In Edge, until it
+          is on the Edge Add-ons store, the same page works: choose <b>Allow extensions from other
+          stores</b> when Edge asks, then <b>Get</b>.</li>
         <li>Click the Leviate icon in the toolbar: the side panel opens. Press <b>Start</b> and choose 3D or Mouse.</li>
       </ol>
-      <p>The zip is the same extension for Chrome and Edge, to load by hand: unzip it, open
-      chrome://extensions (in Edge edge://extensions), turn on Developer mode and press Load
-      unpacked.</p>
-      <p class="note">Soon on the Edge Add-ons store too. While the hand is on, the browser shows a bar saying that
+      <p class="note">Other download: the <a data-file="leviate-chrome-{v}.zip" href="https://github.com/vladpereverzyev/leviate/releases/latest">extension zip</a>,
+      the same extension for Chrome and Edge, to load by hand: unzip it, open chrome://extensions
+      (in Edge edge://extensions), turn on Developer mode and press Load unpacked.</p>
+      <p class="note">While the hand is on, the browser shows a bar saying that
       Leviate is debugging the tab: that is how an extension presses real mouse buttons in a page.
       <a href="https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension" target="_blank" rel="noopener">Full guide</a></p>
     </section>
