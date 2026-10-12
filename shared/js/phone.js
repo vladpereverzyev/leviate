@@ -197,7 +197,19 @@ export async function runPhoneCamera(pairId) {
     });
     ui.video.srcObject = stream;
     ui.video.classList.toggle('mirror', facing === 'user');
-    await ui.video.play();
+    // Power saving on iOS stops videos that start without a tap: the preview then starts at
+    // the next tap. The computer gets the camera either way.
+    ui.video.play().catch(() => {
+      document.addEventListener('pointerdown', () => ui.video.play().catch(() => {}), { once: true, capture: true });
+    });
+  }
+
+  // The phone is not touched while it films the hand, so it would dim and lock the screen (in
+  // power saving after 30 s on an iPhone) and the camera would stop. The page asks to keep it
+  // on, and again when it comes back to the front: the browser drops that when it is hidden.
+  async function keepScreenOn() {
+    if (wakeLock && !wakeLock.released) return;
+    try { wakeLock = await navigator.wakeLock?.request('screen') ?? null; } catch { wakeLock = null; }
   }
 
   async function start() {
@@ -215,6 +227,7 @@ export async function runPhoneCamera(pairId) {
     status('Opening the camera…');
     try {
       await openCamera();
+      await keepScreenOn();
       status('Connecting to your computer…');
       const Peer = await loadPeer();
       peer = new Peer();
@@ -226,7 +239,10 @@ export async function runPhoneCamera(pairId) {
       call.peerConnection?.addEventListener('connectionstatechange', () => {
         if (call !== mine) return;
         const state = mine.peerConnection.connectionState;
-        if (state === 'connected') status('Connected. Keep this page open and point the camera at your hand.');
+        if (state === 'connected') {
+          status(wakeLock ? 'Connected. Keep this page open and point the camera at your hand.'
+            : 'Connected. Keep this page open and the screen on (power saving may turn it off), and point the camera at your hand.');
+        }
         // "disconnected" often comes back by itself, so it only warns.
         if (state === 'disconnected') status('Connection interrupted, trying to get it back…');
         if (state === 'failed') lost('Connection failed. Check that both devices are online.');
@@ -242,7 +258,6 @@ export async function runPhoneCamera(pairId) {
       ui.start.textContent = 'Stop';
       ui.start.disabled = false;
       ui.flip.hidden = false;
-      try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
     } catch (err) {
       console.error(err);
       stop();
@@ -357,5 +372,19 @@ export async function runPhoneCamera(pairId) {
   ui.flip.addEventListener('click', flip);
   ui.scan.addEventListener('click', scan);
   window.addEventListener('pagehide', () => { stopScan(); stop(); });
+  // Back in front: the screen kept on again, and a camera stopped in the background (the
+  // screen locked, another app) opened again in the same call.
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState !== 'visible' || !stream) return;
+    keepScreenOn();
+    if (stream.getVideoTracks()[0]?.readyState !== 'ended') return;
+    try {
+      await openCamera();
+      const sender = call?.peerConnection?.getSenders().find((s) => s.track?.kind === 'video');
+      await sender?.replaceTrack(stream.getVideoTracks()[0]);
+    } catch {
+      lost('The camera stopped while the page was in the background.');
+    }
+  });
   status('Ready. Tap Start camera.');
 }

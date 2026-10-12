@@ -772,6 +772,7 @@ function stopCamera() {
   video.srcObject = null;
   engine.reset();
   setCamUi(false);
+  keepScreenOn(false);
   gesturesDue = false;
   hideGestures();
 }
@@ -812,7 +813,8 @@ async function startCamera() {
 // Shows a stream in the preview and starts hand tracking on it.
 async function attach(s) {
   video.srcObject = s;
-  await video.play().catch(() => {});
+  await playVideo();
+  keepScreenOn(true);
   engine.reset();
   setCamUi(true);
   showCameraInfo();
@@ -831,6 +833,37 @@ async function attach(s) {
   gesturesDue = true;
   maybeShowGestures();
 }
+
+// Power saving on iOS stops videos that start without a tap: the camera then starts at the
+// next tap or click, and the hand is not tracked until it does.
+async function playVideo() {
+  try {
+    await video.play();
+  } catch {
+    toast('Tap the page to start the camera', 0);
+    document.addEventListener('pointerdown', () => {
+      video.play().then(() => toast(''), () => {});
+    }, { once: true, capture: true });
+  }
+}
+
+// The hand works without touching the device, so it would dim and lock the screen (in power
+// saving after 30 s on an iPhone). While the camera is on the page asks to keep it on, and
+// again when it comes back to the front: the browser drops that when the page is hidden.
+let screenLock = null;
+async function keepScreenOn(on) {
+  if (!on) {
+    screenLock?.release().catch(() => {});
+    screenLock = null;
+    return;
+  }
+  if (screenLock && !screenLock.released) return;
+  try { screenLock = await navigator.wakeLock?.request('screen') ?? null; } catch { screenLock = null; }
+  if (!stream) keepScreenOn(false);   // the camera stopped while it was asked
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && stream) keepScreenOn(true);
+});
 
 function showCameraInfo() {
   if (!stream) return;
