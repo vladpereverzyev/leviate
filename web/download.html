@@ -94,6 +94,7 @@
     .buttons .btn.mine { background: var(--accent); border-color: transparent; color: #fff; }
     .buttons .btn.soon { cursor: default; opacity: 0.6; }
     .buttons .btn.mine::after { content: "For this computer"; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; margin-top: 2px; }
+    .buttons .btn.mine[data-browser]::after { content: "For this browser"; }
 
     .steps { counter-reset: step; list-style: none; padding: 0 !important; }
     .steps li { counter-increment: step; position: relative; padding-left: 34px; margin-bottom: 6px; }
@@ -256,9 +257,9 @@
           click, two fingers a right click.</li>
       </ul>
       <p><b>Alt+Shift+M</b> turns the hand off and on from any page.</p>
-      <div class="buttons" data-kind="desktop">
-        <a class="btn" href="https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh" target="_blank" rel="noopener">Chrome Web Store<small>Add to Chrome</small></a>
-        <a class="btn" href="https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl" target="_blank" rel="noopener">Microsoft Edge Add-ons<small>Add to Edge</small></a>
+      <div class="buttons" data-kind="browser">
+        <a class="btn ghost" data-browser="chrome" href="https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh" target="_blank" rel="noopener">Chrome Web Store<small>Add to Chrome</small></a>
+        <a class="btn ghost" data-browser="edge" href="https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl" target="_blank" rel="noopener">Microsoft Edge Add-ons<small>Add to Edge</small></a>
       </div>
       <ol class="steps">
         <li>In Chrome open Leviate on the Chrome Web Store and press <b>Add to Chrome</b>. In Edge
@@ -408,6 +409,24 @@
         }
       }
     });
+    // In the extension card the store of this browser stands out: Edge Add-ons in Edge, the
+    // Chrome Web Store in Chrome and the other browsers built on Chromium. Phones and tablets
+    // have no extensions, Firefox and Safari cannot run this one.
+    function browser() {
+      const ua = navigator.userAgent;
+      if (/Android|iPhone|iPad|Mobile/.test(ua)) return null;
+      if (/Edg\//.test(ua)) return 'edge';
+      if (/Chrome\//.test(ua) && !/Firefox|FxiOS/.test(ua)) return 'chrome';
+      return null;
+    }
+
+    const br = browser();
+    const store = br && document.querySelector(`[data-kind="browser"] [data-browser="${br}"]`);
+    if (store) {
+      store.classList.remove('ghost');
+      store.classList.add('mine');
+      store.parentElement.prepend(store);
+    }
     latest();
 
     // Questions open and close smoothly, as on vladpereverzyev.com (a plain details snaps).
