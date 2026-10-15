@@ -498,3 +498,58 @@ jobs:
           done
           [ "$state" = SUCCEEDED ] || { echo "Upload of $zip: $state"; exit 1; }
           curl -sS --fail-with-body -X POST -H "Authorization: Bearer $token" "$api/v2/$ITEM:publish"
+
+  # After a desktop release: the same zip of Leviate for Chrome to Edge Add-ons, where it waits
+  # for the review of Microsoft. It runs only after an approval in the environment edge-add-ons,
+  # which alone holds the Publish API credentials of Partner Center (EDGE_CLIENT_ID, EDGE_API_KEY,
+  # EDGE_PRODUCT_ID; the key expires, renew it in Partner Center > Edge > Publish API), and it
+  # calls the Edge Add-ons API v1.1 with curl, no third-party code.
+  # Without the secrets the zip stays in the release, to upload by hand.
+  edge-add-ons:
+    needs: [kind, release]
+    if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
+    runs-on: ubuntu-latest
+    environment: edge-add-ons
+    permissions:
+      contents: read
+    env:
+      HAS_KEY: ${{ secrets.EDGE_API_KEY != '' }}
+    steps:
+      - name: Download Leviate for Chrome
+        if: env.HAS_KEY == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: chrome
+          path: dist
+
+      - name: Upload to Edge Add-ons and submit it for review
+        if: env.HAS_KEY == 'true'
+        env:
+          CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          API_KEY: ${{ secrets.EDGE_API_KEY }}
+          PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
+        run: |
+          set -euo pipefail
+          zip=$(ls dist/leviate-chrome-*.zip | head -1)
+          api="https://api.addons.microsoftedge.microsoft.com/v1/products/$PRODUCT_ID/submissions"
+          auth=(-H "Authorization: ApiKey $API_KEY" -H "X-ClientID: $CLIENT_ID")
+          # Both calls answer 202 with the operation in the Location header; the operation
+          # says InProgress, then Succeeded or Failed.
+          operation() { grep -i '^location:' | tr -d '\r' | sed 's/^[^:]*: *//; s|.*/||'; }
+          wait_for() {
+            local status
+            for i in $(seq 60); do
+              status=$(curl -sS --fail-with-body "${auth[@]}" "$1" | tee /dev/stderr | jq -r .status)
+              [ "$status" = InProgress ] || break
+              sleep 10
+            done
+            [ "$status" = Succeeded ] || { echo "$2: $status"; exit 1; }
+          }
+          op=$(curl -sS --fail-with-body -D - -o /dev/null -X POST "${auth[@]}" \
+            -H "Content-Type: application/zip" -T "$zip" "$api/draft/package" | operation)
+          wait_for "$api/draft/package/operations/$op" "Upload of $zip"
+          notes=$(jq -n --arg v "${GITHUB_REF_NAME}" \
+            '{notes: ("Leviate \($v), the same extension as on the Chrome Web Store. Release notes: https://github.com/vladpereverzyev/leviate/releases/tag/\($v)")}')
+          op=$(curl -sS --fail-with-body -D - -o /dev/null -X POST "${auth[@]}" \
+            -H "Content-Type: application/json" -d "$notes" "$api" | operation)
+          wait_for "$api/operations/$op" "Submission"
