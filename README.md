@@ -30,7 +30,8 @@ is never recorded or sent anywhere.
 | **macOS** (signed and notarized) | `-macos-arm64.dmg` (Apple silicon) or `-macos-x64.dmg` (Intel) from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** and Linux with snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` or `-linux-x64.flatpak` from the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest) |
-| **Chrome**, Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Microsoft Edge** | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl) |
 | **Blender** 4.2 or later | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), or in Blender **Get Extensions** and search Leviate |
 | **Dentra Viewer** | the **Plugin** panel of the Viewer, see [integrations/dentra](integrations/dentra/) |
 

@@ -15,7 +15,8 @@ Windows, macOS, Linux and ChromeOS.
 
 ## Install
 
-Install it from the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) and pin Leviate to the toolbar with the
+Install it from the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh), or in Edge from
+[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl). Pin Leviate to the toolbar with the
 puzzle icon.
 
 To load it by hand instead (a version not yet on the store, or to try a change):

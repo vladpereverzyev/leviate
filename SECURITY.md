@@ -8,7 +8,7 @@ Security fixes go into the newest version only. Please update before you report.
 | --- | --- |
 | Web app | the one online at <https://vladpereverzyev.github.io/leviate/> |
 | Leviate for Desktop (Windows, macOS, Linux) | the [latest release](https://github.com/vladpereverzyev/leviate/releases/latest), and the copies from the Mac App Store, the Microsoft Store and the Snap Store |
-| Leviate for Chrome | the version on the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| Leviate for Chrome | the version on the [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) and on [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl) |
 | Leviate for Blender | the newest release on [Blender Extensions](https://extensions.blender.org/add-ons/leviate/) |
 
 ## Reporting a vulnerability

@@ -30,7 +30,8 @@ Gerät erkannt, das Video wird nie aufgezeichnet oder gesendet.
 | **macOS** (signiert und notarisiert) | `-macos-arm64.dmg` (Apple silicon) oder `-macos-x64.dmg` (Intel) aus dem [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** und Linux mit snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` oder `-linux-x64.flatpak` aus dem [neuesten Release](https://github.com/vladpereverzyev/leviate/releases/latest) |
-| **Chrome**, Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Microsoft Edge** | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl) |
 | **Blender** 4.2 oder neuer | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), oder in Blender unter **Get Extensions** nach Leviate suchen |
 | **Dentra Viewer** | das Panel **Plugin** des Viewers, siehe [integrations/dentra](integrations/dentra/) |
 

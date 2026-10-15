@@ -27,6 +27,7 @@ Any phone can be the camera: scan a QR code, no app needed. The phone and the co
 - [Leviate for Desktop](https://github.com/vladpereverzyev/leviate/tree/main/desktop): the 3D and Mouse modules, the mouse buttons of each 3D program and the system permissions
 - [Leviate for Blender](https://github.com/vladpereverzyev/leviate/tree/main/integrations/blender): install, use, phone as the camera
 - [Leviate for Chrome on the Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh): install the extension
+- [Leviate for Edge on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl): install the extension in Microsoft Edge
 - [Leviate for Chrome](https://github.com/vladpereverzyev/leviate/tree/main/integrations/chrome-extension): install, the side panel, the 3D and Mouse modes and its permissions
 - [Leviate for Dentra Viewer](https://github.com/vladpereverzyev/leviate/tree/main/integrations/dentra): the plugin, its options and its permissions
 - [Integrations](https://github.com/vladpereverzyev/leviate/blob/main/integrations/README.md): how to bring the hand control to other programs

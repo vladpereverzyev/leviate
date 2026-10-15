@@ -30,7 +30,8 @@ dispositivo e il video non viene mai registrato né inviato.
 | **macOS** (firmato e notarizzato) | `-macos-arm64.dmg` (Apple silicon) o `-macos-x64.dmg` (Intel) dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** e Linux con snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` o `-linux-x64.flatpak` dall'[ultima release](https://github.com/vladpereverzyev/leviate/releases/latest) |
-| **Chrome**, Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Microsoft Edge** | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl) |
 | **Blender** 4.2 o successivo | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), oppure in Blender **Get Extensions** cerca Leviate |
 | **Dentra Viewer** | il pannello **Plugin** del Viewer, vedi [integrations/dentra](integrations/dentra/) |
 

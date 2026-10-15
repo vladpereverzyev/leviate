@@ -30,7 +30,8 @@ ni se envía.
 | **macOS** (firmado y notarizado) | `-macos-arm64.dmg` (Apple silicon) o `-macos-x64.dmg` (Intel) de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest) |
 | **Ubuntu** y Linux con snap | [Snap Store](https://snapcraft.io/leviate): `sudo snap install leviate` |
 | **Linux** | `-linux-x64.AppImage` o `-linux-x64.flatpak` de la [última versión](https://github.com/vladpereverzyev/leviate/releases/latest) |
-| **Chrome**, Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/leviate/moipdbapejodmhhmhhngbcehcgngchlh) |
+| **Microsoft Edge** | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leviate/mfgmbobbkgoogpbhobeinkhdhmfiagkl) |
 | **Blender** 4.2 o posterior | [Blender Extensions](https://extensions.blender.org/add-ons/leviate/), o en Blender **Get Extensions** y busca Leviate |
 | **Dentra Viewer** | el panel **Plugin** del Viewer, ver [integrations/dentra](integrations/dentra/) |
 
