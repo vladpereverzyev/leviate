@@ -6,6 +6,23 @@ version are on the [releases page](https://github.com/vladpereverzyev/leviate/re
 
 ## Leviate (web app, Desktop, Chrome)
 
+### 1.3.39 (2026-10-20)
+
+- Web app: the three gestures (open hand turns, fist pans, pinch zooms) show in the message box
+  once a model is loaded and the camera is on, one at a time, closing when the camera sees the
+  hand or on a click outside.
+- Web app on phones and tablets: the Webcam window folds once the camera sees the hand with a
+  model loaded, so the model moves in full view.
+- Web app and phone camera: the screen stays on while the camera is on, a video stopped by power
+  saving starts again at the next tap and the phone camera reopens after the page was in the
+  background.
+- Leviate for Desktop is on the Microsoft Store, signed by Microsoft.
+- Leviate for Edge is on the Edge Add-ons store.
+- Download page: one signed copy for each system (Microsoft Store, macOS, Snap Store), Blender
+  Extensions as the add-on button, the other files in a line under them and new questions.
+- Site addresses without .html for the download and privacy pages.
+- Leviate for Desktop and the snap rebuilt with the latest Ubuntu security updates.
+
 ### 1.3.38 (2026-10-11)
 
 - Leviate for Chrome is ready for Edge too: the panel, the camera page and the messages name the
