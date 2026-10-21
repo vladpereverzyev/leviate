@@ -94,16 +94,6 @@
       "category": "Graphics",
       "artifactName": "leviate-${version}-linux-x64.${ext}"
     },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false,
-      "entitlements": "packaging/mas/entitlements.mas.plist",
-      "entitlementsInherit": "packaging/mas/entitlements.mas.inherit.plist",
-      "provisioningProfile": "packaging/mas/embedded.provisionprofile",
-      "artifactName": "leviate-${version}-mac-app-store.${ext}",
-      "icon": "packaging/mas/icon.png",
-      "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/@koromix/koffi-*/**"
-    },
     "appx": {
       "identityName": "VladyslavPereverzyev.Leviate",
       "publisher": "CN=F7184246-76F6-4B55-B18C-F2CCDED1319E",

@@ -5,7 +5,6 @@
 //   Windows  leviate-<version>-windows-x64.exe      (installer)
 //   macOS    leviate-<version>-macos-arm64.dmg and -macos-x64.dmg
 //   Linux    leviate-<version>-linux-x64.AppImage
-//   Mac App Store  leviate-<version>-mac-app-store.pkg (with --mas)
 //   Microsoft Store  leviate-<version>-windows-store.appx (with --appx, on Windows)
 //
 // The app uses the files of shared/ (hand worker, gestures, phone pairing, MediaPipe,
@@ -15,7 +14,6 @@
 //   cd desktop && npm ci
 //   node scripts/build-desktop.mjs          (from the repository root)
 //   node scripts/build-desktop.mjs --dir    (unpacked app only, quicker to try)
-//   node scripts/build-desktop.mjs --mas    (Mac App Store package, see .github/workflows/mas.yml)
 
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -41,17 +39,11 @@ fs.copyFileSync(path.join(SHARED, 'icons', 'icon.ico'), path.join(BUILD, 'icon.i
 
 const platform = { win32: '--win', darwin: '--mac', linux: '--linux' }[process.platform];
 const builder = path.join(APP, 'node_modules', 'electron-builder', 'cli.js');
-// --mas: the sandboxed Mac App Store package (macOS only), signed with the certificates of
-// the keychain and the identity given as -c.mas.identity=... by the Mac App Store workflow.
-const mas = process.argv.includes('--mas');
 // --appx: the MSIX package for the Microsoft Store (Windows only), with its tile images.
 // The Store signs it, so it needs no certificate here.
 const appx = process.argv.includes('--appx');
 if (appx) fs.cpSync(path.join(APP, 'packaging', 'appx'), path.join(BUILD, 'appx'), { recursive: true });
-// The Store wants a 1024 px icon (512 pt @2x) in the app's .icns: the build icon becomes
-// the 1024 px one of packaging/mas/, which also the universal app picks up.
-if (mas) fs.copyFileSync(path.join(APP, 'packaging', 'mas', 'icon.png'), path.join(BUILD, 'icon.png'));
-const args = [builder, ...(mas ? ['--mac', 'mas:universal'] : appx ? ['--win', 'appx:x64'] : [platform]), `-c.extraMetadata.version=${version}`, '--publish', 'never'];
+const args = [builder, ...(appx ? ['--win', 'appx:x64'] : [platform]), `-c.extraMetadata.version=${version}`, '--publish', 'never'];
 if (process.argv.includes('--dir')) args.push('--dir');
 args.push(...process.argv.slice(2).filter((a) => a.startsWith('-c.')));
 
