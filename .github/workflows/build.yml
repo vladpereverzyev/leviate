@@ -214,8 +214,8 @@ jobs:
           path: leviate-*-linux-x64.flatpak
           if-no-files-found: error
 
-  # The MSIX package for the Microsoft Store (product 9P3LPW31MJV0). The Store signs it;
-  # it is uploaded by hand in Partner Center, so it is an artifact, not part of the release.
+  # The MSIX package for the Microsoft Store (product 9P3LPW31MJV0). The Store signs it, so it
+  # is an artifact, not part of the release: the job microsoft-store-submit sends it there.
   microsoft-store:
     needs: [kind]
     if: needs.kind.outputs.desktop == 'true'
@@ -536,6 +536,12 @@ jobs:
           # Both calls answer 202 with the operation in the Location header; the operation
           # says InProgress, then Succeeded or Failed.
           operation() { grep -i '^location:' | tr -d '\r' | sed 's/^[^:]*: *//; s|.*/||'; }
+          # A refused call prints the answer of Microsoft, not only its status code.
+          call() {
+            local body; body=$(mktemp)
+            curl -sS --fail-with-body -D "$body.head" -o "$body" "${auth[@]}" "$@" || { cat "$body" >&2; echo >&2; return 1; }
+            operation < "$body.head"
+          }
           wait_for() {
             local status
             for i in $(seq 60); do
@@ -545,11 +551,54 @@ jobs:
             done
             [ "$status" = Succeeded ] || { echo "$2: $status"; exit 1; }
           }
-          op=$(curl -sS --fail-with-body -D - -o /dev/null -X POST "${auth[@]}" \
-            -H "Content-Type: application/zip" -T "$zip" "$api/draft/package" | operation)
+          op=$(call -X POST -H "Content-Type: application/zip" -T "$zip" "$api/draft/package")
           wait_for "$api/draft/package/operations/$op" "Upload of $zip"
           notes=$(jq -n --arg v "${GITHUB_REF_NAME}" \
             '{notes: ("Leviate \($v), the same extension as on the Chrome Web Store. Release notes: https://github.com/vladpereverzyev/leviate/releases/tag/\($v)")}')
-          op=$(curl -sS --fail-with-body -D - -o /dev/null -X POST "${auth[@]}" \
-            -H "Content-Type: application/json" -d "$notes" "$api" | operation)
+          op=$(call -X POST -H "Content-Type: application/json" -d "$notes" "$api")
           wait_for "$api/operations/$op" "Submission"
+
+  # After a desktop release: the MSIX package to the Microsoft Store, where it waits for the
+  # certification of Microsoft. It runs only after an approval in the environment
+  # microsoft-store, which alone holds the credentials of the Microsoft Entra app linked to
+  # Partner Center (PARTNER_CENTER_TENANT_ID, PARTNER_CENTER_SELLER_ID, PARTNER_CENTER_CLIENT_ID,
+  # PARTNER_CENTER_CLIENT_SECRET; the client secret expires, renew it in the Entra app). It uses
+  # the Microsoft Store Developer CLI of Microsoft (MIT). Without the secrets the package stays
+  # an artifact of the run, to upload by hand in Partner Center.
+  microsoft-store-submit:
+    needs: [kind, microsoft-store, release]
+    if: github.ref_type == 'tag' && needs.kind.outputs.desktop == 'true'
+    runs-on: windows-latest
+    environment: microsoft-store
+    permissions:
+      contents: read
+    env:
+      HAS_SECRET: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET != '' }}
+    steps:
+      - name: Download the Microsoft Store package
+        if: env.HAS_SECRET == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: microsoft-store
+          path: dist
+
+      - name: Set up the Microsoft Store Developer CLI
+        if: env.HAS_SECRET == 'true'
+        uses: microsoft/microsoft-store-apppublisher@v1.4
+
+      - name: Submit it to the Microsoft Store for certification
+        if: env.HAS_SECRET == 'true'
+        shell: bash
+        env:
+          TENANT_ID: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          SELLER_ID: ${{ secrets.PARTNER_CENTER_SELLER_ID }}
+          CLIENT_ID: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+        run: |
+          set -euo pipefail
+          msstore reconfigure --tenantId "$TENANT_ID" --sellerId "$SELLER_ID" \
+            --clientId "$CLIENT_ID" --clientSecret "$CLIENT_SECRET"
+          # The CLI takes .msix files: an .appx is the same package under its older name.
+          appx=$(ls dist/leviate-*-windows-store.appx | head -1)
+          cp "$appx" "${appx%.appx}.msix"
+          msstore publish "$PWD/dist" --inputFile "${appx%.appx}.msix" --appId 9P3LPW31MJV0 --verbose
