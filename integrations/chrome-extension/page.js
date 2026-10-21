@@ -21,48 +21,58 @@ const WHEEL_GAP = 15; // time between two parts of a wheel step, in ms
 const WHEEL_PART = 0.2;
 const WHEEL_MAX = 6;
 const WHEEL_PIXELS = 100;
+const RETRY = 2000;    // time before trying again a tab another debugger holds, in ms
 
 const BUTTON_BITS = { left: 1, right: 2, middle: 4 };
 const KEY_BITS = { alt: 1, ctrl: 2, shift: 8 };
 
 // Runs inside the page. Draws the layer once and leaves window.__leviate to talk to.
+// Built element by element, never from markup: pages with Trusted Types (Gmail and other
+// Google pages) refuse innerHTML, and the layer would never appear there.
 function layer() {
   if (window.__leviate) return;
+  const SVG = 'http://www.w3.org/2000/svg';
+  const make = (ns, tag, attrs = {}, kids = []) => {
+    const e = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    e.append(...kids);
+    return e;
+  };
+  const circle = (attrs) => make(SVG, 'circle', { cx: '36', cy: '36', fill: 'none', ...attrs });
   const host = document.createElement('leviate-hand');
   host.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2147483647;';
   const root = host.attachShadow({ mode: 'closed' });
-  root.innerHTML = `
-    <style>
-      :host { all: initial; }
-      .at { position: fixed; left: 0; top: 0; width: 0; height: 0; display: none; }
-      .cursor { position: absolute; left: -2px; top: -2px; width: 22px; height: 22px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
-      .ring { position: absolute; left: -36px; top: -36px; width: 72px; height: 72px; display: none; }
-      .track { stroke: rgba(70,70,70,.55); } .shadow { stroke: rgba(0,0,0,.35); }
-      .inner { display: none; } svg.double .inner { display: inline; }
-      #flash { opacity: 0; transform-origin: 36px 36px; }
-      #flash.go { animation: flash 350ms ease-out; }
-      @keyframes flash { from { opacity: .6; transform: scale(.6); } to { opacity: 0; transform: scale(1.3); } }
-    </style>
-    <div class="at">
-      <svg class="ring" viewBox="0 0 72 72">
-        <circle class="shadow" cx="36" cy="36" r="24" fill="none" stroke-width="9"/>
-        <circle class="track" cx="36" cy="36" r="24" fill="none" stroke-width="5"/>
-        <circle id="arc" cx="36" cy="36" r="24" fill="none" stroke-width="5" stroke-linecap="round"
-                stroke-dasharray="150.8" stroke-dashoffset="150.8" transform="rotate(-90 36 36)"/>
-        <circle class="inner shadow" cx="36" cy="36" r="13" fill="none" stroke-width="8"/>
-        <circle class="inner track" cx="36" cy="36" r="13" fill="none" stroke-width="4"/>
-        <circle class="inner" id="arc2" cx="36" cy="36" r="13" fill="none" stroke-width="4" stroke-linecap="round"
-                stroke-dasharray="81.7" stroke-dashoffset="81.7" transform="rotate(-90 36 36)"/>
-        <circle id="flash" cx="36" cy="36" r="22"/>
-      </svg>
-      <svg class="cursor" viewBox="0 0 22 22"><path d="M2 2l6.5 17 2.6-7.1 7.1-2.6z" fill="#2791CB" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
-    </div>`;
-  const at = root.querySelector('.at');
-  const ring = root.querySelector('.ring');
-  const cursor = root.querySelector('.cursor');
-  const arc = root.getElementById('arc');
-  const arc2 = root.getElementById('arc2');
-  const flash = root.getElementById('flash');
+  const style = document.createElement('style');
+  style.textContent = `
+    :host { all: initial; }
+    .at { position: fixed; left: 0; top: 0; width: 0; height: 0; display: none; }
+    .cursor { position: absolute; left: -2px; top: -2px; width: 22px; height: 22px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+    .ring { position: absolute; left: -36px; top: -36px; width: 72px; height: 72px; display: none; }
+    .track { stroke: rgba(70,70,70,.55); } .shadow { stroke: rgba(0,0,0,.35); }
+    .inner { display: none; } svg.double .inner { display: inline; }
+    #flash { opacity: 0; transform-origin: 36px 36px; }
+    #flash.go { animation: flash 350ms ease-out; }
+    @keyframes flash { from { opacity: .6; transform: scale(.6); } to { opacity: 0; transform: scale(1.3); } }`;
+  const arc = circle({ r: '24', 'stroke-width': '5', 'stroke-linecap': 'round',
+    'stroke-dasharray': '150.8', 'stroke-dashoffset': '150.8', transform: 'rotate(-90 36 36)' });
+  const arc2 = circle({ class: 'inner', r: '13', 'stroke-width': '4', 'stroke-linecap': 'round',
+    'stroke-dasharray': '81.7', 'stroke-dashoffset': '81.7', transform: 'rotate(-90 36 36)' });
+  const flash = make(SVG, 'circle', { id: 'flash', cx: '36', cy: '36', r: '22' });
+  const ring = make(SVG, 'svg', { class: 'ring', viewBox: '0 0 72 72' }, [
+    circle({ class: 'shadow', r: '24', 'stroke-width': '9' }),
+    circle({ class: 'track', r: '24', 'stroke-width': '5' }),
+    arc,
+    circle({ class: 'inner shadow', r: '13', 'stroke-width': '8' }),
+    circle({ class: 'inner track', r: '13', 'stroke-width': '4' }),
+    arc2,
+    flash,
+  ]);
+  const cursor = make(SVG, 'svg', { class: 'cursor', viewBox: '0 0 22 22' }, [
+    make(SVG, 'path', { d: 'M2 2l6.5 17 2.6-7.1 7.1-2.6z', fill: '#2791CB', stroke: '#fff',
+      'stroke-width': '1.6', 'stroke-linejoin': 'round' }),
+  ]);
+  const at = make(null, 'div', { class: 'at' }, [ring, cursor]);
+  root.append(style, at);
   const COLORS = { left: '#10B279', double: '#10B279', right: '#E0B85A' };
   const state = { x: innerWidth / 2, y: innerHeight / 2 };
   const place = () => { (document.documentElement || document.body)?.append(host); };
@@ -157,6 +167,15 @@ export class Page {
     try {
       await chrome.debugger.attach({ tabId }, PROTOCOL);
     } catch (err) {
+      if (/another debugger/i.test(err.message)) {
+        // The developer tools or another extension that drives pages hold the tab, and
+        // a tab takes one at a time: try again until they let go.
+        this.onError('Another extension or the developer tools are using this tab. The hand starts here once they let go of it.');
+        setTimeout(() => {
+          if (this.wanted && this.next === tabId && this.tabId === null) this.follow(tabId);
+        }, RETRY);
+        return;
+      }
       this.onError(/chrome:|extensions gallery|Cannot access|Cannot attach/i.test(err.message)
         ? `The hand works on websites. Open a website in this tab: ${BROWSER} pages and ${STORE} are closed to extensions.`
         : `The hand cannot work on this tab. ${err.message}`);

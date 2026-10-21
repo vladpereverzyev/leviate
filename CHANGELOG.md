@@ -6,8 +6,13 @@ version are on the [releases page](https://github.com/vladpereverzyev/leviate/re
 
 ## Leviate (web app, Desktop, Chrome)
 
-### 1.3.39 (2026-10-20)
+### 1.3.41 (2026-10-21)
 
+- Leviate for Chrome and Edge works on Gmail and the other Google pages too: those pages
+  refused the hand cursor and the ring of the clicks, so the hand did nothing there.
+- Leviate for Chrome and Edge on a tab the developer tools or another extension are using:
+  a clear message instead of the error of the browser, then the hand starts by itself once
+  the tab is free.
 - Web app: the three gestures (open hand turns, fist pans, pinch zooms) show in the message box
   once a model is loaded and the camera is on, one at a time, closing when the camera sees the
   hand or on a click outside.
